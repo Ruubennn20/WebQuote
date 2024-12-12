@@ -1,0 +1,83 @@
+import React from "react";
+
+export default function TestimonialCard({
+  image,
+  name,
+  role,
+  rating,
+  testimonial,
+}) {
+  return (
+    <article className="testimonial-card">
+    
+      <div className="content">
+        <h3 className="name">{name}</h3>
+        <p className="role">{role}</p>
+      
+        <p className="testimonial-text">{testimonial}</p>
+      </div>
+      <style jsx>{`
+        .testimonial-card {
+          border-radius: 53px;
+          background-color: var(--white);
+          display: flex;
+          min-height: 588px;
+          align-items: center;
+          padding: 58px 89px;
+          width: 100%;
+        }
+        .profile-image {
+          aspect-ratio: 1.03;
+          object-fit: contain;
+          width: 153px;
+          border-radius: 74px;
+          align-self: center;
+        }
+        .content {
+          display: flex;
+          margin-top: 75px;
+          width: 100%;
+          flex-direction: column;
+          align-items: center;
+        }
+        .name {
+          color: var(--primary-purple);
+          text-align: center;
+          font-weight: 700;
+          font-size: 30px;
+          margin: 0;
+        }
+        .role {
+          color: var(--primary-purple);
+          text-align: center;
+          margin-top: 21px;
+          font-weight: 600;
+          font-size: 18px;
+        }
+        .rating {
+          display: flex;
+          margin-top: 21px;
+          gap: 10px;
+        }
+        .star {
+          width: 30px;
+          aspect-ratio: 1.07;
+          object-fit: contain;
+        }
+        .testimonial-text {
+          color: var(--primary-purple);
+          text-align: center;
+          margin-top: 21px;
+          font-weight: 200;
+          font-size: 18px;
+        }
+        @media (max-width: 991px) {
+          .testimonial-card {
+            margin-top: 40px;
+            padding: 0 20px;
+          }
+        }
+      `}</style>
+    </article>
+  );
+}
