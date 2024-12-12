@@ -1,14 +1,27 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import './App.css'
+import FormExemplo from './Forms/FormExemplo'
+import FormInicial from './Forms/FormInicial'
+import FormBlog from './Forms/FormBlog'
+import FormEcommerce from './Forms/FormEcommerce'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
+  
+    <Router>
+      <Routes>
+        <Route path="/" element={<FormInicial />} />
+        <Route path="/formBlog" element={<FormBlog />} />
+        <Route path="/formEcommerce" element={<FormEcommerce />} />
+      </Routes>
+    </Router>
+      /* <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
@@ -29,8 +42,13 @@ function App() {
         Click on the Vite and React logos to learn more
         Olá Team R ja foste
       </p>
-    </>
-  )
+      <FormInicial />
+
+      <div>
+        <FormExemplo />
+      </div>
+    </> */
+  );
 }
 
 export default App
