@@ -12,3 +12,6 @@ git pull origin main
 Caso commit nao funcione:
 git add .
 
+Para saber qual branch esta:
+git status
+
