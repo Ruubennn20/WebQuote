@@ -8,46 +8,20 @@ import FormExemplo from './Forms/FormExemplo'
 import FormInicial from './Forms/FormInicial'
 import FormBlog from './Forms/FormBlog'
 import FormEcommerce from './Forms/FormEcommerce'
+import FormContacto from './Forms/FormContacto'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-  
     <Router>
       <Routes>
         <Route path="/" element={<FormInicial />} />
         <Route path="/formBlog" element={<FormBlog />} />
         <Route path="/formEcommerce" element={<FormEcommerce />} />
+        <Route path="/formContacto" element={<FormContacto />} />
       </Routes>
     </Router>
-      /* <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-        Olá Team R ja foste
-      </p>
-      <FormInicial />
-
-      <div>
-        <FormExemplo />
-      </div>
-    </> */
+      
   );
 }
 

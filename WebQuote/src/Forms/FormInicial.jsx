@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './form.css';
-
+import FormContacto from './FormContacto';
 export default function FormInicial() {
   const [selectedForm, setSelectedForm] = useState(null);
 
@@ -36,6 +36,10 @@ export default function FormInicial() {
             </form>
           </div>
         );
+      case 'contacto':
+        return (
+          <FormContacto />
+        );
       default:
         return null;
     }
@@ -60,6 +64,13 @@ export default function FormInicial() {
             onClick={() => setSelectedForm('ecommerce')}
           >
             E-COMMERCE
+          </button>
+          <button
+            type="button"
+            className="objective-button"
+            onClick={() => setSelectedForm('contacto')}
+          >
+            CONTACTO
           </button>
         </div>
       </div>
