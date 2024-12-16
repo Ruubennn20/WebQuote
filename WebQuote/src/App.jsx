@@ -8,7 +8,8 @@ import Homepage from "./Pages/Homepage";
 import SobreNos from "./Pages/SobreNos";
 import Contactos from "./Pages/Contactos";
 import FormContacto from "./Components/Forms/FormContacto";
-
+import FormExemplo from "./Components/Forms/FormExemplo";
+import FormInicial from "./Components/Forms/FormInicial";
 function App() {
   return (
     <Router>
@@ -17,6 +18,8 @@ function App() {
         <Route path="/sobre-nos" element={<SobreNos />} />
         <Route path="/contactos" element={<Contactos />} />
         <Route path="/form" element={<FormContacto />} />
+        <Route path="/form-exemplo" element={<FormExemplo />} />
+        <Route path="/form-inicial" element={<FormInicial />} />
       </Routes>
     </Router>
   );

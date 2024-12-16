@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import './form.css'
+import Header from '../Header/Header';
 
 export default function FormExemplo() {
   const [formData, setFormData] = useState({
@@ -41,6 +42,7 @@ export default function FormExemplo() {
 
   return (
     <div className="container">
+      <Header/>
       <h1>Formulário para Criação de Sites</h1>
       <form onSubmit={handleSubmit}>
         <div>
