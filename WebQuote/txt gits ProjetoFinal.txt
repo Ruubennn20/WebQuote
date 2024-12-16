@@ -1,0 +1,17 @@
+
+Puxar a branch respetiva:
+git checkout joaoPimentel
+git checkout RubenCouto
+git checkout BrunoAssuncao78
+git checkout Francisco
+
+
+Puxar o projeto mais recente:
+git pull origin main
+
+Caso commit nao funcione:
+git add .
+
+Para saber qual branch esta:
+git status
+
