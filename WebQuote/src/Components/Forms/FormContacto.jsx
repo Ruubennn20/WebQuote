@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import "./form.css";
+import Header from "../Header/Header";
 
 export default function FormContacto() {
 
   return (
-    <form>
-      <h2>Contact Form</h2>
-      <div>
-        <label htmlFor="from_name">Nome</label>
+    <div>
+      <Header/>
+      <form>
+        <h2>Contact Form</h2>
+        <div>
+          <label htmlFor="from_name">Nome</label>
         <input
           type="text"
           name="from_name"
@@ -39,6 +42,7 @@ export default function FormContacto() {
         <button type="submit" disabled={false}>
         </button>
       </div>
-    </form>
+      </form>
+    </div>
   );
 }
