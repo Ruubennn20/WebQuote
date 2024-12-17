@@ -43,8 +43,19 @@ export default function FormInicial() {
       case 'blog':
         return (
           <div className="form-container">
-            <h2>Formulário para Blog</h2>
+            <h2>Formulário para Site informativo</h2>
             <form>
+            <label>Nome:</label>
+              <input type="text" placeholder="Digite o nome e apelido" required/>
+              <br />
+              <br />
+              <label>Telemóvel:</label>
+              <input type='text' placeholder="Digite o contacto" required/>
+              <br />
+              <br />
+              <label>Email:</label>
+              <input type='email' placeholder="Digite o email" required />
+              <br />
             <div>
           <p>Quais páginas o site precisa?</p>
           <div>
@@ -52,7 +63,8 @@ export default function FormInicial() {
               { value: 'home', label: 'Página Inicial' },
               { value: 'about', label: 'Sobre' },
               { value: 'contact', label: 'Contato' },
-              { value: 'blog', label: 'Blog' }
+              { value: 'blog', label: 'Blog' },
+              { value: 'outras', label: 'Outras' }
             ].map(({ value, label }) => (
               <label key={value}>
                 <input
@@ -82,20 +94,27 @@ export default function FormInicial() {
             <option value='modernizacao'>Modernização</option>
           </select>
         </div>
-        <br />
         <div>
-          <label htmlFor="objective">Logotipo</label>
-          <select 
-            id="objective" 
-            name="objective" 
-            required 
-            value={formData.objective}
-            onChange={handleInputChange}
-          >
-            <option value="">Selecione</option>
-            <option value='novoLogotipo'>Criação de um novo</option>
-            <option value='manterLogotipo'>Manter atual</option>
-          </select>
+          <p>Serviços de Design</p>
+          <div>
+            {[
+              { value: 'home', label: 'Logotipo' },
+              { value: 'about', label: 'Icons' },
+              { value: 'contact', label: 'Banners' },
+              { value: 'outras', label: 'Outros' }
+            ].map(({ value, label }) => (
+              <label key={value}>
+                <input
+                  type="checkbox"
+                  name="pages"
+                  value={value}
+                  checked={formData.pages.includes(value)}
+                  onChange={handleInputChange}
+                />
+                {label}
+              </label>
+            ))}
+          </div>
         </div>
         <br />
         <div>
@@ -214,14 +233,9 @@ export default function FormInicial() {
           </div>
         </div>
         <br />
-              <label>Título do Blog:</label>
-              <input type="text" placeholder="Digite o título" />
-              <br />
-              <br />
-              <label>Descrição:</label>
-              <textarea placeholder="Digite a descrição" />
-              <br />
               <button type="submit">Enviar</button>
+              <h5>Ou</h5>
+              <button type="submit">Agendar reunião</button>
             </form>
           </div>
         );
@@ -230,21 +244,214 @@ export default function FormInicial() {
           <div className="form-container">
             <h2>Formulário para E-commerce</h2>
             <form>
-              <label>Nome da Loja:</label>
-              <input type="text" placeholder="Digite o nome da loja" />
+
+              <label>Nome:</label>
+              <input type="text" placeholder="Digite o nome e apelido" required/>
               <br />
-              <label>Produtos Principais:</label>
-              <textarea placeholder="Descreva os produtos" />
               <br />
+              <label>Telemóvel:</label>
+              <input type='text' placeholder="Digite o contacto" required/>
+              <br />
+              <br />
+              <label>Email:</label>
+              <input type='email' placeholder="Digite o email" required />
+              <br />
+            <div>
+          <p>Quais páginas o site precisa?</p>
+          <div>
+            {[
+              { value: 'home', label: 'Página Inicial' },
+              { value: 'about', label: 'Sobre' },
+              { value: 'contact', label: 'Contato' },
+              { value: 'loja', label: 'Loja' },
+              { value: 'usuario', label: 'Conta do usuário' },
+              { value: 'politica', label: 'Política de devoluções' },
+              { value: 'outras', label: 'Outras' }
+            ].map(({ value, label }) => (
+              <label key={value}>
+                <input
+                  type="checkbox"
+                  name="pages"
+                  value={value}
+                  checked={formData.pages.includes(value)}
+                  onChange={handleInputChange}
+                />
+                {label}
+              </label>
+            ))}
+          </div>
+        </div>
+        <br />
+        <div>
+          <label htmlFor="objective">Website novo ou modernização?</label>
+          <select 
+            id="objective" 
+            name="objective" 
+            required 
+            value={formData.objective}
+            onChange={handleInputChange}
+          >
+            <option value="">Selecione</option>
+            <option value='novoSite'>Novo</option>
+            <option value='modernizacao'>Modernização</option>
+          </select>
+        </div>
+        <div>
+          <p>Serviços de Design</p>
+          <div>
+            {[
+              { value: 'home', label: 'Logotipo' },
+              { value: 'about', label: 'Icons' },
+              { value: 'contact', label: 'Banners' },
+              { value: 'outras', label: 'Outros' }
+            ].map(({ value, label }) => (
+              <label key={value}>
+                <input
+                  type="checkbox"
+                  name="pages"
+                  value={value}
+                  checked={formData.pages.includes(value)}
+                  onChange={handleInputChange}
+                />
+                {label}
+              </label>
+            ))}
+          </div>
+        </div>
+        <br />
+        <div>
+          <label htmlFor="objective">Integração com redes sociais</label>
+          <select 
+            id="objective" 
+            name="objective" 
+            required 
+            value={formData.objective}
+            onChange={handleInputChange}
+          >
+            <option value="">Selecione</option>
+            <option value='redesSociais'>Sim</option>
+            <option value='semintegracao'>Não</option>    
+          </select>
+        </div>
+        <br />
+        <div>
+          <label htmlFor="objective">Integração com meios de pagamento</label>
+          <select 
+            id="objective" 
+            name="objective" 
+            required 
+            value={formData.objective}
+            onChange={handleInputChange}
+          >
+            <option value="">Selecione</option>
+            <option value='integracaoPg'>Sim</option>
+            <option value='semIntPg'>Não</option>    
+          </select>
+        </div>
+        <br />
+        <div>
+          <label htmlFor="objective">Avaliação de produtos</label>
+          <select 
+            id="objective" 
+            name="objective" 
+            required 
+            value={formData.objective}
+            onChange={handleInputChange}
+          >
+            <option value="">Selecione</option>
+            <option value='avaliacaoProdutos'>Sim</option>
+            <option value='semAvaProd'>Não</option>    
+          </select>
+        </div>
+        <div>
+          <p>Suporte ao cliente</p>
+          <div>
+            {[
+              { value: 'telefone', label: 'Telefone' },
+              { value: 'email', label: 'Email' },
+              { value: 'chat', label: 'Chat online' },
+              { value: 'outros', label: 'Outros' }
+            ].map(({ value, label }) => (
+              <label key={value}>
+                <input
+                  type="checkbox"
+                  name="pages"
+                  value={value}
+                  checked={formData.pages.includes(value)}
+                  onChange={handleInputChange}
+                />
+                {label}
+              </label>
+            ))}
+          </div>
+        </div>
+        <br />
+        <div>
+          <label htmlFor="objective">Período de manutenção</label>
+          <select 
+            id="objective" 
+            name="objective" 
+            required 
+            value={formData.objective}
+            onChange={handleInputChange}
+          >
+            <option value="">Selecione</option>
+            <option value='umAno'>Um ano</option>
+            <option value='doisAnos'>Dois anos</option> 
+            <option value='tresAnos'>Três anos</option>   
+          </select>
+        </div>
+        <br />
+        <div>
+          <label htmlFor="objective">Atualização</label>
+          <select 
+            id="objective" 
+            name="objective" 
+            required 
+            value={formData.objective}
+            onChange={handleInputChange}
+          >
+            <option value="">Selecione</option>
+            <option value='semanal'>Semanal</option>
+            <option value='mensal'>Mensal</option>  
+            <option value='trimestral'>Trimestral</option>   
+          </select>
+        </div>
+        <div>      
+          <p>Idiomas do Website</p>
+          <div>
+            {[
+              { value: 'portugues', label: 'Português' },
+              { value: 'ingles', label: 'Inglês' },
+              { value: 'frances', label: 'Francês' },
+              { value: 'espanhol', label: 'Espanhol' },
+              { value: 'outro', label: 'Outro' }
+            ].map(({ value, label }) => (
+              <label key={value}>
+                <input
+                  type="checkbox"
+                  name="pages"
+                  value={value}
+                  checked={formData.pages.includes(value)}
+                  onChange={handleInputChange}
+                />
+                {label}
+              </label>
+            ))}
+          </div>
+        </div>
+        <br />
               <button type="submit">Enviar</button>
+              <h5>Ou</h5>
+              <button type="submit">Agendar reunião</button>
             </form>
           </div>
         );
-      case 'contacto':
+     /*  case 'contacto':
         return (
           <FormContacto />
         );
-      default:
+      default: */
         return null;
     }
   };
@@ -260,7 +467,7 @@ export default function FormInicial() {
             className="objective-button"
             onClick={() => setSelectedForm('blog')}
           >
-            Blog
+            Site informativo
           </button>
           <button
             type="button"
@@ -269,13 +476,13 @@ export default function FormInicial() {
           >
             E-COMMERCE
           </button>
-          <button
+          {/* <button
             type="button"
             className="objective-button"
             onClick={() => setSelectedForm('contacto')}
           >
-            CONTACTO
-          </button>
+            Contacto
+          </button> */}
         </div>
       </div>
       {renderForm()}
