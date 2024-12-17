@@ -9,6 +9,9 @@ export default function Footer() {
         <div className="footerContainer">
           <div className="footerContent">
             <h1>footer</h1>
+            
+            
+            
           </div>
         </div>
       </footer>

@@ -1,17 +1,74 @@
 import React, { useState } from 'react';
 import './form.css';
 import FormContacto from './FormContacto';
+import { jsPDF } from 'jspdf';
+
+
+
+const generatePDF = (data) => {
+  const doc = new jsPDF();
+  doc.text('Dados do Formulário', 10, 10);
+  let yPosition = 20;
+  Object.entries(data).forEach(([key, value]) => {
+    doc.text(`${key}: ${value}`, 10, yPosition);
+    yPosition += 10;
+  });
+  return doc;
+};
+
+const downloadPDF = (data) => {
+  const doc = generatePDF(data);
+  doc.save('formulario_dados.pdf');
+};
+
+
+
+
+const handleSendPDF = async () => {
+  const pdfFile = generatePDF();
+  const formDataToSend = new FormData();
+  formDataToSend.append('email', formData.userEmail);
+  formDataToSend.append('file', pdfFile);
+
+  try {
+    const response = await fetch('http://localhost:5000/send-pdf', {
+      method: 'POST',
+      body: formDataToSend,
+    });
+
+    if (response.ok) {
+      alert('PDF enviado com sucesso!');
+    } else {
+      alert('Erro ao enviar o PDF.');
+    }
+  } catch (error) {
+    console.error('Erro ao enviar o PDF:', error);
+    alert('Erro ao enviar o PDF.');
+  }
+};
+
+
 export default function FormInicial() {
   const [selectedForm, setSelectedForm] = useState(null);
   const [formData, setFormData] = useState({
-    objective: '',
+    blogTitle:'',
+    blogDescription:'',
     pages: [],
-    features: [],
-    style: '',
-    audience: '',
-    deadline: '',
-    budget: '',
-    references: ''
+    websiteObjective: [],
+    logotipo:[],
+    acaoVisitantes:[],
+    redesSociais:[],
+    loginOuCadastro:[],
+    formContacto:[],
+    manutencao:[],
+    atualizacao:[],
+    linguas: [],
+    userEmail:'',
+
+
+
+
+
   });
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
@@ -32,11 +89,12 @@ export default function FormInicial() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    console.log(formData);
-    
-  };
+  e.preventDefault();
+  console.log(formData);
+  downloadPDF(formData);
+};
+
+
 
   const renderForm = () => {
     switch (selectedForm) {
@@ -56,6 +114,11 @@ export default function FormInicial() {
               <label>Email:</label>
               <input type='email' placeholder="Digite o email" required />
               <br />
+  return (
+    <div className="form-container">
+      <h2>Formulário para Blog</h2>
+      <form onSubmit={handleSubmit}>
+
             <div>
           <p>Quais páginas o site precisa?</p>
           <div>
@@ -81,12 +144,12 @@ export default function FormInicial() {
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Website novo ou modernização?</label>
+          <label htmlFor="websiteObjective">Website novo ou modernização?</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="websiteObjective" 
+            name="websiteObjective" 
             required 
-            value={formData.objective}
+            value={formData.websiteObjective}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
@@ -95,6 +158,7 @@ export default function FormInicial() {
           </select>
         </div>
         <div>
+
           <p>Serviços de Design</p>
           <div>
             {[
@@ -115,15 +179,29 @@ export default function FormInicial() {
               </label>
             ))}
           </div>
+
+          <label htmlFor="logotipo">Logotipo</label>
+          <select 
+            id="logotipo" 
+            name="logotipo" 
+            required 
+            value={formData.logotipo}
+            onChange={handleInputChange}
+          >
+            <option value="">Selecione</option>
+            <option value='novoLogotipo'>Criação de um novo</option>
+            <option value='manterLogotipo'>Manter atual</option>
+          </select>
+
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Ação desejada dos visitantes</label>
+          <label htmlFor="acaoVisitantes">Ação desejada dos visitantes</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="acaoVisitantes" 
+            name="acaoVisitantes" 
             required 
-            value={formData.objective}
+            value={formData.acaoVisitantes}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
@@ -134,12 +212,12 @@ export default function FormInicial() {
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Integração com redes sociais</label>
+          <label htmlFor="redesSociais">Integração com redes sociais</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="redesSociais" 
+            name="redesSociais" 
             required 
-            value={formData.objective}
+            value={formData.redesSociais}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
@@ -149,12 +227,12 @@ export default function FormInicial() {
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Área de Login e cadastro</label>
+          <label htmlFor="loginOuCadastro">Área de Login e cadastro</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="loginOuCadastro" 
+            name="loginOuCadastro" 
             required 
-            value={formData.objective}
+            value={formData.loginOuCadastro}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
@@ -164,12 +242,12 @@ export default function FormInicial() {
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Formulário de contacto</label>
+          <label htmlFor="formContacto">Formulário de contacto</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="formContacto" 
+            name="formContacto" 
             required 
-            value={formData.objective}
+            value={formData.formContacto}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
@@ -179,12 +257,12 @@ export default function FormInicial() {
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Período de manutenção</label>
+          <label htmlFor="manutencao">Período de manutenção</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="manutencao" 
+            name="manutencao" 
             required 
-            value={formData.objective}
+            value={formData.manutencao}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
@@ -195,12 +273,12 @@ export default function FormInicial() {
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Atualização</label>
+          <label htmlFor="atualizacao">Atualização</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="atualizacao" 
+            name="atualizacao" 
             required 
-            value={formData.objective}
+            value={formData.atualizacao}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
@@ -222,9 +300,9 @@ export default function FormInicial() {
               <label key={value}>
                 <input
                   type="checkbox"
-                  name="pages"
+                  name="linguas"
                   value={value}
-                  checked={formData.pages.includes(value)}
+                  checked={formData.linguas.includes(value)}
                   onChange={handleInputChange}
                 />
                 {label}
@@ -239,6 +317,45 @@ export default function FormInicial() {
             </form>
           </div>
         );
+
+        <label>Título do Blog:</label>
+<input 
+  type="text" 
+  id="blogTitle" 
+  name="blogTitle" 
+  placeholder="Digite o título"
+  value={formData.blogTitle || ''} 
+  onChange={handleInputChange} 
+/>
+<br />
+<br />
+<label>Descrição:</label>
+<textarea 
+  id="blogDescription" 
+  name="blogDescription" 
+  placeholder="Digite a descrição"
+  value={formData.blogDescription || ''} 
+  onChange={handleInputChange} 
+/>
+<br />
+        <label>Email:</label>
+        <input
+          type="email"
+          name="userEmail"
+          value={formData.userEmail}
+          onChange={handleInputChange}
+          placeholder="Digite seu email"
+        />
+<br />
+
+        <button type="submit">Enviar</button>
+        <button type="button" onClick={() => downloadPDF(formData)}>
+          Download PDF
+        </button>
+      </form>
+    </div>
+  );
+
       case 'ecommerce':
         return (
           <div className="form-container">
