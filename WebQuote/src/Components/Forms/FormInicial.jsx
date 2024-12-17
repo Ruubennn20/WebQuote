@@ -25,10 +25,15 @@ const downloadPDF = (data) => {
 
 
 const handleSendPDF = async () => {
-  const pdfFile = generatePDF();
+  const pdfFile = generatePDF(formData); // Gera o PDF
+  const pdfBlob = pdfFile.output('blob'); // Converte o PDF para Blob
   const formDataToSend = new FormData();
-  formDataToSend.append('email', formData.userEmail);
-  formDataToSend.append('file', pdfFile);
+
+  formDataToSend.append('email', formData.userEmail); // Email do utilizador
+  formDataToSend.append(
+    'file',
+    new File([pdfBlob], 'formulario_dados.pdf', { type: 'application/pdf' })
+  );
 
   try {
     const response = await fetch('http://localhost:5000/send-pdf', {
@@ -39,13 +44,17 @@ const handleSendPDF = async () => {
     if (response.ok) {
       alert('PDF enviado com sucesso!');
     } else {
-      alert('Erro ao enviar o PDF.');
+      const errorText = await response.text();
+      console.error('Erro no servidor:', errorText);
+      alert(`Erro ao enviar o PDF: ${errorText}`);
     }
   } catch (error) {
     console.error('Erro ao enviar o PDF:', error);
-    alert('Erro ao enviar o PDF.');
+    alert('Erro ao enviar o PDF. Verifique o console para mais detalhes.');
   }
 };
+
+
 
 
 export default function FormInicial() {
@@ -305,7 +314,14 @@ export default function FormInicial() {
         <button type="submit">Enviar</button>
         <button type="button" onClick={() => downloadPDF(formData)}>
           Download PDF
-        </button>
+                 </button>
+                <button 
+                 type="button" 
+                onClick={handleSendPDF}
+                            >
+                 Enviar PDF por Email
+                 </button>
+        
       </form>
     </div>
   );
