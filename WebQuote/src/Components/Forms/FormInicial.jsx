@@ -3,6 +3,8 @@ import './form.css';
 import FormContacto from './FormContacto';
 import { jsPDF } from 'jspdf';
 
+
+
 const generatePDF = (data) => {
   const doc = new jsPDF();
   doc.text('Dados do Formulário', 10, 10);
@@ -19,6 +21,33 @@ const downloadPDF = (data) => {
   doc.save('formulario_dados.pdf');
 };
 
+
+
+
+const handleSendPDF = async () => {
+  const pdfFile = generatePDF();
+  const formDataToSend = new FormData();
+  formDataToSend.append('email', formData.userEmail);
+  formDataToSend.append('file', pdfFile);
+
+  try {
+    const response = await fetch('http://localhost:5000/send-pdf', {
+      method: 'POST',
+      body: formDataToSend,
+    });
+
+    if (response.ok) {
+      alert('PDF enviado com sucesso!');
+    } else {
+      alert('Erro ao enviar o PDF.');
+    }
+  } catch (error) {
+    console.error('Erro ao enviar o PDF:', error);
+    alert('Erro ao enviar o PDF.');
+  }
+};
+
+
 export default function FormInicial() {
   const [selectedForm, setSelectedForm] = useState(null);
   const [formData, setFormData] = useState({
@@ -34,6 +63,7 @@ export default function FormInicial() {
     manutencao:[],
     atualizacao:[],
     linguas: [],
+    userEmail:'',
 
 
 
@@ -63,6 +93,8 @@ export default function FormInicial() {
   console.log(formData);
   downloadPDF(formData);
 };
+
+
 
   const renderForm = () => {
     switch (selectedForm) {
@@ -259,6 +291,15 @@ export default function FormInicial() {
   value={formData.blogDescription || ''} 
   onChange={handleInputChange} 
 />
+<br />
+        <label>Email:</label>
+        <input
+          type="email"
+          name="userEmail"
+          value={formData.userEmail}
+          onChange={handleInputChange}
+          placeholder="Digite seu email"
+        />
 <br />
 
         <button type="submit">Enviar</button>
