@@ -55,3 +55,124 @@
 .submit-button:not(:disabled):hover {
   background-color: #218838;
 }
+
+.form-container {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 40px;
+}
+
+.form-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #f0e68c;
+  padding-bottom: 15px;
+}
+
+.form-container label {
+  display: block;
+  margin-bottom: 10px;
+  color: #555;
+  font-weight: bold;
+}
+
+.form-container input[type="text"],
+.form-container input[type="email"],
+.form-container select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+}
+
+.form-container input[type="text"]:focus,
+.form-container input[type="email"]:focus,
+.form-container select:focus {
+  outline: none;
+  border-color: #f0e68c;
+}
+
+.form-container div {
+  margin-bottom: 20px;
+  background-color: #fafafa;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.form-container div p {
+  margin-bottom: 10px;
+  color: #444;
+  font-weight: bold;
+}
+
+.form-container input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.form-container input[type="checkbox"] + label {
+  display: inline-block;
+  margin-right: 15px;
+  color: #666;
+}
+
+.form-container button {
+  width: 100%;
+  padding: 12px;
+  background-color: #f0e68c;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 10px;
+  font-size: 15px; 
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.form-container button:hover {
+  background-color: #0077ff;
+}
+
+.form-container h5 {
+  text-align: center;
+  color: #777;
+  margin: 15px 0;
+  font-size: 15px; 
+  font-weight: bold;
+}
+
+.objective-selection {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.objective-button {
+  background-color: #f0e68c;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 15px; 
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.objective-button:hover {
+  background-color: #0077ff;
+}
