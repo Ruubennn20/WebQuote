@@ -1,641 +1,102 @@
-import React, { useState } from "react";
-import "./form.css";
-import FormContacto from "./FormContacto";
-import { jsPDF } from "jspdf";
-
-
-
-const generatePDF = (data) => {
-  const doc = new jsPDF();
-  doc.setFont("Roboto");
-
-  doc.setFontSize(16);
-  doc.text(" ", 20, 20);
-
-  doc.setFontSize(12);
-  let yPosition = 20;
-  const addText = (text) => {
-    if (yPosition > 290) {
-      doc.addPage();
-      yPosition = 20;
-    }
-    doc.text(text, 10, yPosition);
-    yPosition += 10;
-  };
-  Object.entries(data).forEach(([key, value]) => {
-    /* doc.text(`${key}: ${value}`, 10, yPosition);
-    yPosition += 10; */
-
-    if (!value || (Array.isArray(value) && value.length === 0)) return;
-
-    let label = "";
-    switch (key) {
-      case "blogTitle":
-        label = "Título do Blog";
-        break;
-      case "blogDescription":
-        label = "Descrição do Blog";
-        break;
-      case "pages":
-        label = "Páginas do site";
-        break;
-      case "websiteObjective":
-        label = "Website novo ou modernização?";
-        break;
-      default:
-        label = key;
-        break;
-    }
-
-    let displayValue = Array.isArray(value)
-      ? value.join(", ")
-      : value.toString();
-
-    addText(`${label}: ${displayValue}`);
-  });
-  return doc;
-};
-
-const downloadPDF = (data) => {
-  const doc = generatePDF(data);
-  doc.save("formulario_dados.pdf");
-};
-
-
-
-
-const handleSendPDF = async () => {
-  const pdfFile = generatePDF(formData); // Gera o PDF
-  const pdfBlob = pdfFile.output('blob'); // Converte o PDF para Blob
-  const formDataToSend = new FormData();
-
-  formDataToSend.append('email', formData.userEmail); // Email do utilizador
-  formDataToSend.append(
-    'file',
-    new File([pdfBlob], 'formulario_dados.pdf', { type: 'application/pdf' })
-  );
-
-  try {
-    const response = await fetch('http://localhost:5000/send-pdf', {
-      method: 'POST',
-      body: formDataToSend,
-    });
-
-    if (response.ok) {
-      alert('PDF enviado com sucesso!');
-    } else {
-      const errorText = await response.text();
-      console.error('Erro no servidor:', errorText);
-      alert(`Erro ao enviar o PDF: ${errorText}`);
-    }
-  } catch (error) {
-    console.error('Erro ao enviar o PDF:', error);
-    alert('Erro ao enviar o PDF. Verifique o console para mais detalhes.');
-  }
-};
-
-
-
-
+import React, { useState } from 'react';
+import './form.css';
+import { jsPDF } from 'jspdf';
 export default function FormInicial() {
+
+const PRICE_MAP = {
+  novoSite: 500,
+  modernizacao: 300,
+  //Paginas
+  home: 100,
+  about: 100,
+  contact: 100,
+  blog: 100,
+  outras: 100,
+  //Servicos de Design
+  Logotipo: 100,
+  Icons: 100,
+  Banners: 100,
+  outras: 100,
+  //Manutençao
+  umAno: 100,
+  doisAnos: 100,
+  tresAnos: 100,
+  //Atualizaçao
+  semanal: 100,
+  mensal: 100,
+  trimestral: 100,
+}
   const [selectedForm, setSelectedForm] = useState(null);
   const [formData, setFormData] = useState({
-    blogTitle: "",
-    blogDescription: "",
+    objective: '',
     pages: [],
-    websiteObjective: [],
-    logotipo: [],
-    acaoVisitantes: [],
-    redesSociais: [],
-    loginOuCadastro: [],
-    formContacto: [],
-    manutencao: [],
-    atualizacao: [],
-    linguas: [],
-
-
-    userEmail:'',
-
-
-
-
-
-
+    features: [],
+    style: '',
+    audience: '',
+    deadline: '',
+    budget: '',
+    references: ''
   });
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
 
-    if (type === "checkbox") {
-      setFormData((prevData) => ({
+    if (type === 'checkbox') {
+      setFormData(prevData => ({
         ...prevData,
         [name]: e.target.checked
           ? [...(prevData[name] || []), value]
-          : (prevData[name] || []).filter((item) => item !== value),
+          : (prevData[name] || []).filter(item => item !== value)
       }));
     } else {
-      setFormData((prevData) => ({
+      setFormData(prevData => ({
         ...prevData,
-        [name]: value,
+        [name]: value
       }));
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    downloadPDF(formData);
+    
+    let total = 0;
+
+    //custo Website
+    total += PRICE_MAP[formData.objective] || 0;
+
+    //Custo de paginas
+    formData.pages.forEach(page => {
+      total += PRICE_MAP[page] || 0;
+    });
+
+    //Custo de manutençao
+    if (formData.maintenance) {
+      total += PRICE_MAP[formData.maintenance] || 0;
+    }
+    
+    //Conteudo PDF
+    const doc = new jsPDF();
+    //Conteudo
+    doc.setFontSize(20);
+    doc.text('Website Quote', 10,10);
+
+    doc.setFontSize(12);
+    doc.text('Quote Details: ',20,40);
+    doc.text('Objective: '+(formData.objective === 'novoSite' ? 'Novo Website' : 'Modernização')  ,20,50);
+    doc.text('Pages: '+(formData.pages.length > 0 ? formData.pages.join(', ') : 'Não selecionado'),20,60);
+    doc.text('Maintenance: '+(formData.maintenance ? formData.maintenance : 'Não selecionado'),20,70);
+    doc.text('Total: '+(total > 0 ? total : 'Não selecionado'),20,80);
+
+    doc.setFontSize(16);
+    doc.text('Total amount: '+total,20,90);
+    doc.save('website_quote.pdf');
   };
 
-
-
   const renderForm = () => {
-    switch (selectedForm) {
-
-      case "blog":
-        return (
-          <div className="form-container">
-            <h2>Formulário para Blog</h2>
-            <form onSubmit={handleSubmit}>
-              <div>
-                <p>Quais páginas o site precisa?</p>
-                <div>
-                  {[
-                    { value: "home", label: "Página Inicial" },
-                    { value: "about", label: "Sobre" },
-                    { value: "contact", label: "Contato" },
-                    { value: "blog", label: "Blog" },
-                  ].map(({ value, label }) => (
-                    <label key={value}>
-                      <input
-                        type="checkbox"
-                        name="pages"
-                        value={value}
-                        checked={formData.pages.includes(value)}
-                        onChange={handleInputChange}
-                      />
-                      {label}
-                    </label>
-                  ))}
-                </div>
-              </div>
-              <br />
-              <div>
-                <label htmlFor="websiteObjective">
-                  Website novo ou modernização?
-                </label>
-                <select
-                  id="websiteObjective"
-                  name="websiteObjective"
-                  required
-                  value={formData.websiteObjective}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Selecione</option>
-                  <option value="novoSite">Novo</option>
-                  <option value="modernizacao">Modernização</option>
-                </select>
-              </div>
-              <br />
-              <div>
-                <label htmlFor="logotipo">Logotipo</label>
-                <select
-                  id="logotipo"
-                  name="logotipo"
-                  required
-                  value={formData.logotipo}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Selecione</option>
-                  <option value="novoLogotipo">Criação de um novo</option>
-                  <option value="manterLogotipo">Manter atual</option>
-                </select>
-              </div>
-              <br />
-              <div>
-                <label htmlFor="acaoVisitantes">
-                  Ação desejada dos visitantes
-                </label>
-                <select
-                  id="acaoVisitantes"
-                  name="acaoVisitantes"
-                  required
-                  value={formData.acaoVisitantes}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Selecione</option>
-                  <option value="consulta">Somente consulta</option>
-                  <option value="comentarios">Deixar comentários</option>
-                  <option value="outrasacoes">Mais ações</option>
-                </select>
-              </div>
-              <br />
-              <div>
-                <label htmlFor="redesSociais">
-                  Integração com redes sociais
-                </label>
-                <select
-                  id="redesSociais"
-                  name="redesSociais"
-                  required
-                  value={formData.redesSociais}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Selecione</option>
-                  <option value="redesSociais">Sim</option>
-                  <option value="semintegracao">Não</option>
-                </select>
-              </div>
-              <br />
-              <div>
-                <label htmlFor="loginOuCadastro">
-                  Área de Login e cadastro
-                </label>
-                <select
-                  id="loginOuCadastro"
-                  name="loginOuCadastro"
-                  required
-                  value={formData.loginOuCadastro}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Selecione</option>
-                  <option value="comlogin">Sim</option>
-                  <option value="semLogin">Não</option>
-                </select>
-              </div>
-              <br />
-              <div>
-                <label htmlFor="formContacto">Formulário de contacto</label>
-                <select
-                  id="formContacto"
-                  name="formContacto"
-                  required
-                  value={formData.formContacto}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Selecione</option>
-                  <option value="comformulario">Sim</option>
-                  <option value="semFormulario">Não</option>
-                </select>
-              </div>
-              <br />
-              <div>
-                <label htmlFor="manutencao">Período de manutenção</label>
-                <select
-                  id="manutencao"
-                  name="manutencao"
-                  required
-                  value={formData.manutencao}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Selecione</option>
-                  <option value="umAno">Um ano</option>
-                  <option value="doisAnos">Dois anos</option>
-                  <option value="tresAnos">Três anos</option>
-                </select>
-              </div>
-              <br />
-              <div>
-                <label htmlFor="atualizacao">Atualização</label>
-                <select
-                  id="atualizacao"
-                  name="atualizacao"
-                  required
-                  value={formData.atualizacao}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Selecione</option>
-                  <option value="semanal">Semanal</option>
-                  <option value="mensal">Mensal</option>
-                  <option value="trimestral">Trimestral</option>
-                </select>
-              </div>
-              <div>
-                <p>Idiomas do Website</p>
-                <div>
-                  {[
-                    { value: "portugues", label: "Português" },
-                    { value: "ingles", label: "Inglês" },
-                    { value: "frances", label: "Francês" },
-                    { value: "espanhol", label: "Espanhol" },
-                    { value: "outro", label: "Outro" },
-                  ].map(({ value, label }) => (
-                    <label key={value}>
-                      <input
-                        type="checkbox"
-                        name="linguas"
-                        value={value}
-                        checked={formData.linguas.includes(value)}
-                        onChange={handleInputChange}
-                      />
-                      {label}
-                    </label>
-                  ))}
-                </div>
-              </div>
-              <br />
-              <label>Título do Blog:</label>
-              <input
-                type="text"
-                id="blogTitle"
-                name="blogTitle"
-                placeholder="Digite o título"
-                value={formData.blogTitle || ""}
-                onChange={handleInputChange}
-              />
-              <br />
-              <br />
-              <label>Descrição:</label>
-              <textarea
-                id="blogDescription"
-                name="blogDescription"
-                placeholder="Digite a descrição"
-                value={formData.blogDescription || ""}
-                onChange={handleInputChange}
-              />
-              <br />
-
-              <button type="submit">Enviar</button>
-              <button type="button" onClick={() => downloadPDF(formData)}>
-                Download PDF
-              </button>
-            </form>
-          </div>
-        );
-      case "ecommerce":
-
-      case 'blog':
-        return (
-          <div className="form-container">
-            <h2>Formulário para Site informativo</h2>
-            <form>
-            <label>Nome:</label>
-              <input type="text" placeholder="Digite o nome e apelido" required/>
-              <br />
-              <br />
-              <label>Telemóvel:</label>
-              <input type='text' placeholder="Digite o contacto" required/>
-              <br />
-              <br />
-              <label>Email:</label>
-              <input type='email' placeholder="Digite o email" required />
-              <br />
-  return (
-    <div className="form-container">
-      <h2>Formulário para Blog</h2>
-      <form onSubmit={handleSubmit}>
-
-            <div>
-          <p>Quais páginas o site precisa?</p>
-          <div>
-            {[
-              { value: 'home', label: 'Página Inicial' },
-              { value: 'about', label: 'Sobre' },
-              { value: 'contact', label: 'Contato' },
-              { value: 'blog', label: 'Blog' },
-              { value: 'outras', label: 'Outras' }
-            ].map(({ value, label }) => (
-              <label key={value}>
-                <input
-                  type="checkbox"
-                  name="pages"
-                  value={value}
-                  checked={formData.pages.includes(value)}
-                  onChange={handleInputChange}
-                />
-                {label}
-              </label>
-            ))}
-          </div>
-        </div>
-        <br />
-        <div>
-          <label htmlFor="websiteObjective">Website novo ou modernização?</label>
-          <select 
-            id="websiteObjective" 
-            name="websiteObjective" 
-            required 
-            value={formData.websiteObjective}
-            onChange={handleInputChange}
-          >
-            <option value="">Selecione</option>
-            <option value='novoSite'>Novo</option>
-            <option value='modernizacao'>Modernização</option>
-          </select>
-        </div>
-        <div>
-
-          <p>Serviços de Design</p>
-          <div>
-            {[
-              { value: 'home', label: 'Logotipo' },
-              { value: 'about', label: 'Icons' },
-              { value: 'contact', label: 'Banners' },
-              { value: 'outras', label: 'Outros' }
-            ].map(({ value, label }) => (
-              <label key={value}>
-                <input
-                  type="checkbox"
-                  name="pages"
-                  value={value}
-                  checked={formData.pages.includes(value)}
-                  onChange={handleInputChange}
-                />
-                {label}
-              </label>
-            ))}
-          </div>
-
-          <label htmlFor="logotipo">Logotipo</label>
-          <select 
-            id="logotipo" 
-            name="logotipo" 
-            required 
-            value={formData.logotipo}
-            onChange={handleInputChange}
-          >
-            <option value="">Selecione</option>
-            <option value='novoLogotipo'>Criação de um novo</option>
-            <option value='manterLogotipo'>Manter atual</option>
-          </select>
-
-        </div>
-        <br />
-        <div>
-          <label htmlFor="acaoVisitantes">Ação desejada dos visitantes</label>
-          <select 
-            id="acaoVisitantes" 
-            name="acaoVisitantes" 
-            required 
-            value={formData.acaoVisitantes}
-            onChange={handleInputChange}
-          >
-            <option value="">Selecione</option>
-            <option value='consulta'>Somente consulta</option>
-            <option value='comentarios'>Deixar comentários</option>
-            <option value="outrasacoes">Mais ações</option>      
-          </select>
-        </div>
-        <br />
-        <div>
-          <label htmlFor="redesSociais">Integração com redes sociais</label>
-          <select 
-            id="redesSociais" 
-            name="redesSociais" 
-            required 
-            value={formData.redesSociais}
-            onChange={handleInputChange}
-          >
-            <option value="">Selecione</option>
-            <option value='redesSociais'>Sim</option>
-            <option value='semintegracao'>Não</option>    
-          </select>
-        </div>
-        <br />
-        <div>
-          <label htmlFor="loginOuCadastro">Área de Login e cadastro</label>
-          <select 
-            id="loginOuCadastro" 
-            name="loginOuCadastro" 
-            required 
-            value={formData.loginOuCadastro}
-            onChange={handleInputChange}
-          >
-            <option value="">Selecione</option>
-            <option value='comlogin'>Sim</option>
-            <option value='semLogin'>Não</option>    
-          </select>
-        </div>
-        <br />
-        <div>
-          <label htmlFor="formContacto">Formulário de contacto</label>
-          <select 
-            id="formContacto" 
-            name="formContacto" 
-            required 
-            value={formData.formContacto}
-            onChange={handleInputChange}
-          >
-            <option value="">Selecione</option>
-            <option value='comformulario'>Sim</option>
-            <option value='semFormulario'>Não</option>    
-          </select>
-        </div>
-        <br />
-        <div>
-          <label htmlFor="manutencao">Período de manutenção</label>
-          <select 
-            id="manutencao" 
-            name="manutencao" 
-            required 
-            value={formData.manutencao}
-            onChange={handleInputChange}
-          >
-            <option value="">Selecione</option>
-            <option value='umAno'>Um ano</option>
-            <option value='doisAnos'>Dois anos</option> 
-            <option value='tresAnos'>Três anos</option>   
-          </select>
-        </div>
-        <br />
-        <div>
-          <label htmlFor="atualizacao">Atualização</label>
-          <select 
-            id="atualizacao" 
-            name="atualizacao" 
-            required 
-            value={formData.atualizacao}
-            onChange={handleInputChange}
-          >
-            <option value="">Selecione</option>
-            <option value='semanal'>Semanal</option>
-            <option value='mensal'>Mensal</option>  
-            <option value='trimestral'>Trimestral</option>   
-          </select>
-        </div>
-        <div>      
-          <p>Idiomas do Website</p>
-          <div>
-            {[
-              { value: 'portugues', label: 'Português' },
-              { value: 'ingles', label: 'Inglês' },
-              { value: 'frances', label: 'Francês' },
-              { value: 'espanhol', label: 'Espanhol' },
-              { value: 'outro', label: 'Outro' }
-            ].map(({ value, label }) => (
-              <label key={value}>
-                <input
-                  type="checkbox"
-                  name="linguas"
-                  value={value}
-                  checked={formData.linguas.includes(value)}
-                  onChange={handleInputChange}
-                />
-                {label}
-              </label>
-            ))}
-          </div>
-        </div>
-        <br />
-              <button type="submit">Enviar</button>
-              <h5>Ou</h5>
-              <button type="submit">Agendar reunião</button>
-            </form>
-          </div>
-        );
-
-        <label>Título do Blog:</label>
-<input 
-  type="text" 
-  id="blogTitle" 
-  name="blogTitle" 
-  placeholder="Digite o título"
-  value={formData.blogTitle || ''} 
-  onChange={handleInputChange} 
-/>
-<br />
-<br />
-<label>Descrição:</label>
-<textarea 
-  id="blogDescription" 
-  name="blogDescription" 
-  placeholder="Digite a descrição"
-  value={formData.blogDescription || ''} 
-  onChange={handleInputChange} 
-/>
-<br />
-        <label>Email:</label>
-        <input
-          type="email"
-          name="userEmail"
-          value={formData.userEmail}
-          onChange={handleInputChange}
-          placeholder="Digite seu email"
-        />
-<br />
-
-        <button type="submit">Enviar</button>
-        <button type="button" onClick={() => downloadPDF(formData)}>
-          Download PDF
-                 </button>
-                <button 
-                 type="button" 
-                onClick={handleSendPDF}
-                            >
-                 Enviar PDF por Email
-                 </button>
-        
-      </form>
-    </div>
-  );
-
-      case 'ecommerce':
-
         return (
           <div className="form-container">
             <h2>Formulário para E-commerce</h2>
             <form>
-
-              <label>Nome:</label>
+            <label>Nome:</label>
               <input type="text" placeholder="Digite o nome e apelido" required/>
               <br />
               <br />
@@ -777,12 +238,12 @@ export default function FormInicial() {
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Período de manutenção</label>
+          <label htmlFor="maintenance">Período de manutenção</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="maintenance" 
+            name="maintenance" 
             required 
-            value={formData.objective}
+            value={formData.maintenance}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
@@ -837,18 +298,12 @@ export default function FormInicial() {
             </form>
           </div>
         );
-
-      case "contacto":
-        return <FormContacto />;
-      default:
-
-     /*  case 'contacto':
+      /* case 'contacto':
         return (
           <FormContacto />
         );
-      default: */
-
-        return null;
+      default:
+        return null; */
     }
   };
 
@@ -861,27 +316,27 @@ export default function FormInicial() {
           <button
             type="button"
             className="objective-button"
-            onClick={() => setSelectedForm("blog")}
+            onClick={() => setSelectedForm('siteInformativo')}
           >
-            Site informativo
+            Site Informativo
           </button>
           <button
             type="button"
             className="objective-button"
-            onClick={() => setSelectedForm("ecommerce")}
+            onClick={() => setSelectedForm('ecommerce')}
           >
             E-COMMERCE
           </button>
           {/* <button
             type="button"
             className="objective-button"
-            onClick={() => setSelectedForm("contacto")}
+            onClick={() => setSelectedForm('contacto')}
           >
-            Contacto
+            CONTACTO
           </button> */}
         </div>
       </div>
       {renderForm()}
     </div>
   );
-}
+

@@ -1,7 +1,31 @@
 import React, { useState } from 'react';
 import './form.css';
-import FormContacto from './FormContacto';
+import { jsPDF } from 'jspdf';
 export default function FormInicial() {
+
+const PRICE_MAP = {
+  novoSite: 500,
+  modernizacao: 300,
+  //Paginas
+  home: 100,
+  about: 100,
+  contact: 100,
+  blog: 100,
+  outras: 100,
+  //Servicos de Design
+  Logotipo: 100,
+  Icons: 100,
+  Banners: 100,
+  outras: 100,
+  //Manutençao
+  umAno: 100,
+  doisAnos: 100,
+  tresAnos: 100,
+  //Atualizaçao
+  semanal: 100,
+  mensal: 100,
+  trimestral: 100,
+}
   const [selectedForm, setSelectedForm] = useState(null);
   const [formData, setFormData] = useState({
     objective: '',
@@ -34,8 +58,37 @@ export default function FormInicial() {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    console.log(formData);
+    let total = 0;
+
+    //custo Website
+    total += PRICE_MAP[formData.objective] || 0;
+
+    //Custo de paginas
+    formData.pages.forEach(page => {
+      total += PRICE_MAP[page] || 0;
+    });
+
+    //Custo de manutençao
+    if (formData.maintenance) {
+      total += PRICE_MAP[formData.maintenance] || 0;
+    }
     
+    //Conteudo PDF
+    const doc = new jsPDF();
+    //Conteudo
+    doc.setFontSize(20);
+    doc.text('Website Quote', 10,10);
+
+    doc.setFontSize(12);
+    doc.text('Quote Details: ',20,40);
+    doc.text('Objective: '+(formData.objective === 'novoSite' ? 'Novo Website' : 'Modernização')  ,20,50);
+    doc.text('Pages: '+(formData.pages.length > 0 ? formData.pages.join(', ') : 'Não selecionado'),20,60);
+    doc.text('Maintenance: '+(formData.maintenance ? formData.maintenance : 'Não selecionado'),20,70);
+    doc.text('Total: '+(total > 0 ? total : 'Não selecionado'),20,80);
+
+    doc.setFontSize(16);
+    doc.text('Total amount: '+total,20,90);
+    doc.save('website_quote.pdf');
   };
 
   const renderForm = () => {
@@ -386,12 +439,12 @@ export default function FormInicial() {
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Período de manutenção</label>
+          <label htmlFor="maintenance">Período de manutenção</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="maintenance" 
+            name="maintenance" 
             required 
-            value={formData.objective}
+            value={formData.maintenance}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
