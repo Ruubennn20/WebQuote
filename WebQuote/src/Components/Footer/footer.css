@@ -18,3 +18,54 @@
     z-index: -1;
     margin-bottom: -38vh;
 }
+.menu {
+    display: flex;
+    justify-content: space-between; /* Colunas à esquerda, centro e direita */
+    align-items: flex-start; /* Alinha os itens ao topo */
+    flex-wrap: wrap; /* Permite que as colunas se empilhem em telas menores */
+    gap: 20px; /* Espaço entre as colunas */
+    padding: 200px; /* Espaçamento interno para a área do menu */
+    
+  }
+  
+  .menu ul {
+    list-style: none; /* Remove os marcadores da lista */
+    padding: 0;
+    margin: 0;
+  }
+  
+  .menu-coluna1 {
+    margin-left: 20px; /* Margem à esquerda para a coluna inicial */
+  }
+  
+  .menu-coluna3 {
+    margin-right: 20px; /* Margem à direita para a coluna final */
+  }
+  
+  .menu li a {
+    text-decoration: none; /* Remove sublinhado */
+    color: #333;
+  }
+  
+  .menu li a:hover {
+    color: #007BFF; /* Cor ao passar o mouse */
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .menu {
+      flex-direction: column; /* Colunas empilhadas em telas pequenas */
+      align-items: center; /* Centraliza os itens no mobile */
+    }
+  
+    .menu ul {
+      text-align: center; /* Centraliza o texto dos links */
+    }
+  
+    .menu-coluna1,
+    .menu-coluna3 {
+      margin-left: 0; /* Remove margens laterais no mobile */
+      margin-right: 0;
+    }
+  }
+  
