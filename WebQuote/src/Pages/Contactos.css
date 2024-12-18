@@ -72,7 +72,7 @@
     resize: vertical;
   }
   
-  .submit-button {
+  .submit-btn {
     background-color: #E47E00; /* Cor de fundo do botão */
     color: white; /* Cor do texto do botão */
     border: none;
@@ -82,7 +82,7 @@
     font-size: 1.1em;
   }
   
-  .submit-button:hover {
+  .submit-btn:hover {
     background-color: #f8c68a; /* Cor do hover no botão */
   }
   

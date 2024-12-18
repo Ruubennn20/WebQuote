@@ -38,7 +38,7 @@ export default function Contactos() {
             <label htmlFor="message">Mensagem:</label>
             <textarea id="message" name="message" rows="4" required></textarea>
 
-            <button type="submit" className="submit-button">Enviar</button>
+            <button type="submit" className="submit-btn">Enviar</button>
           </form>
         </div>
       </div>
