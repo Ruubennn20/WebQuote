@@ -1,0 +1,99 @@
+.contactos-container {
+    padding: 40px;
+    background-color: #FFF8DC; /* Cor de fundo do container */
+    font-family: Arial, sans-serif;
+  }
+  
+  .contactos-heading {
+    font-size: 2.5em;
+    color: #2D4DAF; /* Cor do título */
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .contactos-main {
+    display: flex;  /* Usando flexbox para alinhar os itens */
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px; /* Espaço entre o mapa e o formulário */
+    flex-wrap: wrap; /* Permite que o layout se ajuste em telas menores */
+  }
+  
+  .map-container {
+    flex: 1;  /* O mapa ocupa 50% do espaço disponível */
+    min-width: 400px; /* Largura mínima para o mapa */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .map-text{
+    text-align: center;
+    font-family: sans-serif;
+    font-weight: bold;
+    color: #2D4DAF;
+  }
+  
+  .contact-form-container {
+    flex: 1;  /* O formulário ocupa o outro 50% */
+    min-width: 400px; /* Largura mínima para o formulário */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFF8DC;
+  }
+  
+  .contact-form {
+    background-color: #FFF8DC; /* Cor de fundo do formulário */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 20px 40px 40px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+  }
+  
+  .contact-form label {
+    display: block;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    color: #333; /* Cor do texto das labels */
+  }
+  
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+  }
+  
+  .contact-form textarea {
+    resize: vertical;
+  }
+  
+  .submit-button {
+    background-color: #E47E00; /* Cor de fundo do botão */
+    color: white; /* Cor do texto do botão */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+  }
+  
+  .submit-button:hover {
+    background-color: #f8c68a; /* Cor do hover no botão */
+  }
+  
+  .submit-button:focus {
+    outline: none;
+  }
+  
+  @media (max-width: 768px) {
+    .contactos-main {
+      flex-direction: column; /* Em telas pequenas, o layout se torna vertical */
+      gap: 20px;
+    }
+  }
+  
