@@ -124,9 +124,12 @@ export default function FormInicial() {
    doc.text("Selected Pages: " + (formData.pages.length > 0 ? formData.pages.join(", ") : "None selected"), 20, 100);
    
    // Design Services
+   doc.line(20, 100, 300, 100);
+
    doc.text("Design Services: " + (formData.designServices.length > 0 ? formData.designServices.join(", ") : "None selected"), 20, 110);
    
    // Integrations
+   doc.line(20, 100, 200, 100);
    doc.text("Social Media Integration: " + (formData.socialMedia === "socialMedia" ? "Yes" : "No"), 20, 120);
    doc.text("Payment Integration: " + (formData.paymentIntegration === "paymentIntegration" ? "Yes" : "No"), 20, 130);
    doc.text("Product Reviews: " + (formData.productReviews === "avaliacaoProdutos" ? "Yes" : "No"), 20, 140);
