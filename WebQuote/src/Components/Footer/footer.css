@@ -1,71 +1,102 @@
 .footerContainer {
     display: flex;
-    width: 100%;
-    color: white;
     justify-content: center;
     align-items: center;
-}   
-
-.footerContent {
-    background-color: #4169E1;
-    max-height: 100%;
     width: 100%;
-    height: 50vh;
-}
-.ellipse03 {
+    color: white;
+  }
+  
+  .footerContent {
+    background-color: #4169E1;
+    width: 100%;
+    min-height: 50vh;  /* Altura mínima para o rodapé */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .ellipse03 {
     width: 100%;
     height: 100%;
     z-index: -1;
     margin-bottom: -38vh;
-}
-.menu {
+  }
+  
+  .menu {
     display: flex;
-    justify-content: space-between; /* Colunas à esquerda, centro e direita */
-    align-items: flex-start; /* Alinha os itens ao topo */
-    flex-wrap: wrap; /* Permite que as colunas se empilhem em telas menores */
-    gap: 20px; /* Espaço entre as colunas */
-    padding: 200px; /* Espaçamento interno para a área do menu */
-    
+    justify-content: space-between; /* Deixa as colunas mais distantes */
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px; /* Diminuindo o espaço entre as colunas */
+    padding: 20px 10px; /* Ajustando o espaçamento interno do menu */
+    width: 100%;
+    max-width: 1000px; /* Reduzindo a largura máxima do menu */
   }
   
   .menu ul {
-    list-style: none; /* Remove os marcadores da lista */
+    list-style: none;
     padding: 0;
     margin: 0;
   }
   
-  .menu-coluna1 {
-    margin-left: 20px; /* Margem à esquerda para a coluna inicial */
-  }
-  
-  .menu-coluna3 {
-    margin-right: 20px; /* Margem à direita para a coluna final */
+  .menu-coluna1, .menu-coluna2, .menu-coluna3 {
+    margin: 0 20px; /* Margem horizontal para as colunas */
   }
   
   .menu li a {
-    text-decoration: none; /* Remove sublinhado */
-    color: #333;
+    text-decoration: none;
+    color: white;
+    font-size: large;
+    font-family: sans-serif;
   }
   
   .menu li a:hover {
-    color: #007BFF; /* Cor ao passar o mouse */
+    color: #FFCC00;
+  }
+  
+  .footer-logo {
+    margin-top: 20px;  /* Espaço entre o menu e o logo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .footerLogoImage {
+    max-width: 150px;  /* Tamanho máximo para a imagem */
+    height: auto;
+  }
+  
+  .copyright {
+    text-align: center;
+    color: white;
+    margin-top: 20px;
+    font-size: 14px;
+    font-family: sans-serif;
   }
   
   /* Responsividade */
   @media (max-width: 768px) {
     .menu {
-      flex-direction: column; /* Colunas empilhadas em telas pequenas */
-      align-items: center; /* Centraliza os itens no mobile */
+      flex-direction: column;
+      align-items: center;
     }
   
     .menu ul {
-      text-align: center; /* Centraliza o texto dos links */
+      text-align: center;
     }
   
-    .menu-coluna1,
-    .menu-coluna3 {
-      margin-left: 0; /* Remove margens laterais no mobile */
-      margin-right: 0;
+    .footer-logo {
+      margin-top: 10px;
+    }
+  
+    .footerLogoImage {
+      max-width: 120px;  /* Reduz o tamanho do logo em dispositivos móveis */
+    }
+  
+    .copyright {
+      font-size: 12px;
+      padding: 10px;
     }
   }
   
