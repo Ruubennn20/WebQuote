@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import './form.css';
 import { jsPDF } from 'jspdf';
-export default function FormInicial() {
 
+
+
+export default function FormInicial() {
 const PRICE_MAP = {
   novoSite: 500,
   modernizacao: 300,
@@ -91,9 +93,8 @@ const PRICE_MAP = {
     doc.save('website_quote.pdf');
   };
 
-  const renderForm = () => {
-        return (
-          <div className="form-container">
+  return (
+        <div className="form-container">
             <h2>Formulário para E-commerce</h2>
             <form>
             <label>Nome:</label>
@@ -298,45 +299,6 @@ const PRICE_MAP = {
             </form>
           </div>
         );
-      /* case 'contacto':
-        return (
-          <FormContacto />
-        );
-      default:
-        return null; */
     }
-  };
 
-  return (
-    <div className="container">
-      <h1>Formulário para Criação de Sites</h1>
-      <div className="objective-selection">
-        <h2>Qual o objetivo do site?</h2>
-        <div className="button-group">
-          <button
-            type="button"
-            className="objective-button"
-            onClick={() => setSelectedForm('siteInformativo')}
-          >
-            Site Informativo
-          </button>
-          <button
-            type="button"
-            className="objective-button"
-            onClick={() => setSelectedForm('ecommerce')}
-          >
-            E-COMMERCE
-          </button>
-          {/* <button
-            type="button"
-            className="objective-button"
-            onClick={() => setSelectedForm('contacto')}
-          >
-            CONTACTO
-          </button> */}
-        </div>
-      </div>
-      {renderForm()}
-    </div>
-  );
 
