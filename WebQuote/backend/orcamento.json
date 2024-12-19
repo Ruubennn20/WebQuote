@@ -1,0 +1,38 @@
+[
+  {
+    "informacoesCliente": {
+      "nome": "bruno",
+      "telefone": "976976",
+      "email": "brsa1602@icloud.com"
+    },
+    "detalhesWebsite": {
+      "tipoWebsite": "Novo Website",
+      "paginas": [
+        "mainPage",
+        "aboutPage",
+        "contactPage"
+      ],
+      "servicosDesign": [
+        "Logotipo",
+        "Icons"
+      ],
+      "redesSociais": "Sim",
+      "integracaoPagamento": "Sim",
+      "avaliacaoProdutos": "Sim",
+      "suporteCliente": "Sim",
+      "periodoManutencao": "umAno",
+      "frequenciaAtualizacao": "mensal",
+      "idiomas": [
+        "portugues",
+        "ingles",
+        "frances"
+      ]
+    },
+    "orcamento": {
+      "valorTotal": "500.00",
+      "moeda": "€"
+    },
+    "dataSubmissao": "2024-12-19T11:46:40.256Z",
+    "timestamp": "2024-12-19T11:46:40.344Z"
+  }
+]
