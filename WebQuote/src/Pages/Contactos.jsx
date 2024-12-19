@@ -6,6 +6,7 @@ export default function Contactos() {
   return (
     <div className="contactos-container">
       <Header />
+      <br />
       <h1 className="contactos-heading">Contactos</h1>
 
       {/* Container principal para o layout lado a lado */}
