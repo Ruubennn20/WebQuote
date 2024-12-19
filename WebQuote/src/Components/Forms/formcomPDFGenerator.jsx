@@ -199,58 +199,100 @@ export default function FormInicial() {
         textColor: 255,
         fontSize: 10,
       },
-      styles: { fontSize: 10, cellPadding: 3 },
+      styles: { fontSize: 10, cellPadding: 2 },
       theme: 'grid',
     });
 
-
-    //Calcula o total para aquela tabela
-    const pagesTotal = formData.pages.reduce((sum, page) => sum + (PRICE_MAP[page] || 0), 0);
     // Pages Table
     let finalY = doc.lastAutoTable.finalY;
 
 
     //Tabela para as páginas
-    doc.autoTable({
-      startY: finalY + 10,
-      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
-      body: [
-        ["Pages", "", formData.pages.length.toString(), "Group", "-"],
-        ...formData.pages.map(page => {
-          const pageLabel = {
-            mainPage: "Página Inicial",
-            aboutPage: "Sobre",
-            contactPage: "Contato",
-            lojaPage: "Loja",
-            userSection: "Secção de users",
-            politicaPage: "Política de devoluções",
-            outras: "Outras"
-          }[page];
-          return ["", pageLabel, "1", "Unit", PRICE_MAP[page] + " €"];
-        })
-      ],
-      foot: [[
-        '',
-        'Subtotal',
-        '',
-        '',
-        `${pagesTotal} €`
-      ]],
-      headStyles: {
-        fillColor: [26, 188, 156],
-        textColor: 255,
-        fontSize: 10,
-      },
-      styles: { fontSize: 10, cellPadding: 3 },
-      theme: 'grid',
-    });
+    if (formData.pages.length > 0) {
+        const pagesTotal = formData.pages.reduce((sum, page) => sum + (PRICE_MAP[page] || 0), 0);
+        doc.autoTable({
+            startY: finalY + 10,
+            head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+            body: [
+                ["Pages", "", formData.pages.length.toString(), "Group", "-"],
+                ...formData.pages.map(page => {
+                    const pageLabel = {
+                        mainPage: "Página Inicial",
+                        aboutPage: "Sobre",
+                        contactPage: "Contato",
+                        lojaPage: "Loja",
+                        userSection: "Secção de users",
+                        politicaPage: "Política de devoluções",
+                        outras: "Outras"
+                    }[page];
+                    return ["", pageLabel, "1", "Unit", (PRICE_MAP[page] || 0) + " €"];
+                })
+            ],
+            foot: [[
+                '',
+                'Subtotal',
+                '',
+                '',
+                `${pagesTotal} €`
+            ]],
+            headStyles: {
+                fillColor: [26, 188, 156],
+                textColor: 255,
+                fontSize: 10,
+            },
+            footStyles: {
+              fillColor: [200, 200, 200], // Keep the same color
+               textColor: 0,
+               fontSize: 10,
+               cellPadding: 1, // Adjust padding for the footer specifically
+            },
+            styles: { 
+                fontSize: 10, 
+                cellPadding: 3 // Keep this for the rest of the table
+            },
+            theme: 'grid',
+        });
+    } else {
+        // If no pages are selected, show a message in the table while keeping the Type header
+        doc.autoTable({
+          startY: finalY + 10,
+          head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+          body: [
+              ["No pages selected.", "Total: 0 €", "", "", ""]
+          ],
+          foot: [[
+              '',
+              'Subtotal',
+              '',
+              '',
+              '0 €' // Show subtotal as 0 €
+          ]],
+          headStyles: {
+              fillColor: [26, 188, 156], // Keep the same color
+              textColor: 255,
+              fontSize: 10,
+          },
+          footStyles: {
+              fillColor: [200, 200, 200], // Keep the same color
+              textColor: 0,
+              fontSize: 10,
+              cellPadding: 1, // Adjust padding for the footer specifically
+          },
+          styles: { 
+              fontSize: 10, 
+              cellPadding: 3 // Keep this for the rest of the table
+          },
+          theme: 'grid',
+      });
+    }
     //Calcula o total para aquela tabela
-    const designTotal = formData.designServices.reduce((sum, service) => sum + (PRICE_MAP[service] || 0), 0);
 
     
     // Tabela para os serviços de design
     finalY = doc.lastAutoTable.finalY;
-    doc.autoTable({
+    if(formData.designServices.length > 0){
+      const designTotal = formData.designServices.reduce((sum, service) => sum + (PRICE_MAP[service] || 0), 0);
+     doc.autoTable({
       startY: finalY + 10,
       head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
       body: formData.designServices.map(service => {
@@ -277,6 +319,38 @@ export default function FormInicial() {
       styles: { fontSize: 10, cellPadding: 3 },
       theme: 'grid',
     });
+  }else{
+    doc.autoTable({
+      startY: finalY + 10,
+      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+      body: [
+          ["No pages selected.", "Total: 0 €", "", "", ""]
+      ],
+      foot: [[
+          '',
+          'Subtotal',
+          '',
+          '',
+          '0 €' // Show subtotal as 0 €
+      ]],
+      headStyles: {
+          fillColor: [26, 188, 156], // Keep the same color
+          textColor: 255,
+          fontSize: 10,
+      },
+      footStyles: {
+          fillColor: [200, 200, 200], // Keep the same color
+          textColor: 0,
+          fontSize: 10,
+          cellPadding: 1, // Adjust padding for the footer specifically
+      },
+      styles: { 
+          fontSize: 10, 
+          cellPadding: 3 // Keep this for the rest of the table
+      },
+      theme: 'grid',
+  });
+  }
 
     // Calculate languages total
     const languagesTotal = formData.languages.reduce((sum, lang) => sum + (PRICE_MAP[lang] || 0), 0);
