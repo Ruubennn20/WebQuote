@@ -1,38 +1,26 @@
 [
   {
     "informacoesCliente": {
-      "nome": "bruno",
-      "telefone": "976976",
-      "email": "brsa1602@icloud.com"
+      "nome": "",
+      "telefone": "",
+      "email": ""
     },
     "detalhesWebsite": {
-      "tipoWebsite": "Novo Website",
-      "paginas": [
-        "mainPage",
-        "aboutPage",
-        "contactPage"
-      ],
-      "servicosDesign": [
-        "Logotipo",
-        "Icons"
-      ],
-      "redesSociais": "Sim",
-      "integracaoPagamento": "Sim",
-      "avaliacaoProdutos": "Sim",
-      "suporteCliente": "Sim",
-      "periodoManutencao": "umAno",
-      "frequenciaAtualizacao": "mensal",
-      "idiomas": [
-        "portugues",
-        "ingles",
-        "frances"
-      ]
+      "tipoWebsite": "Modernização",
+      "paginas": [],
+      "servicosDesign": [],
+      "redesSociais": "Não",
+      "integracaoPagamento": "Não",
+      "avaliacaoProdutos": "Não",
+      "suporteCliente": "Não",
+      "frequenciaAtualizacao": "",
+      "idiomas": []
     },
     "orcamento": {
-      "valorTotal": "500.00",
+      "valorTotal": "0.00",
       "moeda": "€"
     },
-    "dataSubmissao": "2024-12-19T11:46:40.256Z",
-    "timestamp": "2024-12-19T11:46:40.344Z"
+    "dataSubmissao": "2024-12-19T15:10:01.465Z",
+    "timestamp": "2024-12-19T15:10:01.508Z"
   }
 ]

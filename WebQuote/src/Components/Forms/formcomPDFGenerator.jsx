@@ -127,10 +127,6 @@ export default function FormInicial() {
       total += PRICE_MAP.clientSupport;
     }
 
-    // Maintenance
-
-  
-    let total = 0;
   
     // Cálculo do custo do website
     total += PRICE_MAP[formData.objective] || 0;
