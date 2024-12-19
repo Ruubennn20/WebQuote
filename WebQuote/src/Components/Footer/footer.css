@@ -52,7 +52,8 @@
   color: white;
   font-size: large;
   font-family: sans-serif;
-  line-height: 1.5; /* Aumenta o espaço entre as linhas */
+  line-height: 2; /* Aumenta o espaço entre as linhas */
+  font-weight: bold;
 }
 
 .menu li a:hover {
