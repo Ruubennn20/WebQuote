@@ -386,62 +386,13 @@ export default function FormInicial() {
         },
         body: JSON.stringify(dadosOrcamento)
       });
-  
       if (!response.ok) {
         throw new Error('Erro ao salvar orçamento');
       }
-  
-      // Geração do PDF após salvar os dados
-      const doc = new jsPDF();
-      
-      // Header
-      doc.setFontSize(20);
-      doc.text("Website Quote", 10, 10);
-      
-      // Client Info
-      doc.setFontSize(14);
-      doc.text("Client Information:", 20, 30);
-      doc.setFontSize(12);
-      doc.text("Name: " + dadosOrcamento.informacoesCliente.nome, 20, 40);
-      doc.text("Phone: " + dadosOrcamento.informacoesCliente.telefone, 20, 50);
-      doc.text("Email: " + dadosOrcamento.informacoesCliente.email, 20, 60);
-      
-      // Project Details
-      doc.setFontSize(14);
-      doc.text("Project Details:", 20, 80);
-      doc.setFontSize(12);
-      doc.text("Website Type: " + dadosOrcamento.detalhesWebsite.tipoWebsite, 20, 90);
-      doc.text("Selected Pages: " + (dadosOrcamento.detalhesWebsite.paginas.length > 0 ? dadosOrcamento.detalhesWebsite.paginas.join(", ") : "None selected"), 20, 100);
-      
-      // Design Services
-      doc.text("Design Services: " + (dadosOrcamento.detalhesWebsite.servicosDesign.length > 0 ? dadosOrcamento.detalhesWebsite.servicosDesign.join(", ") : "None selected"), 20, 110);
-      
-      // Integrations
-      doc.text("Social Media Integration: " + dadosOrcamento.detalhesWebsite.redesSociais, 20, 120);
-      doc.text("Payment Integration: " + dadosOrcamento.detalhesWebsite.integracaoPagamento, 20, 130);
-      doc.text("Product Reviews: " + dadosOrcamento.detalhesWebsite.avaliacaoProdutos, 20, 140);
-      
-      // Support & Maintenance
-      doc.text("Customer Support: " + dadosOrcamento.detalhesWebsite.suporteCliente, 20, 150);
-      doc.text("Maintenance Period: " + dadosOrcamento.detalhesWebsite.periodoManutencao, 20, 160);
-      doc.text("Update Frequency: " + dadosOrcamento.detalhesWebsite.frequenciaAtualizacao, 20, 170);
-      
-      // Languages
-      doc.text("Website Languages: " + (dadosOrcamento.detalhesWebsite.idiomas.length > 0 ? dadosOrcamento.detalhesWebsite.idiomas.join(", ") : "None selected"), 20, 180);
-      
-      // Pricing
-      doc.setFontSize(16);
-      doc.text("Total Quote Amount: " + dadosOrcamento.orcamento.valorTotal + "€", 20, 200);
-  
-      doc.save("website_quote.pdf");
-  
-      alert('Orçamento salvo com sucesso!');
     } catch (error) {
-      console.error('Erro:', error);
-      alert('Erro ao salvar o orçamento. Por favor, tente novamente.');
+      console.error('Erro ao salvar orçamento:', error);
     }
-
-  };
+  }
 
   
   return (
