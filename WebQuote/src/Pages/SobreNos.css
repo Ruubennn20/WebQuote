@@ -1,3 +1,103 @@
-.sobrenosh1{
+.sobrenosh1 {
     margin-top: 100px;
-}
+  }
+  
+  /* Estilo principal da página */
+  .sobrenos-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FFF5E6; /* Cor de fundo clara */
+    color: #333; /* Texto padrão escuro */
+    min-height: 100vh; /* Garante que a página preencha a altura da tela */
+  }
+  
+  .sobrenos-content {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  /* Cabeçalho */
+  .sobrenos-heading {
+    font-size: 2.5rem;
+    color: #000;
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-family: sans-serif;
+    font-weight: bold;
+  }
+  
+  /* Layout principal */
+  .sobrenos-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  /* Estilo da imagem */
+  .sobrenos-image {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Texto */
+  .sobrenos-text {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #333;
+    margin-top: 10px;
+    text-align: justify;
+    font-family: sans-serif;
+  }
+  
+  /* Responsividade */
+  @media (min-width: 768px) {
+    .sobrenos-main {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  
+    .sobrenos-image {
+      flex: 1;
+      max-width: 500px;
+    }
+  
+    .sobrenos-text {
+      flex: 1;
+      margin-left: 20px;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .sobrenos-container {
+      padding: 10px;
+    }
+  
+    .sobrenos-text {
+      text-align: center; /* Centraliza o texto em telas pequenas */
+      font-size: 1rem; /* Diminui o tamanho da fonte */
+    }
+  
+    .sobrenos-image {
+      max-width: 100%; /* Garante que a imagem ocupe o espaço disponível */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .sobrenos-heading {
+      font-size: 2rem; /* Reduz o tamanho do título em dispositivos pequenos */
+    }
+  
+    .sobrenos-text {
+      font-size: 0.9rem; /* Reduz o tamanho do texto em dispositivos pequenos */
+      line-height: 1.5;
+    }
+  }
+  
