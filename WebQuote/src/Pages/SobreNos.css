@@ -59,16 +59,31 @@
   .sobrenos-text {
     font-size: 1.4rem;
     line-height: 2;
-    color: #333;
+    color: #000;
     margin-top: 10px;
     text-align: justify;
     font-family: 'Open Sans', sans-serif; /* Fonte limpa e moderna */
     padding: 10px;
-    background: #F8F9FA; /* Fundo suave para destacar o texto */
+    background-image: url("../assets/sanjotecFoto.jpg");
+    background-position: center;
+    background-size: 110%;
     border-left: 5px solid #4169E1; /* Barra lateral colorida */
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
+    position: relative; /* Para posicionar o overlay */
+}
+
+.sobrenos-text::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.6); /* Esbranquiçado com opacidade */
+    z-index: 1; /* Coloca o overlay acima da imagem */
+}
+
   
   /* Responsividade */
   @media (min-width: 768px) {
