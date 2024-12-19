@@ -32,6 +32,7 @@ export default function Contactos() {
 
           {/* Formulário de contacto do lado direito */}
           <div className="contact-form-container">
+            <h3>Contacte-nos</h3>
             <form className="contact-form">
               <label htmlFor="name">Nome:</label>
               <input type="text" id="name" name="name" required />
