@@ -156,187 +156,357 @@ export default function FormInicial() {
 
     const doc = new jsPDF();
     
-    // Header with logo and title
-    doc.addImage(logo, 'JPEG', 10, 5, 40, 12);
-    doc.setFontSize(10);
-    doc.text('WEBSITE QUOTATION', 150, 12);
-
-    // Add dividing line
-    doc.setDrawColor(200, 200, 200);
-    doc.line(10, 18, 200, 18);
-
-    // Client Information
-    doc.text('Contact Information', 13, 23);
-    doc.text(document.querySelector('input[placeholder="Digite o nome e apelido"]').value, 13, 28);
-    doc.text(document.querySelector('input[placeholder="Digite o contacto"]').value, 13, 32);
-    doc.text(document.querySelector('input[placeholder="Digite o email"]').value, 13, 36);
-
-
+  doc.addImage(logo, 'JPEG', 10, 5, 40, 12);
+   doc.setFontSize(10);
+   doc.text('WEBSITE QUOTATION', 150, 12);
+   doc.setDrawColor(200, 200, 200);
+   doc.line(10, 18, 200, 18);
+   
+   // Client Information
+   doc.text('Contact Information', 13, 23);
+   doc.text(document.querySelector('input[placeholder="Digite o nome e apelido"]').value, 13, 28);
+   doc.text(document.querySelector('input[placeholder="Digite o contacto"]').value, 13, 32);
+   doc.text(document.querySelector('input[placeholder="Digite o email"]').value, 13, 36);
     // Quote details
-    doc.setFont('Helvetica', 'bold');
-    doc.text('Fatura Num    :', 130, 23);
-    doc.text('Data          :', 130, 27);
-    doc.setFont('Helvetica', 'normal');
-    doc.text(`WQ${Date.now().toString().slice(-6)}`, 155, 23);
-    doc.text(new Date().toLocaleDateString(), 155, 27);
+   doc.setFont('Helvetica', 'bold');
+   doc.text('Fatura Num    :', 130, 23);
+   doc.text('Data          :', 130, 27);
+   doc.setFont('Helvetica', 'normal');
+   doc.text(`WQ${Date.now().toString().slice(-6)}`, 155, 23);
+   doc.text(new Date().toLocaleDateString(), 155, 27);
 
-
-
-
-    
-    // Create the items table
-    const itemDetailsRows = [
-      // Website Type
-      [
+    // Tabela para o tipo de website novo ou modernizar
+    doc.autoTable({
+      startY: 45,
+      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+      body: [[
         "Type",
         formData.objective === "novoSite" ? "New Website Development" : 
         formData.objective === "modernizacao" ? "Website Modernization" : "",
         "1",
         "Service",
         formData.objective ? PRICE_MAP[formData.objective] + " €" : "0 €"
+      ]],
+      foot: [[
+        '',
+        'Subtotal',
+        '',
+        '',
+        `${PRICE_MAP[formData.objective] || 0} €`
+      ]],
+      headStyles: {
+        fillColor: [26, 188, 156],
+        textColor: 255,
+        fontSize: 10,
+      },
+      styles: { fontSize: 10, cellPadding: 3 },
+      theme: 'grid',
+    });
+
+
+    //Calcula o total para aquela tabela
+    const pagesTotal = formData.pages.reduce((sum, page) => sum + (PRICE_MAP[page] || 0), 0);
+    // Pages Table
+    let finalY = doc.lastAutoTable.finalY;
+
+
+    //Tabela para as páginas
+    doc.autoTable({
+      startY: finalY + 10,
+      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+      body: [
+        ["Pages", "", formData.pages.length.toString(), "Group", "-"],
+        ...formData.pages.map(page => {
+          const pageLabel = {
+            mainPage: "Página Inicial",
+            aboutPage: "Sobre",
+            contactPage: "Contato",
+            lojaPage: "Loja",
+            userSection: "Secção de users",
+            politicaPage: "Política de devoluções",
+            outras: "Outras"
+          }[page];
+          return ["", pageLabel, "1", "Unit", PRICE_MAP[page] + " €"];
+        })
       ],
-      // Pages Header
-      [
-        "Pages",
-        "      ",
-        formData.pages.length.toString(),
-        "Group",
-        "-"
-      ],
-      // Pages Section without type
-      ...formData.pages.map(page => {
-        const pageLabel = {
-          mainPage: "Página Inicial",
-          aboutPage: "Sobre",
-          contactPage: "Contato",
-          lojaPage: "Loja",
-          userSection: "Secção de users",
-          politicaPage: "Política de devoluções",
-          outras: "Outras"
-        }[page];
-        return [
-          "",  // Empty type column
-          pageLabel,
-          "1",
-          "Unit",
-          PRICE_MAP[page] + " €"
-        ];
-      }),
-      ...formData.designServices.map(service => {
+      foot: [[
+        '',
+        'Subtotal',
+        '',
+        '',
+        `${pagesTotal} €`
+      ]],
+      headStyles: {
+        fillColor: [26, 188, 156],
+        textColor: 255,
+        fontSize: 10,
+      },
+      styles: { fontSize: 10, cellPadding: 3 },
+      theme: 'grid',
+    });
+    //Calcula o total para aquela tabela
+    const designTotal = formData.designServices.reduce((sum, service) => sum + (PRICE_MAP[service] || 0), 0);
+
+    
+    // Tabela para os serviços de design
+    finalY = doc.lastAutoTable.finalY;
+    doc.autoTable({
+      startY: finalY + 10,
+      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+      body: formData.designServices.map(service => {
         const serviceLabel = {
           Logotipo: "Logotipo",
           Icons: "Icons",
           Banners: "Banners",
           outras: "Outros"
         }[service];
-        return [
-          "Design",
-          serviceLabel,
-          "1",
-          "Unit",
-          PRICE_MAP[service] + " €"
-        ];
+        return ["Design", serviceLabel, "1", "Unit", PRICE_MAP[service] + " €"];
       }),
-      ...formData.languages.map(lang => {
-        return [
-          "Language",
-          lang,
-          "1",
-          "Unit",
-          PRICE_MAP[lang] + " €"
-        ];
+      foot: [[
+        '',
+        'Subtotal',
+        '',
+        '',
+        `${designTotal} €`
+      ]],
+      headStyles: {
+        fillColor: [26, 188, 156],
+        textColor: 255,
+        fontSize: 10,
+      },
+      styles: { fontSize: 10, cellPadding: 3 },
+      theme: 'grid',
+    });
+
+    // Calculate languages total
+    const languagesTotal = formData.languages.reduce((sum, lang) => sum + (PRICE_MAP[lang] || 0), 0);
+
+    // Languages Table
+    finalY = doc.lastAutoTable.finalY;
+    doc.autoTable({
+      startY: finalY + 10,
+      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+      body: formData.languages.map(lang => {
+        const langLabel = {
+          portugues: "portugues",
+          ingles: "ingles",
+          frances: "frances",
+          espanhol: "espanhol"
+        }[lang];
+        return ["Language", langLabel, "1", "Unit", PRICE_MAP[lang] + " €"];
       }),
-      ...(formData.socialMedia === "yes" ? [[
+      foot: [[
+        '',
+        'Subtotal',
+        '',
+        '',
+        `${languagesTotal} €`
+      ]],
+      headStyles: {
+        fillColor: [26, 188, 156],
+        textColor: 255,
+        fontSize: 10,
+      },
+      styles: { fontSize: 10, cellPadding: 3 },
+      theme: 'grid',
+    });
+
+    // Social Media Integration Table
+    finalY = doc.lastAutoTable.finalY;
+    doc.autoTable({
+      startY: finalY + 10,
+      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+      body: formData.socialMedia === "yes" ? [[
         "Integration",
         "Social Media Integration",
         "1",
         "Service",
         PRICE_MAP.socialMedia + " €"
-      ]] : []),
-      ...(formData.paymentIntegration === "integracaoPg" ? [[
+      ]] : [],
+      foot: [[
+        '',
+        'Subtotal',
+        '',
+        '',
+        `${formData.socialMedia === "yes" ? PRICE_MAP.socialMedia : 0} €`
+      ]],
+      headStyles: {
+        fillColor: [26, 188, 156],
+        textColor: 255,
+        fontSize: 10,
+      },
+      styles: { fontSize: 10, cellPadding: 3 },
+      theme: 'grid',
+    });
+
+    // Payment Integration Table
+    finalY = doc.lastAutoTable.finalY;
+    doc.autoTable({
+      startY: finalY + 10,
+      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+      body: formData.paymentIntegration === "integracaoPg" ? [[
         "Integration",
         "Payment Integration",
         "1",
         "Service",
         PRICE_MAP.paymentIntegration + " €"
-      ]] : []),
-      ...(formData.productReviews === "yes" ? [[
-        "Integration",
-        "Product Reviews",
+      ]] : [],
+      foot: [[
+        '',
+        'Subtotal',
+        '',
+        '',
+        `${formData.paymentIntegration === "integracaoPg" ? PRICE_MAP.paymentIntegration : 0} €`
+      ]],
+      headStyles: {
+        fillColor: [26, 188, 156],
+        textColor: 255,
+        fontSize: 10,
+      },
+      styles: { fontSize: 10, cellPadding: 3 },
+      theme: 'grid',
+    });
+
+    // Product Reviews Table
+    finalY = doc.lastAutoTable.finalY;
+    doc.autoTable({
+      startY: finalY + 10,
+      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+      body: formData.productReviews === "avaliacaoProdutos" ? [[
+        "Feature",
+        "Product Reviews System",
         "1",
         "Service",
         PRICE_MAP.productReviews + " €"
-      ]] : []),
-      ...(formData.clientSupport === "yes" ? [[
+      ]] : [],
+      foot: [[
+        '',
+        'Subtotal',
+        '',
+        '',
+        `${formData.productReviews === "avaliacaoProdutos" ? PRICE_MAP.productReviews : 0} €`
+      ]],
+      headStyles: {
+        fillColor: [26, 188, 156],
+        textColor: 255,
+        fontSize: 10,
+      },
+      styles: { fontSize: 10, cellPadding: 3 },
+      theme: 'grid',
+    });
+
+    // Customer Support Table
+    finalY = doc.lastAutoTable.finalY;
+    doc.autoTable({
+      startY: finalY + 10,
+      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+      body: formData.clientSupport === "suporteYes" ? [[
         "Support",
-        "Customer Support",
+        "Customer Support Service",
         "1",
         "Service",
         PRICE_MAP.clientSupport + " €"
-      ]] : []),
-      ...(formData.maintenance ? [[
+      ]] : [],
+      foot: [[
+        '',
+        'Subtotal',
+        '',
+        '',
+        `${formData.clientSupport === "suporteYes" ? PRICE_MAP.clientSupport : 0} €`
+      ]],
+      headStyles: {
+        fillColor: [26, 188, 156],
+        textColor: 255,
+        fontSize: 10,
+      },
+      styles: { fontSize: 10, cellPadding: 3 },
+      theme: 'grid',
+    });
+
+    // Maintenance Period Table
+    finalY = doc.lastAutoTable.finalY;
+    doc.autoTable({
+      startY: finalY + 10,
+      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+      body: formData.maintenance ? [[
         "Maintenance",
-        formData.maintenance,
+        {
+          umAno: "One Year Maintenance",
+          doisAnos: "Two Years Maintenance",
+          tresAnos: "Three Years Maintenance"
+        }[formData.maintenance],
         "1",
         "Service",
         PRICE_MAP[formData.maintenance] + " €"
-      ]] : []),
-      ...(formData.updateFrequency ? [[
-        "Update",
-        formData.updateFrequency,
+      ]] : [],
+      foot: [[
+        '',
+        'Subtotal',
+        '',
+        '',
+        `${PRICE_MAP[formData.maintenance] || 0} €`
+      ]],
+      headStyles: {
+        fillColor: [26, 188, 156],
+        textColor: 255,
+        fontSize: 10,
+      },
+      styles: { fontSize: 10, cellPadding: 3 },
+      theme: 'grid',
+    });
+
+    // Update Frequency Table
+    finalY = doc.lastAutoTable.finalY;
+    doc.autoTable({
+      startY: finalY + 10,
+      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+      body: formData.updateFrequency ? [[
+        "Updates",
+        {
+          semanal: "Weekly Updates",
+          mensal: "Monthly Updates",
+          trimestral: "Quarterly Updates"
+        }[formData.updateFrequency],
         "1",
         "Service",
         PRICE_MAP[formData.updateFrequency] + " €"
-      ]] : []),
-      ...formData.languages.map(lang => {
-        const langLabel = {
-          portugues: "Português",
-          ingles: "Inglês",
-          frances: "Francês",
-          espanhol: "Espanhol"
-        }[lang];
-        return [
-          "Language",
-          langLabel,
-          "1",
-          "Unit",
-          PRICE_MAP[lang] + " €"
-        ];
-      }),
-      // ... rest of your itemDetailsRows
-    ];
-
-    // Add the table
-    doc.autoTable({
-      startY: 45,
-      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
-      body: itemDetailsRows,
+      ]] : [],
       foot: [[
+        '',
+        'Subtotal',
+        '',
+        '',
+        `${PRICE_MAP[formData.updateFrequency] || 0} €`
+      ]],
+      headStyles: {
+        fillColor: [26, 188, 156],
+        textColor: 255,
+        fontSize: 10,
+      },
+      styles: { fontSize: 10, cellPadding: 3 },
+      theme: 'grid',
+    });
+
+    // Final Total Table
+    finalY = doc.lastAutoTable.finalY;
+    doc.autoTable({
+      startY: finalY + 10,
+      body: [[
         '',
         'Total Amount',
         '',
         '',
         `${total.toFixed(2)} €`
       ]],
-      didParseCell: function(data) {
-        // Make group header rows (like "Pages") have a light blue background
-        if (data.row.cells[0].text === "Pages" || 
-            data.row.cells[0].text === "Design" || 
-            data.row.cells[0].text === "Type") {
-          data.cell.styles.fillColor = [235, 237, 242]; // Light blue-gray
-          data.cell.styles.fontStyle = 'bold';
-        }
-      },
-      styles: {
-        fontSize: 10,
+      styles: { 
+        fontSize: 10, 
         cellPadding: 3,
-      }
+        fontStyle: 'bold'
+      },
+      theme: 'grid',
     });
-
     
-    
-
-    // Add footer
+    // Add footer with number of pgaes
     const pageCount = doc.internal.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {
       doc.setPage(i);
