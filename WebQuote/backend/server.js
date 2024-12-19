@@ -26,7 +26,7 @@ app.post('/send-pdf', upload.single('file'), async (req, res) => {
     service: 'gmail',
     auth: {
       user: 'zoroark.email@gmail.com', // Substitua pelo seu email
-      pass: 'fvcx modc kdtk lwji'            // Substitua pela sua senha ou App Password
+                 // Substitua pela sua senha ou App Password
     },
   });
 
@@ -65,3 +65,8 @@ const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
+
+
+
+
+
