@@ -1,6 +1,6 @@
-
 import React, { useState } from 'react';
-import './form.css'
+import jsPDF from 'jspdf';
+import './form.css';
 import Header from '../Header/Header';
 
 export default function FormExemplo() {
@@ -12,40 +12,115 @@ export default function FormExemplo() {
     audience: '',
     deadline: '',
     budget: '',
-    references: ''
+    references: '',
+    email: '', // Campo para e-mail
   });
 
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
 
     if (type === 'checkbox') {
-      setFormData(prevData => ({
+      setFormData((prevData) => ({
         ...prevData,
         [name]: e.target.checked
           ? [...(prevData[name] || []), value]
-          : (prevData[name] || []).filter(item => item !== value)
+          : (prevData[name] || []).filter((item) => item !== value),
       }));
     } else {
-      setFormData(prevData => ({
+      setFormData((prevData) => ({
         ...prevData,
-        [name]: value
+        [name]: value,
       }));
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const jsonData = JSON.stringify(formData);
+
+    const jsonBlob = new Blob([jsonData], { type: 'application/json' });
+
     
-    console.log(formData);
-    
+
+    const doc = new jsPDF();
+
+    doc.text('Formulário para Criação de Sites', 10, 10);
+    doc.text(`Objetivo: ${formData.objective}`, 10, 20);
+    doc.text(`Páginas: ${formData.pages.join(', ')}`, 10, 30);
+    doc.text(`Funcionalidades: ${formData.features.join(', ')}`, 10, 40);
+    doc.text(`Estilo: ${formData.style}`, 10, 50);
+    doc.text(`Público-alvo: ${formData.audience}`, 10, 60);
+    doc.text(`Prazo: ${formData.deadline}`, 10, 70);
+    doc.text(`Orçamento: ${formData.budget}`, 10, 80);
+    doc.text(`Referências: ${formData.references}`, 10, 90);
+
+    // Salva o PDF como blob
+    const pdfBlob = doc.output('blob');
+
+    // Enviar para o backend (exemplo de requisição fetch)
+    const formDataToSend = new FormData();
+    formDataToSend.append('pdf', pdfBlob);
+    formDataToSend.append('email', formData.email);
+
+    doc.save('formulario.pdf'); // Salva o PDF localmente
+
+
+  
+
+
+
+
+
+    try {
+      const response = await fetch('http://localhost:5000/send-email', {
+        method: 'POST',
+        body: formDataToSend,
+      });
+
+      if (response.ok) {
+        alert('E-mail enviado com sucesso!');
+      } else {
+        alert('Falha ao enviar e-mail.');
+      }
+    } catch (error) {
+      console.error('Erro ao enviar e-mail:', error);
+    }
   };
+
+
+  const doc = new jsPDF();
+
+doc.setFontSize(12);
+doc.text('Formulário para Criação de Sites', 10, 10);
+doc.text(`Objetivo: ${formData.objective || 'Não especificado'}`, 10, 20);
+doc.text(`Páginas: ${formData.pages.join(', ') || 'Nenhuma selecionada'}`, 10, 30);
+doc.text(`Funcionalidades: ${formData.features.join(', ') || 'Nenhuma selecionada'}`, 10, 40);
+doc.text(`Estilo: ${formData.style || 'Não especificado'}`, 10, 50);
+doc.text(`Público-alvo: ${formData.audience || 'Não especificado'}`, 10, 60);
+doc.text(`Prazo: ${formData.deadline || 'Não especificado'}`, 10, 70);
+doc.text(`Orçamento: ${formData.budget || 'Não especificado'}`, 10, 80);
+doc.text(`Referências: ${formData.references || 'Nenhuma'}`, 10, 90);
+
+const pdfBlob = doc.output('blob');
+
+// Teste abrindo o PDF no navegador
+const blobUrl = URL.createObjectURL(pdfBlob);
+window.open(blobUrl);
+
+const formDataToSend = new FormData();
+formDataToSend.append('pdf', pdfBlob, 'formulario.pdf'); // Adiciona o nome do arquivo
+formDataToSend.append('email', formData.email);
+
+
+
 
   return (
     <div className="container">
-      <Header/>
+      <Header />
       <h1>Formulário para Criação de Sites</h1>
       <form onSubmit={handleSubmit}>
-        <div>
+      <div>
           <label htmlFor="objective">Qual o objetivo do site?</label>
           <select 
             id="objective" 
@@ -172,7 +247,18 @@ export default function FormExemplo() {
             onChange={handleInputChange}
           ></textarea>
         </div>
-
+        <div>
+          <label htmlFor="email">E-mail para envio:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Seu e-mail"
+            required
+            value={formData.email}
+            onChange={handleInputChange}
+          />
+        </div>
         <button type="submit">Enviar</button>
       </form>
     </div>

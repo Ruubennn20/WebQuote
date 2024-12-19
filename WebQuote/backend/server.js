@@ -1,15 +1,24 @@
 const express = require('express');
 const multer = require('multer');
 const nodemailer = require('nodemailer');
+const bodyParser = require('body-parser');
+const fs = require('fs');
+
 const cors = require('cors');
 const fs = require('fs/promises');
+
 const path = require('path');
 
 const app = express();
-const upload = multer(); // Middleware para processar arquivos
+const port = 5000;
 
-app.use(cors());
-app.use(express.json());
+// Configuração do Multer para salvar o PDF em memória
+const upload = multer({ storage: multer.memoryStorage() });
+
+
+// Middleware para processar JSON e URL-encoded
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 // Rota para envio do PDF por email
@@ -24,45 +33,53 @@ app.post('/send-pdf', upload.single('file'), async (req, res) => {
       return res.status(400).send('Email ou arquivo não fornecido.');
     }
 
-  // Configuração do transporte Nodemailer (Gmail ou SMTP)
+
+// Endpoint para enviar e-mail
+app.post('/send-email', upload.single('pdf'), async (req, res) => {
+  const { email } = req.body;
+  const pdfBuffer = req.file?.buffer; // Arquivo PDF enviado no FormData
+
+  if (!email || !pdfBuffer) {
+    return res.status(400).json({ error: 'E-mail ou arquivo PDF ausente.' });
+  }
+
+  // Configuração do Nodemailer
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    service: 'gmail', // Use seu serviço de e-mail
     auth: {
-      user: 'zoroark.email@gmail.com', // Substitua pelo seu email
-      pass: 'fvcx modc kdtk lwji'            // Substitua pela sua senha ou App Password
+      user: 'zoroarkchico@gmail.com', // Substitua pelo seu e-mail
+      pass: 'fvcx modc kdtk lwji',           // Substitua pela sua senha
     },
   });
 
-  const corsOptions = {
-    origin: 'http://localhost:3000', // Garanta que é a origem do seu frontend
-    methods: 'POST,GET,OPTIONS',
-    allowedHeaders: 'Content-Type,Authorization',
-  };
-  
-  app.use(cors(corsOptions));
-  
-
+  // Configuração do e-mail
   const mailOptions = {
-    from: 'zoroark.email@gmail.com',
-    to: email,
-    subject: 'PDF do Formulário',
-    text: 'Segue em anexo o PDF gerado.',
+    from: 'franciscomesk@gmail.com',       // Remetente
+    to: email,                        // Destinatário
+    subject: 'Formulário de Criação de Sites',
+    text: 'Segue em anexo o PDF gerado pelo formulário.',
     attachments: [
       {
-        filename: pdfFile.originalname,
-        content: pdfFile.buffer,
+        filename: 'formulario.pdf',
+        content: pdfBuffer, // Envia o PDF como anexo
       },
     ],
   };
 
   try {
+    // Enviar o e-mail
     await transporter.sendMail(mailOptions);
-    res.status(200).send('PDF enviado com sucesso!');
+    res.status(200).json({ message: 'E-mail enviado com sucesso!' });
   } catch (error) {
-    console.error('Erro ao enviar o email:', error);
-    res.status(500).send('Erro ao enviar o email.');
+    console.error('Erro ao enviar e-mail:', error);
+    res.status(500).json({ error: 'Falha ao enviar e-mail.' });
   }
 });
+
+
+// Iniciar o servidor
+app.listen(port, () => {
+  console.log(`Servidor rodando na porta ${port}`);
 
 
 // Ensure the orcamento.json file exists
@@ -113,4 +130,5 @@ app.get('/api/orcamentos', (req, res) => {
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
+
 });
