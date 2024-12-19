@@ -15,7 +15,7 @@ export default function SobreNos() {
           <div className="sobrenos-main">
             <img src={FotoSobreNos} alt="Sobre Nós" className="sobrenos-image" />
             <p className="sobrenos-text">
-              "Bem-vindo à nossa empresa! Somos especializados na criação de websites e e-commerces sob medida, 
+              "Bem-vindos! Somos especializados na criação de websites e e-commerces sob medida, 
               com foco em inovação, funcionalidade e design moderno. Nossa missão é transformar ideias em soluções digitais 
               que impulsionem os negócios dos nossos clientes. Como empreendedores em nome individual, valorizamos a proximidade 
               e a personalização no atendimento, garantindo soluções únicas para cada cliente."
