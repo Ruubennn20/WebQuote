@@ -2,6 +2,7 @@ import "./footer.css";
 import Ellipse3 from "../../assets/Ellipse 3.png";
 import WebQuoteLogo from "../../assets/webQuoteLogo.jpg"; // Adicionando a importação da imagem
 
+
 export default function Footer() {
   return (
     <>
