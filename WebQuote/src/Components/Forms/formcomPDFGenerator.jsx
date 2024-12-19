@@ -87,8 +87,9 @@ export default function FormInicial() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     let total = 0;
 
     // Calculate total based on selections
@@ -127,6 +128,19 @@ export default function FormInicial() {
     }
 
     // Maintenance
+
+  
+    let total = 0;
+  
+    // Cálculo do custo do website
+    total += PRICE_MAP[formData.objective] || 0;
+  
+    // Cálculo do custo das páginas
+    formData.pages.forEach((page) => {
+      total += PRICE_MAP[page] || 0;
+    });
+  
+    // Cálculo do custo de manutenção
     if (formData.maintenance) {
       total += PRICE_MAP[formData.maintenance];
     }
@@ -339,6 +353,98 @@ export default function FormInicial() {
     }
 
     doc.save("website_quotation.pdf");
+
+  
+    // Captura dos dados do formulário
+    const dadosOrcamento = {
+      informacoesCliente: {
+        nome: document.querySelector('input[placeholder="Digite o nome e apelido"]').value,
+        telefone: document.querySelector('input[placeholder="Digite o contacto"]').value,
+        email: document.querySelector('input[placeholder="Digite o email"]').value
+      },
+      detalhesWebsite: {
+        tipoWebsite: formData.objective === "novoSite" ? "Novo Website" : "Modernização",
+        paginas: formData.pages,
+        servicosDesign: formData.designServices,
+        redesSociais: formData.socialMedia === "yes" ? "Sim" : "Não",
+        integracaoPagamento: formData.paymentIntegration === "integracaoPg" ? "Sim" : "Não",
+        avaliacaoProdutos: formData.productReviews === "avaliacaoProdutos" ? "Sim" : "Não",
+        suporteCliente: formData.clientSupport === "suporteYes" ? "Sim" : "Não",
+        periodoManutencao: formData.maintenance,
+        frequenciaAtualizacao: formData.updateFrequency,
+        idiomas: formData.languages
+      },
+      orcamento: {
+        valorTotal: total.toFixed(2),
+        moeda: "€"
+      },
+      dataSubmissao: new Date().toISOString()
+    };
+  
+    try {
+      // Envio dos dados para o servidor
+      const response = await fetch('http://localhost:3000/api/orcamento', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dadosOrcamento)
+      });
+  
+      if (!response.ok) {
+        throw new Error('Erro ao salvar orçamento');
+      }
+  
+      // Geração do PDF após salvar os dados
+      const doc = new jsPDF();
+      
+      // Header
+      doc.setFontSize(20);
+      doc.text("Website Quote", 10, 10);
+      
+      // Client Info
+      doc.setFontSize(14);
+      doc.text("Client Information:", 20, 30);
+      doc.setFontSize(12);
+      doc.text("Name: " + dadosOrcamento.informacoesCliente.nome, 20, 40);
+      doc.text("Phone: " + dadosOrcamento.informacoesCliente.telefone, 20, 50);
+      doc.text("Email: " + dadosOrcamento.informacoesCliente.email, 20, 60);
+      
+      // Project Details
+      doc.setFontSize(14);
+      doc.text("Project Details:", 20, 80);
+      doc.setFontSize(12);
+      doc.text("Website Type: " + dadosOrcamento.detalhesWebsite.tipoWebsite, 20, 90);
+      doc.text("Selected Pages: " + (dadosOrcamento.detalhesWebsite.paginas.length > 0 ? dadosOrcamento.detalhesWebsite.paginas.join(", ") : "None selected"), 20, 100);
+      
+      // Design Services
+      doc.text("Design Services: " + (dadosOrcamento.detalhesWebsite.servicosDesign.length > 0 ? dadosOrcamento.detalhesWebsite.servicosDesign.join(", ") : "None selected"), 20, 110);
+      
+      // Integrations
+      doc.text("Social Media Integration: " + dadosOrcamento.detalhesWebsite.redesSociais, 20, 120);
+      doc.text("Payment Integration: " + dadosOrcamento.detalhesWebsite.integracaoPagamento, 20, 130);
+      doc.text("Product Reviews: " + dadosOrcamento.detalhesWebsite.avaliacaoProdutos, 20, 140);
+      
+      // Support & Maintenance
+      doc.text("Customer Support: " + dadosOrcamento.detalhesWebsite.suporteCliente, 20, 150);
+      doc.text("Maintenance Period: " + dadosOrcamento.detalhesWebsite.periodoManutencao, 20, 160);
+      doc.text("Update Frequency: " + dadosOrcamento.detalhesWebsite.frequenciaAtualizacao, 20, 170);
+      
+      // Languages
+      doc.text("Website Languages: " + (dadosOrcamento.detalhesWebsite.idiomas.length > 0 ? dadosOrcamento.detalhesWebsite.idiomas.join(", ") : "None selected"), 20, 180);
+      
+      // Pricing
+      doc.setFontSize(16);
+      doc.text("Total Quote Amount: " + dadosOrcamento.orcamento.valorTotal + "€", 20, 200);
+  
+      doc.save("website_quote.pdf");
+  
+      alert('Orçamento salvo com sucesso!');
+    } catch (error) {
+      console.error('Erro:', error);
+      alert('Erro ao salvar o orçamento. Por favor, tente novamente.');
+    }
+
   };
 
   

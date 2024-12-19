@@ -134,12 +134,12 @@ const PRICE_MAP = {
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Website novo ou modernização?</label>
+          <label htmlFor="siteNovo">Website novo ou modernização?</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="siteNovo" 
+            name="siteNovo" 
             required 
-            value={formData.objective}
+            value={formData.siteNovo}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
@@ -151,10 +151,10 @@ const PRICE_MAP = {
         <p>Serviços de Design</p>
           <div>
             {[
-              { value: 'home', label: 'Logotipo' },
-              { value: 'about', label: 'Icons' },
-              { value: 'contact', label: 'Banners' },
-              { value: 'outras', label: 'Outros' }
+              { value: 'logotipo', label: 'Logotipo' },
+              { value: 'icons', label: 'Icons' },
+              { value: 'banners', label: 'Banners' },
+              { value: 'outrosDes', label: 'Outros' }
             ].map(({ value, label }) => (
               <label key={value}>
                 <input
@@ -171,12 +171,12 @@ const PRICE_MAP = {
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Ação desejada dos visitantes</label>
+          <label htmlFor="acaoVisit">Ação desejada dos visitantes</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="acaoVisit" 
+            name="acaoVisit" 
             required 
-            value={formData.objective}
+            value={formData.acaoVisit}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
@@ -187,12 +187,12 @@ const PRICE_MAP = {
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Integração com redes sociais</label>
+          <label htmlFor="integracao">Integração com redes sociais</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="integracao" 
+            name="integracao" 
             required 
-            value={formData.objective}
+            value={formData.integracao}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
@@ -202,12 +202,12 @@ const PRICE_MAP = {
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Área de Login e cadastro</label>
+          <label htmlFor="areaLogin">Área de Login e cadastro</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="areaLogin" 
+            name="areaLogin" 
             required 
-            value={formData.objective}
+            value={formData.areaLogin}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
@@ -217,12 +217,12 @@ const PRICE_MAP = {
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Formulário de contacto</label>
+          <label htmlFor="formContacto">Formulário de contacto</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="formContacto" 
+            name="formContacto" 
             required 
-            value={formData.objective}
+            value={formData.formContacto}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
@@ -232,12 +232,12 @@ const PRICE_MAP = {
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Período de manutenção</label>
+          <label htmlFor="perManutencao">Período de manutenção</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="perManutencao" 
+            name="perManutencao" 
             required 
-            value={formData.objective}
+            value={formData.perManutencao}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
@@ -248,12 +248,12 @@ const PRICE_MAP = {
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Atualização</label>
+          <label htmlFor="atualizacao">Atualização</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="atualizacao" 
+            name="atualizacao" 
             required 
-            value={formData.objective}
+            value={formData.atualizacao}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
@@ -335,12 +335,12 @@ const PRICE_MAP = {
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Website novo ou modernização?</label>
+        <label htmlFor="siteNovo">Website novo ou modernização?</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="siteNovo" 
+            name="siteNovo" 
             required 
-            value={formData.objective}
+            value={formData.siteNovo}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
@@ -352,10 +352,10 @@ const PRICE_MAP = {
           <p>Serviços de Design</p>
           <div>
             {[
-              { value: 'home', label: 'Logotipo' },
-              { value: 'about', label: 'Icons' },
-              { value: 'contact', label: 'Banners' },
-              { value: 'outras', label: 'Outros' }
+               { value: 'logotipo', label: 'Logotipo' },
+               { value: 'icons', label: 'Icons' },
+               { value: 'banners', label: 'Banners' },
+               { value: 'outrosDes', label: 'Outros' }
             ].map(({ value, label }) => (
               <label key={value}>
                 <input
@@ -374,10 +374,10 @@ const PRICE_MAP = {
         <div>
           <label htmlFor="objective">Integração com redes sociais</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="integracao" 
+            name="integracao" 
             required 
-            value={formData.objective}
+            value={formData.integracao}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
@@ -387,12 +387,12 @@ const PRICE_MAP = {
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Integração com meios de pagamento</label>
+          <label htmlFor="integracaoPg">Integração com meios de pagamento</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="integracaoPg" 
+            name="integracaoPg" 
             required 
-            value={formData.objective}
+            value={formData.integracaoPg}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
@@ -402,12 +402,12 @@ const PRICE_MAP = {
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Avaliação de produtos</label>
+          <label htmlFor="avaProd">Avaliação de produtos</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="avaProd" 
+            name="avaProd" 
             required 
-            value={formData.objective}
+            value={formData.avaProd}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>
@@ -455,12 +455,12 @@ const PRICE_MAP = {
         </div>
         <br />
         <div>
-          <label htmlFor="objective">Atualização</label>
+        <label htmlFor="atualizacao">Atualização</label>
           <select 
-            id="objective" 
-            name="objective" 
+            id="atualizacao" 
+            name="atualizacao" 
             required 
-            value={formData.objective}
+            value={formData.atualizacao}
             onChange={handleInputChange}
           >
             <option value="">Selecione</option>

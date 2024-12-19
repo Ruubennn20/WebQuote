@@ -11,6 +11,7 @@ import FormContacto from "./Components/Forms/FormContacto";
 import FormExemplo from "./Components/Forms/FormExemplo";
 import FormInicial from "./Components/Forms/FormInicial";
 import FormComPDF from "./Components/Forms/formcomPDFGenerator";
+import FormAdmin from "./Pages/formAdmin";
 function App() {
   return (
     <Router>
@@ -23,6 +24,7 @@ function App() {
         <Route path="/form-exemplo" element={<FormExemplo />} />
         <Route path="/form-inicial" element={<FormInicial />} />
         <Route path="/form-com-pdf" element={<FormComPDF />} />
+        <Route path="/form-admin" element={<FormAdmin />} />
       </Routes>
     </Router>
   );

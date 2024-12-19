@@ -15,3 +15,7 @@ git add .
 Para saber qual branch esta:
 git status
 
+
+Paleta de Cores: 
+Laranja escuro: #e47e00
+laranja claro: #f8c68a
