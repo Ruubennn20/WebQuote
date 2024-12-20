@@ -3,8 +3,7 @@ import "./Cards.css";
 import Vector1 from "../../assets/Vector1.png";
 import imgCard1 from "../../assets/imgCard1.png";
 import imgCard2 from "../../assets/imgCard2.png";
-import card1 from "../../assets/card1.jpg";
-import card2 from "../../assets/card2.jpg";
+
 
 export default function Cartao1and2() {
   return (
@@ -60,11 +59,7 @@ export default function Cartao1and2() {
         <br />
         <br />
         <br />
-        <div className="extra-images">
-        <img src={card2} alt="card 2" className="extra-image2" />
-          <img src={card1} alt="card 1" className="extra-image1" />
-          
-        </div>
+        
       </div>
     </>
   );

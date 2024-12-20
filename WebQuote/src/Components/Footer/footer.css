@@ -18,12 +18,31 @@
   gap: 20px; /* Espaço entre os elementos */
 }
 
+/* Ajustes para a classe extra-images */
+.extra-images {
+  display: flex;
+  justify-content: center; /* Centraliza as imagens */
+  gap: 20px; /* Espaço entre as imagens */
+  position: relative;
+  top: -20px; /* Mover os cards ligeiramente para cima */
+  z-index: 2; /* Garante que as imagens fiquem acima da ellipse */
+}
+
+.extra-image1, .extra-image2 {
+  
+  height: auto;
+  border-radius: 10px; /* Arredondar as bordas das imagens */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra para destacar as imagens */
+  margin-bottom: -30vh;
+}
+
 .ellipse03 {
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: 1; /* Garante que a Ellipse fique atrás dos cards */
   margin-bottom: -38vh;
 }
+
 
 .menu {
   display: flex;
