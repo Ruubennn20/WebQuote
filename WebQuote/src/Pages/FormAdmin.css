@@ -1,0 +1,95 @@
+/* FormAdmin.css */
+.container {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 24px;
+    color: #333;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+  }
+  
+  .table th {
+    background-color: #2563eb;
+    color: white;
+    padding: 16px 24px;
+    text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+    border: 1px solid #e5e7eb;
+  }
+  
+  .table td {
+    padding: 16px 24px;
+    border: 1px solid #e5e7eb;
+    white-space: nowrap;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .table tr.even {
+    background-color: white;
+  }
+  
+  .table tr.odd {
+    background-color: #f9fafb;
+  }
+  
+  .order-number {
+    font-weight: 500;
+  }
+  
+  .total-value {
+    font-weight: 500;
+  }
+  
+  .status-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 14px;
+    outline: none;
+  }
+  
+  .status-select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+  
+  .status-select:hover {
+    border-color: #2563eb;
+  }
+  .export-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  
+  .export-button:hover {
+    background-color: #0056b3;
+  }
+  
