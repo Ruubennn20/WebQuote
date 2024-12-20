@@ -59,6 +59,8 @@ export default function FormInicial() {
     objective: "",
     pages: [],
     designServices: [],
+    integrations: [],
+    features: [],
     socialMedia: "",
     paymentIntegration: "",
     productReviews: "",
@@ -307,17 +309,10 @@ export default function FormInicial() {
   }else{
     doc.autoTable({
       startY: finalY + 10,
-      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+      head: [['Type', 'Tipo de serviço', 'Horas', 'Price (€)']],
       body: [
-          ["No pages selected.", "Total: 0 €", "", "", ""]
-      ],
-      foot: [[
-          '',
-          'Subtotal',
-          '',
-          '',
-          '0 €' // Show subtotal as 0 €
-      ]],
+          ["No design selected.", "", "", "Total: 0 €"]
+      ], 
       headStyles: {
           fillColor: [26, 188, 156], // Keep the same color
           textColor: 255,
@@ -345,15 +340,18 @@ export default function FormInicial() {
       doc.autoTable({
       startY: finalY + 10,
       head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
-      body: formData.languages.map(lang => {
+     
+      body:[["Linguagem", "", formData.languages.length.toString(), "20€ / Hora", "-"],
+      ...formData.languages.map(lang => {
         const langLabel = {
           portugues: "portugues",
           ingles: "ingles",
           frances: "frances",
           espanhol: "espanhol"
         }[lang];
-        return ["Language", langLabel, "1", "Unit", PRICE_MAP[lang] + " €"];
+        return ["", langLabel, "1", "Unit", PRICE_MAP[lang] + " €"];
       }),
+    ],
       foot: [[
         '',
         'Subtotal',
@@ -376,13 +374,6 @@ export default function FormInicial() {
       body: [
           ["No pages selected.", "Total: 0 €", "", "", ""]
       ],
-      foot: [[
-          '',
-          'Subtotal',
-          '',
-          '',
-          '0 €' // Show subtotal as 0 €
-      ]],
       headStyles: {
           fillColor: [26, 188, 156], // Keep the same color
           textColor: 255,
@@ -404,46 +395,42 @@ export default function FormInicial() {
 
     // Social Media Integration Table
     finalY = doc.lastAutoTable.finalY;
-    if(formData.socialMedia === "yes"){
+   const integrations = [];
+   if (formData.socialMedia === "yes") {
+     integrations.push(["", "Social Media Integration", "1", "Service", `${PRICE_MAP.socialMedia} €`]);
+   }
+   if (formData.productReviews === "avaliacaoProdutos") {
+     integrations.push(["", "Product Reviews System", "1", "Service", `${PRICE_MAP.productReviews} €`]);
+   }
+   if(integrations.length > 0 ){
     doc.autoTable({
-      startY: finalY + 10,
-      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
-      body: formData.socialMedia === "yes" ? [[
-        "Integration",
-        "Social Media Integration",
-        "1",
-        "Service",
-        PRICE_MAP.socialMedia + " €"
-      ]] : [],
-      foot: [[
-        '',
-        'Subtotal',
-        '',
-        '',
-        `${formData.socialMedia === "yes" ? PRICE_MAP.socialMedia : 0} €`
-      ]],
-      headStyles: {
-        fillColor: [26, 188, 156],
-        textColor: 255,
-        fontSize: 10,
-      },
-      styles: { fontSize: 10, cellPadding: 3 },
-      theme: 'grid',
-    });
+     startY: finalY + 10,
+     head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+     body: [["Integrações", "", "", "20€ / Hora", "-"],
+     ...integrations.length > 0 ? integrations : [["No integrstions selected.", "", "", "", "Total: 0 €"]],
+   ],
+     foot: [[
+       '',
+       'Subtotal',
+       '',
+       '',
+       `${integrations.reduce((sum, item) => sum + parseFloat(item[4]), 0) || 0} €`
+     ]],
+     headStyles: {
+       fillColor: [26, 188, 156],
+       textColor: 255,
+       fontSize: 10,
+     },
+     styles: { fontSize: 10, cellPadding: 3 },
+     theme: 'grid',
+   });
   }else{
     doc.autoTable({
       startY: finalY + 10,
       head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
       body: [
-          ["No pages selected.", "Total: 0 €", "", "", ""]
+          ["Sem Integrações selecionas.", "Total: 0 €", "", "", ""]
       ],
-      foot: [[
-          '',
-          'Subtotal',
-          '',
-          '',
-          '0 €' // Show subtotal as 0 €
-      ]],
       headStyles: {
           fillColor: [26, 188, 156], // Keep the same color
           textColor: 255,
@@ -463,24 +450,27 @@ export default function FormInicial() {
   });
   }
 
-    // Payment Integration Table
+    const features = []
+    if (formData.paymentIntegration === "integracaoPg") {
+      features.push(["", "Payment Integration", "1", "Service", `${PRICE_MAP.paymentIntegration} €`]);
+    }
+    if(formData.clientSupport === "suporteYes"){
+      features.push(["", "Suporte ao Cliente", "1", "Service", `${PRICE_MAP.clientSupport} €`]);
+    }
+    if(features.length > 0){
     finalY = doc.lastAutoTable.finalY;
     doc.autoTable({
       startY: finalY + 10,
       head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
-      body: formData.paymentIntegration === "integracaoPg" ? [[
-        "Integration",
-        "Payment Integration",
-        "1",
-        "Service",
-        PRICE_MAP.paymentIntegration + " €"
-      ]] : [],
+      body: [["Features", "", "", "20€ / Hora", "-"],
+      ...features.length > 0 ? features : [["No features selected.", "", "", "", "Total: 0 €"]],
+    ],
       foot: [[
         '',
         'Subtotal',
         '',
         '',
-        `${formData.paymentIntegration === "integracaoPg" ? PRICE_MAP.paymentIntegration : 0} €`
+        `${features.reduce((sum, item) => sum + parseFloat(item[4]), 0) || 0} €`
       ]],
       headStyles: {
         fillColor: [26, 188, 156],
@@ -490,126 +480,95 @@ export default function FormInicial() {
       styles: { fontSize: 10, cellPadding: 3 },
       theme: 'grid',
     });
+  }else{
+    doc.autoTable({
+      startY: finalY + 10,
+      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+      body: [
+          ["Sem features selecionas.", "Total: 0 €", "", "", ""]
+      ],
+      headStyles: {
+          fillColor: [26, 188, 156], // Keep the same color
+          textColor: 255,
+          fontSize: 10,
+      },
+      footStyles: {
+          fillColor: [200, 200, 200], // Keep the same color
+          textColor: 0,
+          fontSize: 10,
+          cellPadding: 1, // Adjust padding for the footer specifically
+      },
+      styles: { 
+          fontSize: 10, 
+          cellPadding: 3 // Keep this for the rest of the table
+      },
+      theme: 'grid',
+  });
+  }
 
-    // Product Reviews Table
-    finalY = doc.lastAutoTable.finalY;
-    doc.autoTable({
-      startY: finalY + 10,
-      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
-      body: formData.productReviews === "avaliacaoProdutos" ? [[
-        "Feature",
-        "Product Reviews System",
-        "1",
-        "Service",
-        PRICE_MAP.productReviews + " €"
-      ]] : [],
-      foot: [[
-        '',
-        'Subtotal',
-        '',
-        '',
-        `${formData.productReviews === "avaliacaoProdutos" ? PRICE_MAP.productReviews : 0} €`
-      ]],
-      headStyles: {
-        fillColor: [26, 188, 156],
+  finalY = doc.lastAutoTable.finalY;
+  const finalDetails = [];
+  // Check for MaintenanceormData.maintenance) {
+   finalDetails.push(["Manutenção", {
+     umAno: "One Year Maintenance",
+     doisAnos: "Two Years Maintenance",
+     tresAnos: "Three Years Maintenance"
+   }[formData.maintenance], "1", "Service", `${PRICE_MAP[formData.maintenance]} €`]);
+  // Check for Update Frequency
+  if (formData.updateFrequency) {
+   finalDetails.push(["Atualizações", {
+     semanal: "Weekly Updates",
+     mensal: "Monthly Updates",
+     trimestral: "Quarterly Updates"
+   }[formData.updateFrequency], "1", "Service", `${PRICE_MAP[formData.updateFrequency]} €`]);
+  
+  // Draw the Final Table
+  doc.autoTable({
+   startY: finalY + 10,
+   head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+   body: [["Pós venda ", "", " ", "20€ / Hora", "-"],
+   ...finalDetails.length > 0 ? finalDetails : [["No maintenance or update frequency selected.", "", "", "", "Total: 0 €"]],
+  ],
+   foot: [[
+     '',
+     'Subtotal',
+     '',
+     '',
+     `${finalDetails.reduce((sum, item) => sum + parseFloat(item[4]), 0) || 0} €`
+   ]],
+   headStyles: {
+     fillColor: [26, 188, 156],
+     textColor: 255,
+     fontSize: 10,
+   },
+   styles: { fontSize: 10, cellPadding: 3 },
+   theme: 'grid',
+  })
+}else{
+  doc.autoTable({
+    startY: finalY + 10,
+    head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+    body: [
+        ["Sem suporte nosso selecionao", "Total: 0 €", "", "", ""]
+    ],
+    headStyles: {
+        fillColor: [26, 188, 156], // Keep the same color
         textColor: 255,
         fontSize: 10,
-      },
-      styles: { fontSize: 10, cellPadding: 3 },
-      theme: 'grid',
-    });
-
-    // Customer Support Table
-    finalY = doc.lastAutoTable.finalY;
-    doc.autoTable({
-      startY: finalY + 10,
-      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
-      body: formData.clientSupport === "suporteYes" ? [[
-        "Support",
-        "Customer Support Service",
-        "1",
-        "Service",
-        PRICE_MAP.clientSupport + " €"
-      ]] : [],
-      foot: [[
-        '',
-        'Subtotal',
-        '',
-        '',
-        `${formData.clientSupport === "suporteYes" ? PRICE_MAP.clientSupport : 0} €`
-      ]],
-      headStyles: {
-        fillColor: [26, 188, 156],
-        textColor: 255,
+    },
+    footStyles: {
+        fillColor: [200, 200, 200], // Keep the same color
+        textColor: 0,
         fontSize: 10,
-      },
-      styles: { fontSize: 10, cellPadding: 3 },
-      theme: 'grid',
-    });
-
-    // Maintenance Period Table
-    finalY = doc.lastAutoTable.finalY;
-    doc.autoTable({
-      startY: finalY + 10,
-      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
-      body: formData.maintenance ? [[
-        "Maintenance",
-        {
-          umAno: "One Year Maintenance",
-          doisAnos: "Two Years Maintenance",
-          tresAnos: "Three Years Maintenance"
-        }[formData.maintenance],
-        "1",
-        "Service",
-        PRICE_MAP[formData.maintenance] + " €"
-      ]] : [],
-      foot: [[
-        '',
-        'Subtotal',
-        '',
-        '',
-        `${PRICE_MAP[formData.maintenance] || 0} €`
-      ]],
-      headStyles: {
-        fillColor: [26, 188, 156],
-        textColor: 255,
-        fontSize: 10,
-      },
-      styles: { fontSize: 10, cellPadding: 3 },
-      theme: 'grid',
-    });
-
-    // Update Frequency Table
-    finalY = doc.lastAutoTable.finalY;
-    doc.autoTable({
-      startY: finalY + 10,
-      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
-      body: formData.updateFrequency ? [[
-        "Updates",
-        {
-          semanal: "Weekly Updates",
-          mensal: "Monthly Updates",
-          trimestral: "Quarterly Updates"
-        }[formData.updateFrequency],
-        "1",
-        "Service",
-        PRICE_MAP[formData.updateFrequency] + " €"
-      ]] : [],
-      foot: [[
-        '',
-        'Subtotal',
-        '',
-        '',
-        `${PRICE_MAP[formData.updateFrequency] || 0} €`
-      ]],
-      headStyles: {
-        fillColor: [26, 188, 156],
-        textColor: 255,
-        fontSize: 10,
-      },
-      styles: { fontSize: 10, cellPadding: 3 },
-      theme: 'grid',
-    });
+        cellPadding: 1, // Adjust padding for the footer specifically
+    },
+    styles: { 
+        fontSize: 10, 
+        cellPadding: 3 // Keep this for the rest of the table
+    },
+    theme: 'grid',
+});
+}
 
     // Final Total Table
     finalY = doc.lastAutoTable.finalY;
