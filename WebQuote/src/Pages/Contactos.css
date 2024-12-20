@@ -98,6 +98,10 @@
   .submit-button:focus {
     outline: none;
   }
+  #message{
+    padding-bottom: 14vh;
+    
+  }
   
   @media (max-width: 768px) {
     .contactos-main {
@@ -105,4 +109,5 @@
       gap: 20px;
     }
   }
+  
   

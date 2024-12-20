@@ -109,6 +109,32 @@
   width: 100%;
   height: auto;
 }
+.extra-images {
+  display: flex;
+  gap: 10px; /* Espaço entre as imagens */
+  justify-content: center; /* Centraliza as imagens */
+  margin-top: 20px; /* Espaçamento acima das imagens extras */
+  
+}
+
+.extra-image1 {
+  width: 25%; /* Ajuste para o tamanho desejado das imagens */
+  height: auto;
+  object-fit: cover; /* Mantém a proporção das imagens */
+  border: 2px solid #ddd; /* Adiciona borda para um acabamento melhor */
+  border-radius: 20px; /* Arredonda as bordas das imagens */
+  
+  
+}
+.extra-image2 {
+  width: 25%; /* Ajuste para o tamanho desejado das imagens */
+  height: auto;
+  object-fit: cover; /* Mantém a proporção das imagens */
+  border: 2px solid #ddd; /* Adiciona borda para um acabamento melhor */
+  border-radius: 20px; /* Arredonda as bordas das imagens */
+  margin-right: 25vh;
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

@@ -3,8 +3,8 @@ import "./Cards.css";
 import Vector1 from "../../assets/Vector1.png";
 import imgCard1 from "../../assets/imgCard1.png";
 import imgCard2 from "../../assets/imgCard2.png";
-
-
+import card1 from "../../assets/card1.jpg";
+import card2 from "../../assets/card2.jpg";
 
 export default function Cartao1and2() {
   return (
@@ -40,11 +40,11 @@ export default function Cartao1and2() {
             <h2 className="card-title">Escolher a WebQuote ?</h2>
             <h3 className="card-subtitle">Simples e Prático...</h3>
             <p className="card-text">
-              Transformar ideias em realidade nunca foi tão simples. 
-              Nossa plataforma oferece uma solução ágil e eficiente para quem deseja criar um webSite ou E-Commerce sob medida. 
-              Basta selecionar o tipo de projeto e os serviços que melhor atendem às suas necessidades, 
-              e em instantes você receberá um orçamento completo e profissional em PDF. 
-              Essa abordagem prática permite que você visualize todos os detalhes do investimento, 
+              Transformar ideias em realidade nunca foi tão simples.
+              Nossa plataforma oferece uma solução ágil e eficiente para quem deseja criar um webSite ou E-Commerce sob medida.
+              Basta selecionar o tipo de projeto e os serviços que melhor atendem às suas necessidades,
+              e em instantes você receberá um orçamento completo e profissional em PDF.
+              Essa abordagem prática permite que você visualize todos os detalhes do investimento,
               enquanto cuidamos para entregar o melhor em design e funcionalidade.
             </p>
           </div>
@@ -56,6 +56,14 @@ export default function Cartao1and2() {
               </div>
             </div>
           </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <div className="extra-images">
+        <img src={card2} alt="card 2" className="extra-image2" />
+          <img src={card1} alt="card 1" className="extra-image1" />
+          
         </div>
       </div>
     </>
