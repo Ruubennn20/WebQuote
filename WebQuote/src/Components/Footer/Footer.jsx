@@ -1,7 +1,7 @@
 import "./footer.css";
 import Ellipse3 from "../../assets/Ellipse 3.png";
 import WebQuoteLogo from "../../assets/webQuoteLogo.jpg"; // Adicionando a importação da imagem
-
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -12,16 +12,21 @@ export default function Footer() {
           <div className="footerContent">
             <div className="menu">
               <ul className="menu-coluna1">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#sobre-nos">Sobre Nós</a></li>
-                <li><a href="#contacto">Contacto</a></li>
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="/sobre-nos">Sobre Nós</Link></li>
+                <li><Link to="/contactos">Contactos</Link></li>
               </ul>
               <ul className="menu-coluna2">
                 <li><a href="#politica-cookies">Política de Cookies</a></li>
                 <li><a href="#politica-privacidade">Política de Privacidade</a></li>
               </ul>
               <ul className="menu-coluna3">
-                <li><a href="#livro-reclamacoes">Livro de Reclamações</a></li>
+                <li>
+                  <a href="https://www.livroreclamacoes.pt/Inicio/" target="_blank" rel="noopener noreferrer">
+                    Livro de Reclamações
+                  </a>
+                </li>
+
                 <li><a href="#perguntas-respostas">Perguntas e Respostas</a></li>
                 <li><a href="#termos-servico">Termos de Serviço</a></li>
               </ul>
@@ -38,4 +43,3 @@ export default function Footer() {
     </>
   );
 }
-

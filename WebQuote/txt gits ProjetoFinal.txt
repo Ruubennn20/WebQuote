@@ -17,5 +17,15 @@ git status
 
 
 Paleta de Cores: 
+Botões:
 Laranja escuro: #e47e00
 laranja claro: #f8c68a
+
+header: 
+azul escuro: #2D4DAF
+azul claro: #4169E1
+
+background:
+bege: #FFF8DC
+
+
