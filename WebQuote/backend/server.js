@@ -1,13 +1,16 @@
 const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 const multer = require('multer');
 const nodemailer = require('nodemailer');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const fs = require('fs/promises');
+const fs = require('fs').promises;
 const path = require('path');
 
 const app = express();
 const PORT = 3000;
+
+// Configuração dos caminhos
+const orcamentoPath = path.join(__dirname, 'orcamento.json');
 
 // Middleware setup
 app.use(cors());
@@ -16,7 +19,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const upload = multer({ storage: multer.memoryStorage() });
 
 // Ensure the orcamento.json file exists
-const orcamentoPath = path.join(__dirname, 'orcamento.json');
 (async () => {
   try {
     await fs.access(orcamentoPath);
@@ -25,7 +27,7 @@ const orcamentoPath = path.join(__dirname, 'orcamento.json');
   }
 })();
 
-// Email route
+// Rotas
 app.post('/send-email', upload.single('pdf'), async (req, res) => {
   const { email } = req.body;
   const pdfBuffer = req.file?.buffer;
@@ -64,7 +66,6 @@ app.post('/send-email', upload.single('pdf'), async (req, res) => {
   }
 });
 
-// Orcamento routes
 app.post('/api/orcamento', async (req, res) => {
   try {
     const formData = req.body;
@@ -82,18 +83,26 @@ app.post('/api/orcamento', async (req, res) => {
   }
 });
 
-app.get('/api/orcamentos', async (req, res) => {
+app.get('/api/orcamento', async (req, res) => {
   try {
     const data = await fs.readFile(orcamentoPath, 'utf8');
-    const orcamentos = JSON.parse(data);
-    res.json(orcamentos);
+    const orders = JSON.parse(data);
+    res.status(200).json(orders);
   } catch (error) {
-    console.error('Error reading orcamentos:', error);
-    res.status(500).json({ error: 'Failed to read orcamentos' });
+    console.error("Erro ao carregar os pedidos:", error);
+    res.status(500).json({ message: "Erro ao carregar os pedidos." });
   }
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ message: "404 - Não encontrado." });
 });
 
 // Start server
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
+
+
+

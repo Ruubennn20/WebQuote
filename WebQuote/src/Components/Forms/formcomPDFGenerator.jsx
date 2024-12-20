@@ -389,6 +389,7 @@ export default function FormInicial() {
       if (!response.ok) {
         throw new Error('Erro ao salvar orçamento');
       }
+      alert("Orçamento enviado com sucesso!")
     } catch (error) {
       console.error('Erro ao salvar orçamento:', error);
     }
