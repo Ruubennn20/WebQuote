@@ -5,6 +5,7 @@
   background-color: #fff5e6;
   width: 100%;
   font-family: 'Roboto', sans-serif;
+  margin-bottom: -10vh;
 }
 
 .cards-container02 {
@@ -13,6 +14,7 @@
   width: 100%;
   font-family: 'Roboto', sans-serif;
   padding-bottom: 20vh;
+  margin-bottom: 10vh;
 }
 
 .card-content {

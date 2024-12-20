@@ -3,9 +3,19 @@ import Ellipse3 from "../../assets/Ellipse 3.png";
 import WebQuoteLogo from "../../assets/webQuoteLogo.jpg"; // Adicionando a importação da imagem
 import { Link } from "react-router-dom";
 
+// Importação correta das imagens dos cards
+import card1 from "../../assets/card1.jpg";
+import card2 from "../../assets/card2.jpg";
+
 export default function Footer() {
   return (
     <>
+      {/* Container para as imagens dos cards */}
+      <div className="extra-images">
+        <img src={card2} alt="card 2" className="extra-image2" />
+        <img src={card1} alt="card 1" className="extra-image1" />
+      </div>
+
       <img src={Ellipse3} alt="ellipse03" className="ellipse03" />
       <footer>
         <div className="footerContainer">
@@ -26,7 +36,6 @@ export default function Footer() {
                     Livro de Reclamações
                   </a>
                 </li>
-
                 <li><a href="#perguntas-respostas">Perguntas e Respostas</a></li>
                 <li><a href="#termos-servico">Termos de Serviço</a></li>
               </ul>

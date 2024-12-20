@@ -1,133 +1,133 @@
 /* Estilo principal da página */
 .sobrenos-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: linear-gradient(to bottom, #FFF5E6, #E6F0FF); /* Gradiente suave */
-    color: #333;
-    min-height: 100vh;
-  }
-  
-  /* Conteúdo da seção */
-  .sobrenos-content {
-    width: 90%;
-    max-width: 1200px;
-    margin: 20px auto;
-    text-align: center;
-    padding: 30px;
-    background: #FFF5E6;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra leve */
-    border-radius: 10px; /* Bordas arredondadas */
-    background-color: #FFF5E6;
-    margin-bottom: -30vh;
-  }
-  
-  /* Cabeçalho */
-  .sobrenos-heading {
-    font-size: 3rem;
-    color: #000;
-    margin-bottom: 30px;
-    font-weight: bold;
-    font-family: 'Roboto', sans-serif; /* Fonte moderna */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra no texto */
-  }
-  
-  /* Layout principal */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #FFF5E6; /* Cor de fundo consistente */
+  color: #333;
+  min-height: 100vh;
+}
+
+/* Conteúdo da seção */
+.sobrenos-content {
+  width: 90%;
+  max-width: 1200px;
+  margin: 20px auto;
+  text-align: center;
+  padding: 30px;
+  background: #FFF5E6; /* Fundo consistente */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra leve */
+  border-radius: 10px; /* Bordas arredondadas */
+  margin-bottom: -30vh;
+}
+
+/* Cabeçalho */
+.sobrenos-heading {
+  font-size: 3rem;
+  color: #000; /* Letras pretas */
+  margin-bottom: 30px;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif; /* Fonte moderna */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave no texto */
+}
+
+/* Layout principal */
+.sobrenos-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  margin-top: 20px;
+  background-color: #FFF5E6; /* Fundo consistente */
+  justify-content: center;
+}
+
+/* Estilo da imagem */
+.sobrenos-image {
+  width: 100%;
+  max-width: 600px; /* Limita o tamanho da imagem */
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra mais intensa */
+  transition: transform 0.3s ease; /* Animação ao passar o mouse */
+  position: relative; /* Para adicionar overlay */
+}
+
+.sobrenos-image:hover {
+  transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
+}
+
+/* Efeito de esbranquiçamento na imagem */
+.sobrenos-image::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.5); /* Camada esbranquiçada com opacidade */
+  z-index: 1; /* Coloca o overlay acima da imagem */
+  border-radius: 15px;
+}
+
+/* Texto */
+.sobrenos-text {
+  font-size: 1.4rem;
+  line-height: 2;
+  color: #000; /* Letras pretas */
+  margin-top: 10px;
+  text-align: justify;
+  font-family: 'Open Sans', sans-serif; /* Fonte limpa e moderna */
+  padding: 10px;
+  background-color: #FFF5E6; /* Fundo consistente */
+  border-left: 5px solid #4169E1; /* Barra lateral colorida */
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative; /* Para posicionar o overlay */
+}
+
+/* Responsividade */
+@media (min-width: 768px) {
   .sobrenos-main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-    margin-top: 20px;
-    background-color: #FFF5E6;
+    flex-direction: row;
+    justify-content: space-between;
   }
-  
-  /* Estilo da imagem */
+
   .sobrenos-image {
-    width: 100%;
-    max-width: 600px;
-    border-radius: 15px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra mais intensa */
-    transition: transform 0.3s ease; /* Animação ao passar o mouse */
+    flex: 1;
+    max-width: 500px; /* Ajuste para alinhar a imagem */
   }
-  
-  .sobrenos-image:hover {
-    transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
-  }
-  
-  /* Texto */
+
   .sobrenos-text {
-    font-size: 1.4rem;
-    line-height: 2;
-    color: #000;
-    margin-top: 10px;
-    text-align: justify;
-    font-family: 'Open Sans', sans-serif; /* Fonte limpa e moderna */
-    padding: 10px;
-    background-image: url("../assets/sanjotecFoto.jpg");
-    background-position: center;
-    background-size: 110%;
-    border-left: 5px solid #4169E1; /* Barra lateral colorida */
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative; /* Para posicionar o overlay */
+    flex: 1;
+    margin-left: 20px; /* Espaço entre texto e imagem */
+    font-size: 3vh;
+    
+  }
 }
 
-.sobrenos-text::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.6); /* Esbranquiçado com opacidade */
-    z-index: 1; /* Coloca o overlay acima da imagem */
+@media (max-width: 767px) {
+  .sobrenos-container {
+    padding: 1px;
+  }
+
+  .sobrenos-text {
+    text-align: center; /* Centraliza o texto em telas pequenas */
+    font-size: 1rem; /* Ajusta o tamanho da fonte */
+    font-family: sans-serif;
+  }
+
+  .sobrenos-image {
+    max-width: 100%; /* Garante que a imagem ocupe o espaço disponível */
+  }
 }
 
-  
-  /* Responsividade */
-  @media (min-width: 768px) {
-    .sobrenos-main {
-      flex-direction: row;
-      justify-content: space-between;
-    }
-  
-    .sobrenos-image {
-      flex: 1;
-      max-width: 500px;
-    }
-  
-    .sobrenos-text {
-      flex: 1;
-      margin-left: 20px;
-    }
+@media (max-width: 480px) {
+  .sobrenos-heading {
+    font-size: 2.5rem; /* Reduz o tamanho do título em dispositivos pequenos */
   }
-  
-  @media (max-width: 767px) {
-    .sobrenos-container {
-      padding: 1px;
-     
-    }
-  
-    .sobrenos-text {
-      text-align: center; /* Centraliza o texto em telas pequenas */
-      font-size: 1rem; /* Ajusta o tamanho da fonte */
-      font-family: sans-serif;
-    }
-  
-    .sobrenos-image {
-      max-width: 100%; /* Garante que a imagem ocupe o espaço disponível */
-    }
+
+  .sobrenos-text {
+    font-size: 1rem; /* Ajusta o tamanho do texto */
+    line-height: 1.6;
   }
-  
-  @media (max-width: 480px) {
-    .sobrenos-heading {
-      font-size: 2.5rem; /* Reduz o tamanho do título em dispositivos pequenos */
-    }
-  
-    .sobrenos-text {
-      font-size: 1rem; /* Ajusta o tamanho do texto */
-      line-height: 1.6;
-    }
-  }
-  
+}
