@@ -199,22 +199,21 @@ export default function FormInicial() {
         textColor: 255,
         fontSize: 10,
       },
-      styles: { fontSize: 10, cellPadding: 2 },
+      styles: { fontSize: 10, cellPadding: 3 },
       theme: 'grid',
     });
 
     // Pages Table
     let finalY = doc.lastAutoTable.finalY;
 
-
     //Tabela para as páginas
     if (formData.pages.length > 0) {
         const pagesTotal = formData.pages.reduce((sum, page) => sum + (PRICE_MAP[page] || 0), 0);
         doc.autoTable({
             startY: finalY + 10,
-            head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+            head: [['Type', 'Tipo de serviço', 'Horas', 'Price (€)']],
             body: [
-                ["Pages", "", formData.pages.length.toString(), "Group", "-"],
+                ["Pages", "", formData.pages.length.toString(), "20€ / Hora", "-"],
                 ...formData.pages.map(page => {
                     const pageLabel = {
                         mainPage: "Página Inicial",
@@ -225,55 +224,39 @@ export default function FormInicial() {
                         politicaPage: "Política de devoluções",
                         outras: "Outras"
                     }[page];
-                    return ["", pageLabel, "1", "Unit", (PRICE_MAP[page] || 0) + " €"];
+                    return ["", pageLabel, "1",  (PRICE_MAP[page] || 0) + " €"];
                 })
-            ],
-            foot: [[
+              ],
+              foot: [[
                 '',
                 'Subtotal',
                 '',
-                '',
-                `${pagesTotal} €`
-            ]],
-            headStyles: {
+                `${pagesTotal} €` 
+                
+              ]],
+              headStyles: {
                 fillColor: [26, 188, 156],
                 textColor: 255,
                 fontSize: 10,
-            },
-            footStyles: {
-              fillColor: [200, 200, 200], // Keep the same color
-               textColor: 0,
-               fontSize: 10,
-               cellPadding: 1, // Adjust padding for the footer specifically
-            },
-            styles: { 
-                fontSize: 10, 
-                cellPadding: 3 // Keep this for the rest of the table
-            },
-            theme: 'grid',
-        });
+              },
+              styles: { fontSize: 10, cellPadding: 3 },
+              theme: 'grid',
+            });
     } else {
         // If no pages are selected, show a message in the table while keeping the Type header
         doc.autoTable({
           startY: finalY + 10,
           head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
           body: [
-              ["No pages selected.", "Total: 0 €", "", "", ""]
+              ["Nada Selecionado.", "", "", "", "Total: 0 €"]
           ],
-          foot: [[
-              '',
-              'Subtotal',
-              '',
-              '',
-              '0 €' // Show subtotal as 0 €
-          ]],
           headStyles: {
               fillColor: [26, 188, 156], // Keep the same color
               textColor: 255,
               fontSize: 10,
           },
           footStyles: {
-              fillColor: [200, 200, 200], // Keep the same color
+              fillColor: [26, 188, 156] ,
               textColor: 0,
               fontSize: 10,
               cellPadding: 1, // Adjust padding for the footer specifically
@@ -285,31 +268,98 @@ export default function FormInicial() {
           theme: 'grid',
       });
     }
-    //Calcula o total para aquela tabela
-
     
     // Tabela para os serviços de design
     finalY = doc.lastAutoTable.finalY;
     if(formData.designServices.length > 0){
+      console.log("Design Services Selected:", formData.designServices);
       const designTotal = formData.designServices.reduce((sum, service) => sum + (PRICE_MAP[service] || 0), 0);
-     doc.autoTable({
+      doc.autoTable({
       startY: finalY + 10,
-      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
-      body: formData.designServices.map(service => {
-        const serviceLabel = {
+      head: [['Type', 'Tipo de serviço', 'Horas', 'Price (€)']],
+      body: [
+        ["Design", "", formData.designServices.length.toString(), "10€ / Hora", "-"],
+        ...formData.designServices.map(service => {
+        const designLabel = {
           Logotipo: "Logotipo",
           Icons: "Icons",
           Banners: "Banners",
           outras: "Outros"
         }[service];
-        return ["Design", serviceLabel, "1", "Unit", PRICE_MAP[service] + " €"];
+        return ["",designLabel, "4", PRICE_MAP[service] + " €"];
+      }),
+    ],
+      foot: [[
+        '',
+        'Subtotal',
+        '',
+        `${designTotal} €` 
+        
+      ]],
+      headStyles: {
+        fillColor: [26, 188, 156],
+        textColor: 255,
+        fontSize: 10,
+      },
+      styles: { fontSize: 10, cellPadding: 3 },
+      theme: 'grid',
+    });
+  }else{
+    doc.autoTable({
+      startY: finalY + 10,
+      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+      body: [
+          ["No pages selected.", "Total: 0 €", "", "", ""]
+      ],
+      foot: [[
+          '',
+          'Subtotal',
+          '',
+          '',
+          '0 €' // Show subtotal as 0 €
+      ]],
+      headStyles: {
+          fillColor: [26, 188, 156], // Keep the same color
+          textColor: 255,
+          fontSize: 10,
+      },
+      footStyles: {
+          fillColor: [200, 200, 200], // Keep the same color
+          textColor: 0,
+          fontSize: 10,
+          cellPadding: 1, // Adjust padding for the footer specifically
+      },
+      styles: { 
+          fontSize: 10, 
+          cellPadding: 3
+      },
+      theme: 'grid',
+  });
+  }
+
+
+    // Languages Table
+    finalY = doc.lastAutoTable.finalY;
+    if(formData.languages.length >0){
+      const languagesTotal = formData.languages.reduce((sum, lang) => sum + (PRICE_MAP[lang] || 0), 0);
+      doc.autoTable({
+      startY: finalY + 10,
+      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+      body: formData.languages.map(lang => {
+        const langLabel = {
+          portugues: "portugues",
+          ingles: "ingles",
+          frances: "frances",
+          espanhol: "espanhol"
+        }[lang];
+        return ["Language", langLabel, "1", "Unit", PRICE_MAP[lang] + " €"];
       }),
       foot: [[
         '',
         'Subtotal',
         '',
         '',
-        `${designTotal} €`
+        `${languagesTotal} €`
       ]],
       headStyles: {
         fillColor: [26, 188, 156],
@@ -352,41 +402,9 @@ export default function FormInicial() {
   });
   }
 
-    // Calculate languages total
-    const languagesTotal = formData.languages.reduce((sum, lang) => sum + (PRICE_MAP[lang] || 0), 0);
-
-    // Languages Table
-    finalY = doc.lastAutoTable.finalY;
-    doc.autoTable({
-      startY: finalY + 10,
-      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
-      body: formData.languages.map(lang => {
-        const langLabel = {
-          portugues: "portugues",
-          ingles: "ingles",
-          frances: "frances",
-          espanhol: "espanhol"
-        }[lang];
-        return ["Language", langLabel, "1", "Unit", PRICE_MAP[lang] + " €"];
-      }),
-      foot: [[
-        '',
-        'Subtotal',
-        '',
-        '',
-        `${languagesTotal} €`
-      ]],
-      headStyles: {
-        fillColor: [26, 188, 156],
-        textColor: 255,
-        fontSize: 10,
-      },
-      styles: { fontSize: 10, cellPadding: 3 },
-      theme: 'grid',
-    });
-
     // Social Media Integration Table
     finalY = doc.lastAutoTable.finalY;
+    if(formData.socialMedia === "yes"){
     doc.autoTable({
       startY: finalY + 10,
       head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
@@ -412,6 +430,38 @@ export default function FormInicial() {
       styles: { fontSize: 10, cellPadding: 3 },
       theme: 'grid',
     });
+  }else{
+    doc.autoTable({
+      startY: finalY + 10,
+      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+      body: [
+          ["No pages selected.", "Total: 0 €", "", "", ""]
+      ],
+      foot: [[
+          '',
+          'Subtotal',
+          '',
+          '',
+          '0 €' // Show subtotal as 0 €
+      ]],
+      headStyles: {
+          fillColor: [26, 188, 156], // Keep the same color
+          textColor: 255,
+          fontSize: 10,
+      },
+      footStyles: {
+          fillColor: [200, 200, 200], // Keep the same color
+          textColor: 0,
+          fontSize: 10,
+          cellPadding: 1, // Adjust padding for the footer specifically
+      },
+      styles: { 
+          fontSize: 10, 
+          cellPadding: 3 // Keep this for the rest of the table
+      },
+      theme: 'grid',
+  });
+  }
 
     // Payment Integration Table
     finalY = doc.lastAutoTable.finalY;
