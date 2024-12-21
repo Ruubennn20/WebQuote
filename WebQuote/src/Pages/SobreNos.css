@@ -6,6 +6,7 @@
   background: #FFF5E6; /* Cor de fundo consistente */
   color: #333;
   min-height: 100vh;
+  padding-bottom: 60px; /* Espaço para o rodapé */
 }
 
 /* Conteúdo da seção */
@@ -18,7 +19,7 @@
   background: #FFF5E6; /* Fundo consistente */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra leve */
   border-radius: 10px; /* Bordas arredondadas */
-  margin-bottom: -30vh;
+  padding-bottom: 50px; /* Ajuste o padding para dar o espaçamento adequado */
 }
 
 /* Cabeçalho */
@@ -101,13 +102,12 @@
     flex: 1;
     margin-left: 20px; /* Espaço entre texto e imagem */
     font-size: 3vh;
-    
   }
 }
 
 @media (max-width: 767px) {
   .sobrenos-container {
-    padding: 1px;
+    padding: 10px; /* Adiciona um padding para ajustar o layout */
   }
 
   .sobrenos-text {

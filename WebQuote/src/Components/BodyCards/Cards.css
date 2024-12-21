@@ -6,6 +6,7 @@
   width: 100%;
   font-family: 'Roboto', sans-serif;
   margin-bottom: -10vh;
+  
 }
 
 .cards-container02 {
@@ -24,6 +25,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 40px;
+  margin-top: -40vh;
 }
 
 .card-content02 {
