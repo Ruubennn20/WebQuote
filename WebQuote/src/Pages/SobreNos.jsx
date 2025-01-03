@@ -19,8 +19,8 @@ export default function SobreNos() {
             </p>
           </div>
         </div>
-        <Footer />
       </div>
+      <Footer />
     </>
   );
 }

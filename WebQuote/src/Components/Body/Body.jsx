@@ -2,6 +2,7 @@ import React from "react";
 import "./Body.css";
 import Ellipse1 from "../../assets/Ellipse 1.png";
 import Illustrator from "../../assets/Illustrator.png";
+import { Link } from "react-router-dom";
 
 export default function Body() {
   return (
@@ -14,7 +15,9 @@ export default function Body() {
               <h1 className="webQuoteTitle">WebQuote</h1>
               <p className="webQuoteSubTitle">Soluções de Orçamento</p>
               <p className="webQuoteSubTitle">Clique no botão para pedir um orçamento</p>
-              <button className="button-body">Clique aqui para o orçamento</button>
+              <Link to="/form-com-pdf" className="button-body">
+                Clique aqui para o orçamento
+              </Link>
             </div>
             <div className="right-content">
               <img src={Illustrator} alt="Ellipse2" className="right-image" />
