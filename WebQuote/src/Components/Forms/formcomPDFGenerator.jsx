@@ -4,6 +4,7 @@ import "./form.css";
 import { jsPDF } from "jspdf";
 import { jsPDFTable } from "jspdf-autotable";
 import logo from "../../assets/WebQuoteLogo.jpg";
+import HeaderForm from "../Header/HeaderForm";
 
 export default function FormInicial() {
   const PRICE_MAP = {
@@ -135,7 +136,6 @@ export default function FormInicial() {
       total += PRICE_MAP.clientSupport;
     }
 
-  
     // Cálculo do custo do website
     total += PRICE_MAP[formData.objective] || 0;
   
@@ -338,7 +338,6 @@ export default function FormInicial() {
       theme: 'grid',
   });
   }
-
 
     // Languages Table
     finalY = doc.lastAutoTable.finalY;
@@ -1006,14 +1005,18 @@ export default function FormInicial() {
 
   // Update the return statement
   return (
-    <div className="form-container">
-      <h2>Formulário para E-commerce</h2>
-      <AnimatePresence mode="wait" initial={false}>
-        {step === 1 && <Step1 />}
-        {step === 2 && <Step2 />}
-        {step === 3 && <Step3 />}
-        {step === 4 && <Step4 />}
-      </AnimatePresence>
-    </div>
-  );
+    <>
+      <HeaderForm currentStep={step} />
+      <div className="form-container">
+        <h2>Formulário para E-commerce</h2>
+        <AnimatePresence mode="wait" initial={false}>
+          {step === 1 && <Step1 />}
+          {step === 2 && <Step2 />}
+          {step === 3 && <Step3 />}
+          {step === 4 && <Step4 />}
+        </AnimatePresence>
+      </div>
+    </>
+  )
 }
+
