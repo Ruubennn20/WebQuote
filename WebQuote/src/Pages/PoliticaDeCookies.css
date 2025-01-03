@@ -1,0 +1,25 @@
+.titleCookies 
+{
+    font-size: 82px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    margin: 50px 50px; /* Alterado para ter margem superior e inferior de 50px */
+    text-align: center;
+    background-color: #4169E1;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #fff;
+}
+
+
+
+.politica-de-cookiesText 
+{
+    margin: 50px 50px; /* Alterado para ter margem superior e inferior de 50px */
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
