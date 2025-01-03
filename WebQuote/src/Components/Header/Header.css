@@ -41,3 +41,29 @@
   display: flex;
   gap: 30px;
 }
+
+.header-steps {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background-color: #fff;
+  justify-content: center;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.step {
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: #666;
+  background-color: #f5f5f5;
+}
+
+.step.active {
+  background-color: #4040ff;
+  color: white;
+}
