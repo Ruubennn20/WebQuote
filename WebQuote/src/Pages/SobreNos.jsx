@@ -9,8 +9,7 @@ export default function SobreNos() {
       <div className="sobrenos-container">
         <Header />
         <div className="sobrenos-content">
-          <br />
-          <br />
+          
           <h1 className="sobrenos-heading">Sobre Nós</h1>
           <div className="sobrenos-main">
             <img src={FotoSobreNos} alt="Sobre Nós" className="sobrenos-image" />

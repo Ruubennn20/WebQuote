@@ -8,7 +8,7 @@ export default function Contactos() {
     <>
       <div className="contactos-container">
         <Header />
-        <br />
+        
         <h1 className="contactos-heading">Contactos</h1>
 
         {/* Container principal para o layout lado a lado */}

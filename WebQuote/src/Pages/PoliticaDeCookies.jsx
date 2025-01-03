@@ -12,7 +12,7 @@ export default function PoliticaDeCookies() {
                 <br />
                 <br />
                 <br />
-                <h1 className='titleCookies'>WebQuote</h1>
+                <h1 className='titleCookies'>Política de Cookies</h1>
                 <div className='politica-de-cookiesText'>
                 <h1>Política de Cookies do serviço webquote.pt</h1>
 
