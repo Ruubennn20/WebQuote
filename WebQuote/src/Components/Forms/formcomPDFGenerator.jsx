@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import "./form.css";
 import { jsPDF } from "jspdf";
 import { jsPDFTable } from "jspdf-autotable";
@@ -44,9 +45,9 @@ export default function FormInicial() {
     
 
     //Atualizaçao
-    semanal: 20,
+    semanal: 100,
     mensal: 50,
-    trimestral: 100,
+    trimestral: 20,
 
     //Idiomas
     portugues: 10,
@@ -56,6 +57,9 @@ export default function FormInicial() {
   };
   const [selectedForm, setSelectedForm] = useState(null);
   const [formData, setFormData] = useState({
+    nome: '',
+    contacto: '',
+    email: '',
     objective: "",
     pages: [],
     designServices: [],
@@ -71,6 +75,8 @@ export default function FormInicial() {
     budget: "",
     references: "",
   });
+  const [step, setStep] = useState(1);
+
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
 
@@ -158,24 +164,25 @@ export default function FormInicial() {
 
     const doc = new jsPDF();
     
-  doc.addImage(logo, 'JPEG', 10, 5, 40, 12);
-   doc.setFontSize(10);
-   doc.text('WEBSITE QUOTATION', 150, 12);
-   doc.setDrawColor(200, 200, 200);
-   doc.line(10, 18, 200, 18);
-   
-   // Client Information
-   doc.text('Contact Information', 13, 23);
-   doc.text(document.querySelector('input[placeholder="Digite o nome e apelido"]').value, 13, 28);
-   doc.text(document.querySelector('input[placeholder="Digite o contacto"]').value, 13, 32);
-   doc.text(document.querySelector('input[placeholder="Digite o email"]').value, 13, 36);
+    doc.addImage(logo, 'JPEG', 10, 5, 40, 12);
+    doc.setFontSize(10);
+    doc.text('WEBSITE QUOTATION', 150, 12);
+    doc.setDrawColor(200, 200, 200);
+    doc.line(10, 18, 200, 18);
+    
+    // Client Information
+    doc.text('Contact Information', 13, 23);
+    doc.text(formData.nome || '', 13, 28);
+    doc.text(formData.contacto || '', 13, 32);
+    doc.text(formData.email || '', 13, 36);
+    
     // Quote details
-   doc.setFont('Helvetica', 'bold');
-   doc.text('Fatura Num    :', 130, 23);
-   doc.text('Data          :', 130, 27);
-   doc.setFont('Helvetica', 'normal');
-   doc.text(`WQ${Date.now().toString().slice(-6)}`, 155, 23);
-   doc.text(new Date().toLocaleDateString(), 155, 27);
+    doc.setFont('Helvetica', 'bold');
+    doc.text('Fatura Num    :', 130, 23);
+    doc.text('Data          :', 130, 27);
+    doc.setFont('Helvetica', 'normal');
+    doc.text(`WQ${Date.now().toString().slice(-6)}`, 155, 23);
+    doc.text(new Date().toLocaleDateString(), 155, 27);
 
     // Tabela para o tipo de website novo ou modernizar
     doc.autoTable({
@@ -648,22 +655,113 @@ export default function FormInicial() {
     }
   }
 
-  
-  return (
-    <div className="form-container">
-      <h2>Formulário para E-commerce</h2>
-      <form>
+  const nextStep = () => {
+    setStep(step + 1);
+  };
+
+  const prevStep = () => {
+    setStep(step - 1);
+  };
+
+  // Update the animation variants
+  const slideVariants = {
+    enter: {
+      opacity: 0,
+      x: 0,
+      y: 20
+    },
+    center: {
+      zIndex: 1,
+      x: 0,
+      y: 0,
+      opacity: 1
+    },
+    exit: {
+      zIndex: 0,
+      opacity: 0,
+      x: 0,
+      y: -20
+    }
+  };
+
+  // Update each step component to use layoutId
+  const Step1 = () => (
+    <motion.div
+      initial="enter"
+      animate="center"
+      exit="exit"
+      variants={slideVariants}
+    >
+      <h3>Informações Básicas</h3>
+      <div>
         <label>Nome:</label>
-        <input type="text" placeholder="Digite o nome e apelido" required />
+        <input 
+          type="text" 
+          name="nome"
+          placeholder="Digite o nome e apelido" 
+          defaultValue={formData.nome || ''}
+          onBlur={handleInputChange}
+          required 
+        />
         <br />
         <br />
         <label>Telemóvel:</label>
-        <input type="text" placeholder="Digite o contacto" required />
+        <input 
+          type="text" 
+          name="contacto"
+          placeholder="Digite o contacto" 
+          defaultValue={formData.contacto || ''}
+          onBlur={handleInputChange}
+          required 
+        />
         <br />
         <br />
         <label>Email:</label>
-        <input type="email" placeholder="Digite o email" required />
-        <br />
+        <input 
+          type="email" 
+          name="email"
+          placeholder="Digite o email" 
+          defaultValue={formData.email || ''}
+          onBlur={handleInputChange}
+          required 
+        />
+      </div>
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={nextStep}
+      >
+        Próximo
+      </motion.button>
+    </motion.div>
+  );
+
+  const Step2 = () => (
+    <motion.div
+      initial={false}
+      animate="center"
+      exit="exit"
+      variants={slideVariants}
+      transition={{ duration: 0.3 }}
+      key="step2"
+      layoutId="formStep"
+    >
+      <h3>Detalhes do Website</h3>
+      <div>
+        <div>
+          <label htmlFor="objective">Website novo ou modernização?</label>
+          <select
+            id="objective"
+            name="objective"
+            required
+            value={formData.objective}
+            onChange={handleInputChange}
+          >
+            <option value="">Selecione</option>
+            <option value="novoSite">Novo</option>
+            <option value="modernizacao">Modernização</option>
+          </select>
+        </div>
         <div>
           <p>Quais páginas o site precisa?</p>
           <div>
@@ -689,21 +787,38 @@ export default function FormInicial() {
             ))}
           </div>
         </div>
-        <br />
-        <div>
-          <label htmlFor="objective">Website novo ou modernização?</label>
-          <select
-            id="objective"
-            name="objective"
-            required
-            value={formData.objective}
-            onChange={handleInputChange}
-          >
-            <option value="">Selecione</option>
-            <option value="novoSite">Novo</option>
-            <option value="modernizacao">Modernização</option>
-          </select>
-        </div>
+      </div>
+      <div className="button-group">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={prevStep}
+        >
+          Anterior
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={nextStep}
+        >
+          Próximo
+        </motion.button>
+      </div>
+    </motion.div>
+  );
+
+  const Step3 = () => (
+    <motion.div
+      initial={false}
+      animate="center"
+      exit="exit"
+      variants={slideVariants}
+      transition={{ duration: 0.3 }}
+      key="step3"
+      layoutId="formStep"
+    >
+      <h3>Serviços Adicionais</h3>
+      <div>
         <div>
           <p>Serviços de Design</p>
           <div>
@@ -726,7 +841,6 @@ export default function FormInicial() {
             ))}
           </div>
         </div>
-        <br />
         <div>
           <label htmlFor="socialMedia">Integração com redes sociais</label>
           <select
@@ -772,10 +886,8 @@ export default function FormInicial() {
           </select>
         </div>
         <div>
-          <p>Suporte ao cliente</p>
-          <div>
-           <label htmlFor="clientSupport">Suporte ao cliente</label>
-           <select
+          <label htmlFor="clientSupport">Suporte ao cliente</label>
+          <select
             id="clientSupport"
             name="clientSupport"
             required
@@ -786,11 +898,63 @@ export default function FormInicial() {
             <option value="suporteYes">Sim</option>
             <option value="suporteNo">Não</option>
           </select>
+        </div>
+        <div>
+          <p>Idiomas do Website</p>
+          <div>
+            {[
+              { value: "portugues", label: "Português" },
+              { value: "ingles", label: "Inglês" },
+              { value: "frances", label: "Francês" },
+              { value: "espanhol", label: "Espanhol" },
+            ].map(({ value, label }) => (
+              <label key={value}>
+                <input
+                  type="checkbox"
+                  name="languages"
+                  value={value}
+                  checked={formData.languages.includes(value)}
+                  onChange={handleInputChange}
+                />
+                {label}
+              </label>
+            ))}
           </div>
         </div>
-        <br />
+      </div>
+      <div className="button-group">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={prevStep}
+        >
+          Anterior
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={nextStep}
+        >
+          Próximo
+        </motion.button>
+      </div>
+    </motion.div>
+  );
+
+  const Step4 = () => (
+    <motion.div
+      initial={false}
+      animate="center"
+      exit="exit"
+      variants={slideVariants}
+      transition={{ duration: 0.3 }}
+      key="step4"
+      layoutId="formStep"
+    >
+      <h3>Finalização</h3>
+      <div>
         <div>
-          <label htmlFor="maintenance">Período de manutençao</label>
+          <label htmlFor="maintenance">Período de manutenção</label>
           <select
             id="maintenance"
             name="maintenance"
@@ -806,7 +970,7 @@ export default function FormInicial() {
         </div>
         <br />
         <div>
-          <label htmlFor="updateFrequency">Atualização</label>
+          <label htmlFor="updateFrequency">Frequência de Atualização</label>
           <select
             id="updateFrequency"
             name="updateFrequency"
@@ -820,32 +984,36 @@ export default function FormInicial() {
             <option value="trimestral">Trimestral</option>
           </select>
         </div>
-        <div>
-          <p>Idiomas do Website</p>
-          <div>
-            {[
-              { value: "portugues", label: "Português" },
-              { value: "ingles", label: "Inglês" },
-              { value: "frances", label: "Francês" },
-              { value: "espanhol", label: "Espanhol" },
-              { value: "outro", label: "Outro" },
-            ].map(({ value, label }) => (
-              <label key={value}>
-                <input
-                  type="checkbox"
-                  name="languages"
-                  value={value}
-                  checked={formData.languages.includes(value)}
-                  onChange={handleInputChange}
-                />
-                {label}
-              </label>
-            ))}
-          </div>
-        </div>
-        <br />
-        <button type="submit" onClick={handleSubmit}>PDF Download</button>
-      </form>
+      </div>
+      <div className="button-group">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={prevStep}
+        >
+          Anterior
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={handleSubmit}
+        >
+          Gerar PDF
+        </motion.button>
+      </div>
+    </motion.div>
+  );
+
+  // Update the return statement
+  return (
+    <div className="form-container">
+      <h2>Formulário para E-commerce</h2>
+      <AnimatePresence mode="wait" initial={false}>
+        {step === 1 && <Step1 />}
+        {step === 2 && <Step2 />}
+        {step === 3 && <Step3 />}
+        {step === 4 && <Step4 />}
+      </AnimatePresence>
     </div>
   );
 }
