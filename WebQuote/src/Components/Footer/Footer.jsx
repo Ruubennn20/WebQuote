@@ -27,7 +27,7 @@ export default function Footer() {
                 <li><Link to="/contactos">Contactos</Link></li>
               </ul>
               <ul className="menu-coluna2">
-                <li><a href="#politica-cookies">Política de Cookies</a></li>
+              <li><Link to="/politica-cookies">Política de Cookies</Link></li>
                 <li><a href="#politica-privacidade">Política de Privacidade</a></li>
               </ul>
               <ul className="menu-coluna3">
@@ -44,7 +44,7 @@ export default function Footer() {
               <img src={WebQuoteLogo} alt="Logo WebQuote" className="footerLogoImage" />
             </div>
             <div className="copyright">
-              © 2024 Ruben Couto, João Pimentel, Francisco Almeida e Bruno Assunção. Todos os direitos reservados.
+              © 2025 Ruben Couto, João Pimentel, Francisco Almeida e Bruno Assunção. Todos os direitos reservados.
             </div>
           </div>
         </div>
