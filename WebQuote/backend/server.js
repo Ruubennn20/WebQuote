@@ -34,7 +34,7 @@ app.post('/send-email', upload.single('pdf'), async (req, res) => {
     from: 'seu-email@gmail.com', // Seu email
     to: email, // Email do destinatário
     subject: 'Seu PDF Gerado',
-    text: 'Segue em anexo o PDF gerado.',
+    text: 'Caro(a) Cliente,Conforme solicitado,\n segue em anexo o documento em formato PDF. Caso necessite de informações adicionais ou de algum ajuste, estou à disposição.\nAgradeço pela atenção e fico no aguardo de qualquer retorno.\nCom os melhores cumprimentos,\n WebQuote',
     attachments: [
       {
         filename: 'website_quotation.pdf', // Nome do arquivo
