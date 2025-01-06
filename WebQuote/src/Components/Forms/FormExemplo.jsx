@@ -73,7 +73,7 @@ export default function FormExemplo() {
 
 
     try {
-      const response = await fetch('http://localhost:5000/send-email', {
+      const response = await fetch('http://localhost:3000/send-email', {
         method: 'POST',
         body: formDataToSend,
       });
