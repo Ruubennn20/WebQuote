@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import "./form.css";
 import { jsPDF } from "jspdf";
 import { jsPDFTable } from "jspdf-autotable";
+import "./formsFinal.css";
 import logo from "../../assets/WebQuoteLogo.jpg";
 import HeaderForm from "../Header/HeaderForm";
 
@@ -734,7 +734,7 @@ try {
           placeholder="Digite o nome e apelido" 
           defaultValue={formData.nome || ''}
           onBlur={handleInputChange}
-          required 
+             
         />
         <br />
         <br />
@@ -745,7 +745,7 @@ try {
           placeholder="Digite o contacto" 
           defaultValue={formData.contacto || ''}
           onBlur={handleInputChange}
-          required 
+             
         />
         <br />
         <br />
@@ -756,16 +756,18 @@ try {
           placeholder="Digite o email" 
           defaultValue={formData.email || ''}
           onBlur={handleInputChange}
-          required 
+             
         />
       </div>
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={nextStep}
-      >
-        Próximo
-      </motion.button>
+      <div className="button-container">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={nextStep}
+        >
+          Próximo
+        </motion.button>
+      </div>
     </motion.div>
   );
 
@@ -786,7 +788,6 @@ try {
           <select
             id="objective"
             name="objective"
-            required
             value={formData.objective}
             onChange={handleInputChange}
           >
@@ -821,7 +822,7 @@ try {
           </div>
         </div>
       </div>
-      <div className="button-group">
+      <div className="button-container">
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -879,7 +880,7 @@ try {
           <select
             id="socialMedia"
             name="socialMedia"
-            required
+              
             value={formData.socialMedia}
             onChange={handleInputChange}
           >
@@ -894,7 +895,7 @@ try {
           <select
             id="paymentIntegration"
             name="paymentIntegration"
-            required
+              
             value={formData.paymentIntegration}
             onChange={handleInputChange}
           >
@@ -909,7 +910,7 @@ try {
           <select
             id="productReviews"
             name="productReviews"
-            required
+              
             value={formData.productReviews}
             onChange={handleInputChange}
           >
@@ -923,7 +924,7 @@ try {
           <select
             id="clientSupport"
             name="clientSupport"
-            required
+              
             value={formData.clientSupport}
             onChange={handleInputChange}
           >
@@ -955,7 +956,7 @@ try {
           </div>
         </div>
       </div>
-      <div className="button-group">
+      <div className="button-container">
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -991,7 +992,7 @@ try {
           <select
             id="maintenance"
             name="maintenance"
-            required
+              
             value={formData.maintenance}
             onChange={handleInputChange}
           >
@@ -1007,7 +1008,7 @@ try {
           <select
             id="updateFrequency"
             name="updateFrequency"
-            required
+              
             value={formData.updateFrequency}
             onChange={handleInputChange}
           >
@@ -1018,7 +1019,7 @@ try {
           </select>
         </div>
       </div>
-      <div className="button-group">
+      <div className="button-container">
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -1040,9 +1041,23 @@ try {
   // Update the return statement
   return (
     <>
-      <HeaderForm currentStep={step} />
-      <div className="form-container">
-        <h2>Formulário para E-commerce</h2>
+      <HeaderForm currentStep={step} /> 
+      <div className="container-form">
+        <h2>Solução de Orçamento</h2>
+        <div className="select-container">
+        <label> Websites </label>
+          <select name="tipo" id="tipo">
+            <option value="teste01" className="select-option">Blog</option>
+            <option value="teste02" className="select-option">E-commerce</option>
+            <option value="teste03" className="select-option">CRM</option>
+        </select>
+        <label> Apps Mobile: </label>
+        <select name="apps" id="apps">
+          <option value="teste01" className="select-option">Entregas e Logistica</option>
+          <option value="teste02" className="select-option">Rede Social</option>
+          <option value="teste03" className="select-option">E-Learning</option>
+        </select>
+        </div>
         <AnimatePresence mode="wait" initial={false}>
           {step === 1 && <Step1 />}
           {step === 2 && <Step2 />}
