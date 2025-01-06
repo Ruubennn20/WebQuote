@@ -34,12 +34,27 @@ app.post('/send-email', upload.single('pdf'), async (req, res) => {
     from: 'seu-email@gmail.com', // Seu email
     to: email, // Email do destinatário
     subject: 'Seu PDF Gerado',
-    text: 'Caro(a) Cliente,Conforme solicitado,\n segue em anexo o documento em formato PDF. Caso necessite de informações adicionais ou de algum ajuste, estou à disposição.\nAgradeço pela atenção e fico no aguardo de qualquer retorno.\nCom os melhores cumprimentos,\n WebQuote',
+    html: `
+    <p>Caro(a) Cliente,</p>
+    <p>Conforme solicitado, segue em anexo o documento em formato PDF.</p>
+    <p>Caso necessite de informações adicionais ou de algum ajuste, estou à disposição.</p>
+    <p>Agradeço pela atenção e fico no aguardo de qualquer retorno.</p>
+    <p>Com os melhores cumprimentos,</p>
+    <p><strong>WebQuote</strong></p>
+    <img src="cid:logoWebQuote" alt="Logo WebQuote" style="width: 150px;" />
+  `,
+   
     attachments: [
       {
         filename: 'website_quotation.pdf', // Nome do arquivo
         content: pdfBuffer, // Conteúdo do PDF
       },
+      {
+        filename: 'webQuoteLogo.jpg',
+        path: 'C:/Users/cesae/Desktop/WebQuote/WebQuote/src/assets/webQuoteLogo.jpg',
+        cid: 'logoWebQuote',
+      },
+    
    
      
     ],
