@@ -9,8 +9,7 @@ import SobreNos from "./Pages/SobreNos";
 import Contactos from "./Pages/Contactos";
 import FormContacto from "./Components/Forms/FormContacto";
 import FormExemplo from "./Components/Forms/FormExemplo";
-import FormInicial from "./Components/Forms/FormInicial";
-import FormComPDF from "./Components/Forms/formcomPDFGenerator";
+import FormInicial from "./Components/Forms/formcomPDFGenerator";
 import FormAdmin from "./Pages/formAdmin";
 import PoliticaDeCookies from "./Pages/PoliticaDeCookies";
 
@@ -26,8 +25,7 @@ function App() {
         <Route path="/contactos" element={<Contactos />} />
         <Route path="/form" element={<FormContacto />} />
         <Route path="/form-exemplo" element={<FormExemplo />} />
-        <Route path="/form-inicial" element={<FormInicial />} />
-        <Route path="/form-com-pdf" element={<FormComPDF />} />
+        <Route path="/form-com-pdf" element={<FormInicial />} />
         <Route path="/form-admin" element={<FormAdmin />} />
         <Route path="/politica-cookies" element={<PoliticaDeCookies />} />
       </Routes>
