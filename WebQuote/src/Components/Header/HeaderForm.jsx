@@ -9,7 +9,7 @@ export default function HeaderForm({ currentStep }) {
                 <span>Informações Básicas</span>
             </div>
             <div className={`step ${currentStep === 2 ? 'active' : ''}`}>
-                <span>Detalhes do Website</span>
+                <span>Detalhes do Web Site</span>
             </div>
             <div className={`step ${currentStep === 3 ? 'active' : ''}`}>
                 <span>Serviços Adicionais</span>
