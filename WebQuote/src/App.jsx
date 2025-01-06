@@ -12,6 +12,7 @@ import FormExemplo from "./Components/Forms/FormExemplo";
 import FormInicial from "./Components/Forms/formcomPDFGenerator";
 import FormAdmin from "./Pages/formAdmin";
 import PoliticaDeCookies from "./Pages/PoliticaDeCookies";
+import FormMainComponente from "./Components/Forms/FormMainComponente"; 
 
 
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/form-com-pdf" element={<FormInicial />} />
         <Route path="/form-admin" element={<FormAdmin />} />
         <Route path="/politica-cookies" element={<PoliticaDeCookies />} />
+        <Route path="/form-main" element={<FormMainComponente />} />
       </Routes>
     </Router>
   );

@@ -254,8 +254,5 @@
     animation: fadeIn 0.3s ease-out forwards;
 }
 .select-container{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
+    width: 99%;
 }

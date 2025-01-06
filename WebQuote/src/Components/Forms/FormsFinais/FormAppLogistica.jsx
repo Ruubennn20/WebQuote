@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { jsPDF } from "jspdf";
 import { jsPDFTable } from "jspdf-autotable";
-import "./formsFinal.css";
-import logo from "../../assets/WebQuoteLogo.jpg";
-import HeaderForm from "../Header/HeaderForm";
-import FormInfoInicial from "./FormInfoInicial";
+import "../formsFinal.css";
+import logo from "../../../assets/WebQuoteLogo.jpg";
+import HeaderForm from "../../Header/HeaderForm";
+import FormInfoInicial from "../FormInfoInicial";
 
 export default function FormInicial() {
   const PRICE_MAP = {
