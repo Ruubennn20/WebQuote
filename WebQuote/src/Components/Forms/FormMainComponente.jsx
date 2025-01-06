@@ -4,7 +4,10 @@ import HeaderForm from '../Header/HeaderForm';
 import FormInfoInicial from './FormInfoInicial';
 import FormBlog from './FormsFinais/FormBlog';
 import FormAppLogistica from './FormsFinais/FormAppLogistica';
-
+import FormCRM from './FormsFinais/FormCRM';
+import FormECommerce from './FormsFinais/FormECommerce';
+import FormAppELearning from './FormsFinais/FormAppELearning';
+import FormAppRedeSocial from './FormsFinais/FormAppRedeSocial';
 
 
 export default function FormMainComponente() {
@@ -23,7 +26,11 @@ export default function FormMainComponente() {
   // Map form types to their components
   const formComponents = {
     blogForm: FormBlog,
-    formAppLogistica: FormAppLogistica,
+    appLogisticaForm: FormAppLogistica,
+    crmForm: FormCRM,
+    eComerceForm: FormECommerce,
+    appELearningForm: FormAppELearning,
+    appRedeSocialForm: FormAppRedeSocial,
   };
 
   const handleInputChange = (e) => {

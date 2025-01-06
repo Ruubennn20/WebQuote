@@ -6,7 +6,7 @@ import "../formsFinal.css";
 import logo from "../../../assets/WebQuoteLogo.jpg";
 import HeaderForm from "../../Header/HeaderForm";
 
-export default function FormAppLogistica({ formData: initialFormData, setFormData: setInitialFormData, initialStep, onStepBack }) {
+export default function FormAppELearning({ formData: initialFormData, setFormData: setInitialFormData, initialStep, onStepBack }) {
   const PRICE_MAP = {
    //Paginas
     mainPage: 100,

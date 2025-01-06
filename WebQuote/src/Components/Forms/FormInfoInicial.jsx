@@ -8,13 +8,13 @@ const FormInfoInicial = ({ formData, handleInputChange, handleNextStep }) => {
   const categoryOptions = {
     websites: [
       { value: 'blog', label: 'Blog', formType: 'blogForm' },
-      { value: 'ecommerce', label: 'E-commerce', formType: 'ecommerceForm' },
+      { value: 'ecommerce', label: 'E-commerce', formType: 'eComerceForm' },
       { value: 'crm', label: 'CRM', formType: 'crmForm' }
     ],
     apps: [
-      { value: 'logistics', label: 'Entregas e Logística', formType: 'logisticsForm' },
-      { value: 'social', label: 'Rede Social', formType: 'socialForm' },
-      { value: 'elearning', label: 'E-Learning', formType: 'elearningForm' }
+      { value: 'logistica', label: 'Entregas e Logística', formType: 'appLogisticaForm' },
+      { value: 'social', label: 'Rede Social', formType: 'appRedeSocialForm' },
+      { value: 'elearning', label: 'E-Learning', formType: 'appELearningForm' }
     ]
   };
 
