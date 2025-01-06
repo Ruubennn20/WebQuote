@@ -1,59 +1,62 @@
 const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
 const multer = require('multer');
 const nodemailer = require('nodemailer');
-const fs = require('fs').promises;
-const path = require('path');
+const cors = require('cors');
+const { path } = require('framer-motion/client');
 
 const app = express();
-const PORT = 3000;
-
-// Configuração dos caminhos
-const orcamentoPath = path.join(__dirname, 'orcamento.json');
-
-// Middleware setup
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Ensure the orcamento.json file exists
-(async () => {
-  try {
-    await fs.access(orcamentoPath);
-  } catch {
-    await fs.writeFile(orcamentoPath, JSON.stringify([], null, 2));
-  }
-})();
+app.use(cors());
+app.use(express.json());
 
-// Rotas
+
+
+// Configuração do nodemailer
+const transporter = nodemailer.createTransport({
+  service: 'gmail', // Pode usar outro provedor ou configuração SMTP
+  auth: {
+    user: 'zoroarkchico@gmail.com', // Substitua pelo seu email
+    pass: 'gijw ncfw ochc fset', // Senha do app ou senha do email
+  },
+});
+
+// Rota para envio do email
 app.post('/send-email', upload.single('pdf'), async (req, res) => {
-  const { email } = req.body;
-  const pdfBuffer = req.file?.buffer;
+  const { email } = req.body; // Email do destinatário
+  const pdfBuffer = req.file?.buffer; // PDF enviado pelo frontend
 
   if (!email || !pdfBuffer) {
-    return res.status(400).json({ error: 'E-mail ou arquivo PDF ausente.' });
+    return res.status(400).json({ error: 'Email ou arquivo PDF ausente.' });
   }
 
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'zoroarkchico@gmail.com',
-      pass: 'fvcx modc kdtk lwji',
-    },
-  });
-
   const mailOptions = {
-    from: 'franciscomesk@gmail.com',
-    to: email,
-    subject: 'Formulário de Criação de Sites',
-    text: 'Segue em anexo o PDF gerado pelo formulário.',
+    from: 'seu-email@gmail.com', // Seu email
+    to: email, // Email do destinatário
+    subject: 'Seu PDF Gerado',
+    html: `
+    <p>Caro(a) Cliente,</p>
+    <p>Conforme solicitado, segue em anexo o documento em formato PDF.</p>
+    <p>Caso necessite de informações adicionais ou de algum ajuste, estou à disposição.</p>
+    <p>Agradeço pela atenção e fico no aguardo de qualquer retorno.</p>
+    <p>Com os melhores cumprimentos,</p>
+    <p><strong>WebQuote</strong></p>
+    <img src="cid:logoWebQuote" alt="Logo WebQuote" style="width: 150px;" />
+  `,
+   
     attachments: [
       {
-        filename: 'formulario.pdf',
-        content: pdfBuffer,
+        filename: 'website_quotation.pdf', // Nome do arquivo
+        content: pdfBuffer, // Conteúdo do PDF
       },
+      {
+        filename: 'webQuoteLogo.jpg',
+        path: 'C:/Users/cesae/Desktop/WebQuote/WebQuote/src/assets/webQuoteLogo.jpg',
+        cid: 'logoWebQuote',
+      },
+    
+   
+     
     ],
   };
 
@@ -61,48 +64,11 @@ app.post('/send-email', upload.single('pdf'), async (req, res) => {
     await transporter.sendMail(mailOptions);
     res.status(200).json({ message: 'E-mail enviado com sucesso!' });
   } catch (error) {
-    console.error('Erro ao enviar e-mail:', error);
-    res.status(500).json({ error: 'Falha ao enviar e-mail.' });
+    console.error('Erro ao enviar email:', error);
+    res.status(500).json({ error: 'Erro ao enviar email.' });
   }
 });
 
-app.post('/api/orcamento', async (req, res) => {
-  try {
-    const formData = req.body;
-    formData.timestamp = new Date().toISOString();
-    
-    const data = await fs.readFile(orcamentoPath, 'utf8');
-    const existingData = JSON.parse(data);
-    existingData.push(formData);
-    
-    await fs.writeFile(orcamentoPath, JSON.stringify(existingData, null, 2));
-    res.status(200).json({ message: 'Orçamento saved successfully' });
-  } catch (error) {
-    console.error('Error saving orcamento:', error);
-    res.status(500).json({ error: 'Failed to save orcamento' });
-  }
-});
-
-app.get('/api/orcamento', async (req, res) => {
-  try {
-    const data = await fs.readFile(orcamentoPath, 'utf8');
-    const orders = JSON.parse(data);
-    res.status(200).json(orders);
-  } catch (error) {
-    console.error("Erro ao carregar os pedidos:", error);
-    res.status(500).json({ message: "Erro ao carregar os pedidos." });
-  }
-});
-
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ message: "404 - Não encontrado." });
-});
-
-// Start server
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
-
-
+// Inicia o servidor
+app.listen(3000, () => console.log('Servidor rodando na porta 3000'));
 

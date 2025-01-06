@@ -313,6 +313,8 @@ export default function FormInicial() {
       styles: { fontSize: 10, cellPadding: 3 },
       theme: 'grid',
     });
+
+    
   }else{
     doc.autoTable({
       startY: finalY + 10,
@@ -606,8 +608,40 @@ export default function FormInicial() {
         doc.internal.pageSize.height - 10
       );
     }
+    
 
-    doc.save("website_quotation.pdf");
+// ... resto do seu código que popula o PDF ...
+
+// Salva o PDF localmente (opcional)
+doc.save("website_quotation.pdf");
+
+// Converte o PDF em Blob para enviar ao backend
+const pdfBlob = doc.output("blob");
+
+// Cria um FormData para enviar o PDF ao servidor
+const formDataEmail = new FormData();
+formDataEmail.append("pdf", pdfBlob, "website_quotation.pdf");
+
+// Anexe também o e-mail do utilizador, que está no formData.email
+formDataEmail.append("email", formData.email);
+
+// Agora chama a rota do backend que envia e-mail
+try {
+  const response = await fetch("http://localhost:3000/send-email", {
+    method: "POST",
+    body: formDataEmail,
+  });
+
+  if (!response.ok) {
+    throw new Error("Erro ao enviar e-mail.");
+  }
+
+  alert("PDF enviado por e-mail com sucesso!");
+} catch (error) {
+  console.error("Erro ao enviar o PDF por e-mail:", error);
+  alert("Falha ao enviar o e-mail.");
+}
+
 
   
     // Captura dos dados do formulário

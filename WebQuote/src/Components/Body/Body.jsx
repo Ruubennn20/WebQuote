@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 export default function Body() {
   return (
     <>
-      <body>
+      {/* Substituir body por div, main ou section */}
+      <div className="body-wrapper">
         <img src={Ellipse1} alt="Ellipse1" className="imgCurve" />
         <div className="body-section">
           <div className="content-container">
@@ -58,7 +59,7 @@ export default function Body() {
             </div>
           </div>
         </div>
-      </body>
+      </div>
     </>
   );
 }
