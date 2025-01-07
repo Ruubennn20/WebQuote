@@ -21,8 +21,11 @@
 .header-nav {
   display: flex;
   gap: 30px;
-  width: 100%;
+  width: 80%;
   justify-content: space-around;
+  margin-bottom: -15px;
+  
+  
 }
 
 .header-nav a {
@@ -30,6 +33,7 @@
   color: white;
   font-weight: bold;
   transition: color 0.3s;
+  
 }
 
 .header-nav a:hover {
