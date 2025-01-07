@@ -1,11 +1,15 @@
 import React from "react";
 import "./Header.css";
 import { Link } from "react-router-dom";
+import webQuoteLogo from "../../assets/webQuoteLogo.jpg";
 
 export default function Header() {
   return (
     <header className="header">
       <nav className="header-nav">
+        <Link className="homelink" to="/homepage">
+                            <img src={webQuoteLogo} alt="Logo WebQuote" />
+                        </Link>
         <Link className="header-nav" to="/">Home</Link>
         <Link className="header-nav" to="/sobre-nos">Sobre Nós</Link>
         <Link className="header-nav" to="/contactos">Contactos</Link>

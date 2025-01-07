@@ -68,7 +68,14 @@
   color: #4040ff;
   font-weight: 600;
   transition: color 0.3s ease;
+  padding-top: 4px;
+  
 }
+.home-link img {
+  width: 10% !important;
+  height: auto; /* Mantém a proporção */
+}
+
 
 .home-link:hover {
   color: #3333cc;
@@ -106,4 +113,11 @@
 
 .step-connector.completed {
   background-color: #4040ff;
+}
+
+.homelink img {
+  width: 30% !important;
+  height: auto; /* Mantém a proporção */
+  margin-left: 90%;
+  margin-top: -5%;
 }
