@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { jsPDF } from "jspdf";
 import { jsPDFTable } from "jspdf-autotable";
-import "./formsFinal.css";
-import logo from "../../assets/WebQuoteLogo.jpg";
-import HeaderForm from "../Header/HeaderForm";
-import FormInfoInicial from "./FormInfoInicial";
+import "../formsFinal.css";
+import logo from "../../../assets/WebQuoteLogo.jpg";
+import HeaderForm from "../../Header/HeaderForm";
 
-export default function FormInicial() {
+export default function FormAppLogistica({ formData: initialFormData, setFormData: setInitialFormData, initialStep, onStepBack }) {
   const PRICE_MAP = {
    //Paginas
     mainPage: 100,
@@ -77,7 +76,7 @@ export default function FormInicial() {
     budget: "",
     references: "",
   });
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(initialStep || 2);
 
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
@@ -167,15 +166,16 @@ export default function FormInicial() {
     
     doc.addImage(logo, 'JPEG', 10, 5, 40, 12);
     doc.setFontSize(10);
-    doc.text('WEBSITE QUOTATION', 150, 12);
+    doc.text('WEBQUOTE', 150, 10);
+    doc.text('Website Blog', 150, 15);
     doc.setDrawColor(200, 200, 200);
     doc.line(10, 18, 200, 18);
     
     // Client Information
     doc.text('Contact Information', 13, 23);
-    doc.text(formData.nome || '', 13, 28);
-    doc.text(formData.contacto || '', 13, 32);
-    doc.text(formData.email || '', 13, 36);
+    doc.text(`Nome: ${initialFormData.nome || ''}`, 13, 28);
+    doc.text(`Contacto: ${initialFormData.contacto || ''}`, 13, 32);
+    doc.text(`Email: ${initialFormData.email || ''}`, 13, 36);
     
     // Quote details
     doc.setFont('Helvetica', 'bold');
@@ -624,7 +624,7 @@ const formDataEmail = new FormData();
 formDataEmail.append("pdf", pdfBlob, "website_quotation.pdf");
 
 // Anexe também o e-mail do utilizador, que está no formData.email
-formDataEmail.append("email", formData.email);
+formDataEmail.append("email", initialFormData.email);
 
 // Agora chama a rota do backend que envia e-mail
 try {
@@ -690,11 +690,18 @@ try {
   }
 
   const nextStep = () => {
-    setStep(step + 1);
+    if (step < 4) {
+      setStep(step + 1);
+    }
   };
 
   const prevStep = () => {
-    setStep(step - 1);
+    if (step > 2) {
+      setStep(step - 1);
+    } else if (step === 2) {
+      // Call the parent component's callback to go back to step 1
+      onStepBack();
+    }
   };
 
   // Update the animation variants
@@ -718,19 +725,9 @@ try {
     }
   };
 
-  // Update each step component to use layoutId
-
   //Primeiro Componente Criado
   const Step1 = () => (
-    <FormInfoInicial
-      formData={formData}
-      handleInputChange={handleInputChange}
-      nextStep={nextStep}
-    />
-  );
-
-  const Step2 = () => (
-    <motion.div
+<motion.div
       initial={false}
       animate="center"
       exit="exit"
@@ -799,7 +796,78 @@ try {
     </motion.div>
   );
 
-  const Step3 = () => (
+
+/*   const Step2 = () => (
+    <motion.div
+      initial={false}
+      animate="center"
+      exit="exit"
+      variants={slideVariants}
+      transition={{ duration: 0.3 }}
+      key="step2"
+      layoutId="formStep"
+    >
+      <h3>Detalhes do Website</h3>
+      <div>
+        <div>
+          <label htmlFor="objective">Website novo ou modernização?</label>
+          <select
+            id="objective"
+            name="objective"
+            value={formData.objective}
+            onChange={handleInputChange}
+          >
+            <option value="">Selecione</option>
+            <option value="novoSite">Novo</option>
+            <option value="modernizacao">Modernização</option>
+          </select>
+        </div>
+        <div>
+          <p>Quais páginas o site precisa?</p>
+          <div>
+            {[
+              { value: "mainPage", label: "Página Inicial" },
+              { value: "aboutPage", label: "Sobre" },
+              { value: "contactPage", label: "Contato" },
+              { value: "lojaPage", label: "Loja" },
+              { value: "userSection", label: "Secção de users" },
+              { value: "politicaPage", label: "Política de devoluções" },
+              { value: "outras", label: "Outras" },
+            ].map(({ value, label }) => (
+              <label key={value}>
+                <input
+                  type="checkbox"
+                  name="pages"
+                  value={value}
+                  checked={formData.pages.includes(value)}
+                  onChange={handleInputChange}
+                />
+                {label}
+              </label>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="button-container">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={prevStep}
+        >
+          Anterior
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={nextStep}
+        >
+          Próximo
+        </motion.button>
+      </div>
+    </motion.div>
+  ); */
+
+  const Step2 = () => (
     <motion.div
       initial={false}
       animate="center"
@@ -933,7 +1001,7 @@ try {
     </motion.div>
   );
 
-  const Step4 = () => (
+  const Step3 = () => (
     <motion.div
       initial={false}
       animate="center"
@@ -999,29 +1067,11 @@ try {
   // Update the return statement
   return (
     <>
-      <HeaderForm currentStep={step} /> 
-      <div className="container-form">
-        <h2>Solução de Orçamento</h2>
-        <div className="select-container">
-        <label> Websites </label>
-          <select name="tipo" id="tipo">
-            <option value="teste01" className="select-option">Blog</option>
-            <option value="teste02" className="select-option">E-commerce</option>
-            <option value="teste03" className="select-option">CRM</option>
-        </select>
-        <label> Apps Mobile: </label>
-        <select name="apps" id="apps">
-          <option value="teste01" className="select-option">Entregas e Logistica</option>
-          <option value="teste02" className="select-option">Rede Social</option>
-          <option value="teste03" className="select-option">E-Learning</option>
-        </select>
-        </div>
-        <AnimatePresence mode="wait" initial={false}>
-          {step === 1 && <Step1 />}
-          {step === 2 && <Step2 />}
-          {step === 3 && <Step3 />}
-          {step === 4 && <Step4 />}
-        </AnimatePresence>
+      <HeaderForm currentStep={step} />
+      <div className="form-blog-container">
+        {step === 2 && <Step1 />}
+        {step === 3 && <Step2 />}
+        {step === 4 && <Step3 />}
       </div>
     </>
   )

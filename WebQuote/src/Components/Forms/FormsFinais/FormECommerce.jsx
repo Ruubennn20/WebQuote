@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { jsPDF } from "jspdf";
 import { jsPDFTable } from "jspdf-autotable";
-import "./formsFinal.css";
-import logo from "../../assets/WebQuoteLogo.jpg";
-import HeaderForm from "../Header/HeaderForm";
-import FormInfoInicial from "./FormInfoInicial";
+import "../formsFinal.css";
+import logo from "../../../assets/WebQuoteLogo.jpg";
+import HeaderForm from "../../Header/HeaderForm";
 
-export default function FormInicial() {
+export default function FormECommerce({ formData: initialFormData, setFormData: setInitialFormData, initialStep, onStepBack }) {
   const PRICE_MAP = {
    //Paginas
     mainPage: 100,
@@ -77,7 +76,7 @@ export default function FormInicial() {
     budget: "",
     references: "",
   });
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(initialStep || 2);
 
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
@@ -100,6 +99,62 @@ export default function FormInicial() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validation checks
+    const validationErrors = [];
+
+    // Check objective (website type)
+    if (!formData.objective) {
+      validationErrors.push("Por favor selecione se deseja um website novo ou modernização");
+    }
+
+    // Check pages (at least one)
+    if (!formData.pages.length) {
+      validationErrors.push("Por favor selecione pelo menos uma página");
+    }
+
+    // Check design services (at least one)
+    if (!formData.designServices.length) {
+      validationErrors.push("Por favor selecione pelo menos um serviço de design");
+    }
+
+    // Check required selects
+    if (!formData.socialMedia) {
+      validationErrors.push("Por favor selecione a opção de integração com redes sociais");
+    }
+
+    if (!formData.paymentIntegration) {
+      validationErrors.push("Por favor selecione a opção de integração de pagamento");
+    }
+
+    if (!formData.productReviews) {
+      validationErrors.push("Por favor selecione a opção de avaliação de produtos");
+    }
+
+    if (!formData.clientSupport) {
+      validationErrors.push("Por favor selecione a opção de suporte ao cliente");
+    }
+
+    // Check languages (at least one)
+    if (!formData.languages.length) {
+      validationErrors.push("Por favor selecione pelo menos um idioma");
+    }
+
+    // Check maintenance and update frequency
+    if (!formData.maintenance) {
+      validationErrors.push("Por favor selecione um período de manutenção");
+    }
+
+    if (!formData.updateFrequency) {
+      validationErrors.push("Por favor selecione uma frequência de atualização");
+    }
+
+    // If there are validation errors, show them and stop form submission
+    if (validationErrors.length > 0) {
+      alert(validationErrors.join("\n"));
+      return;
+    }
+
+    // If validation passes, continue with existing submit logic
     let total = 0;
 
     // Calculate total based on selections
@@ -167,15 +222,16 @@ export default function FormInicial() {
     
     doc.addImage(logo, 'JPEG', 10, 5, 40, 12);
     doc.setFontSize(10);
-    doc.text('WEBSITE QUOTATION', 150, 12);
+    doc.text('WEBQUOTE', 150, 10);
+    doc.text('Website Blog', 150, 15);
     doc.setDrawColor(200, 200, 200);
     doc.line(10, 18, 200, 18);
     
     // Client Information
     doc.text('Contact Information', 13, 23);
-    doc.text(formData.nome || '', 13, 28);
-    doc.text(formData.contacto || '', 13, 32);
-    doc.text(formData.email || '', 13, 36);
+    doc.text(`Nome: ${initialFormData.nome || ''}`, 13, 28);
+    doc.text(`Contacto: ${initialFormData.contacto || ''}`, 13, 32);
+    doc.text(`Email: ${initialFormData.email || ''}`, 13, 36);
     
     // Quote details
     doc.setFont('Helvetica', 'bold');
@@ -232,7 +288,6 @@ export default function FormInicial() {
                         lojaPage: "Loja",
                         userSection: "Secção de users",
                         politicaPage: "Política de devoluções",
-                        outras: "Outras"
                     }[page];
                     return ["", pageLabel, "1",  (PRICE_MAP[page] || 0) + " €"];
                 })
@@ -624,7 +679,7 @@ const formDataEmail = new FormData();
 formDataEmail.append("pdf", pdfBlob, "website_quotation.pdf");
 
 // Anexe também o e-mail do utilizador, que está no formData.email
-formDataEmail.append("email", formData.email);
+formDataEmail.append("email", initialFormData.email);
 
 // Agora chama a rota do backend que envia e-mail
 try {
@@ -690,11 +745,34 @@ try {
   }
 
   const nextStep = () => {
-    setStep(step + 1);
+    if (step === 2) {
+      // Validate Step 1
+      if (!formData.objective || !formData.pages.length) {
+        alert("Por favor preencha todos os campos obrigatórios antes de continuar");
+        return;
+      }
+    } else if (step === 3) {
+      // Validate Step 2
+      if (!formData.designServices.length || !formData.socialMedia || 
+          !formData.paymentIntegration || !formData.productReviews || 
+          !formData.clientSupport || !formData.languages.length) {
+        alert("Por favor preencha todos os campos obrigatórios antes de continuar");
+        return;
+      }
+    }
+
+    if (step < 4) {
+      setStep(step + 1);
+    }
   };
 
   const prevStep = () => {
-    setStep(step - 1);
+    if (step > 2) {
+      setStep(step - 1);
+    } else if (step === 2) {
+      // Call the parent component's callback to go back to step 1
+      onStepBack();
+    }
   };
 
   // Update the animation variants
@@ -718,19 +796,9 @@ try {
     }
   };
 
-  // Update each step component to use layoutId
-
   //Primeiro Componente Criado
   const Step1 = () => (
-    <FormInfoInicial
-      formData={formData}
-      handleInputChange={handleInputChange}
-      nextStep={nextStep}
-    />
-  );
-
-  const Step2 = () => (
-    <motion.div
+<motion.div
       initial={false}
       animate="center"
       exit="exit"
@@ -748,6 +816,7 @@ try {
             name="objective"
             value={formData.objective}
             onChange={handleInputChange}
+            required
           >
             <option value="">Selecione</option>
             <option value="novoSite">Novo</option>
@@ -755,8 +824,8 @@ try {
           </select>
         </div>
         <div>
-          <p>Quais páginas o site precisa?</p>
-          <div>
+          <h4>Quais páginas o site precisa?</h4>
+          <div className="custom-checkbox">
             {[
               { value: "mainPage", label: "Página Inicial" },
               { value: "aboutPage", label: "Sobre" },
@@ -764,18 +833,154 @@ try {
               { value: "lojaPage", label: "Loja" },
               { value: "userSection", label: "Secção de users" },
               { value: "politicaPage", label: "Política de devoluções" },
-              { value: "outras", label: "Outras" },
             ].map(({ value, label }) => (
-              <label key={value}>
+              <div key={value}>
                 <input
                   type="checkbox"
+                  id={value}
                   name="pages"
                   value={value}
                   checked={formData.pages.includes(value)}
                   onChange={handleInputChange}
                 />
-                {label}
-              </label>
+                <label htmlFor={value}>{label}</label>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="button-container">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={prevStep}
+        >
+          Anterior
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={nextStep}
+        >
+          Próximo
+        </motion.button>
+      </div>
+    </motion.div>
+  );
+
+  const Step2 = () => (
+    <motion.div
+      initial={false}
+      animate="center"
+      exit="exit"
+      variants={slideVariants}
+      transition={{ duration: 0.3 }}
+      key="step3"
+      layoutId="formStep"
+    >
+      <h3>Serviços Adicionais</h3>
+      <div>
+        <div>
+          <p>Serviços de Design</p>
+          <div className="custom-checkbox">
+            {[
+              { value: "Logotipo", label: "Logotipo" },
+              { value: "Icons", label: "Icons" },
+              { value: "Banners", label: "Banners" },
+              { value: "outras", label: "Outros" },
+            ].map(({ value, label }) => (
+              <div key={value}>
+                <input
+                  type="checkbox"
+                  id={value}
+                  name="designServices"
+                  value={value}
+                  checked={formData.designServices.includes(value)}
+                  onChange={handleInputChange}
+                />
+                <label htmlFor={value}>{label}</label>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div>
+          <label htmlFor="socialMedia">Integração com redes sociais</label>
+          <select
+            id="socialMedia"
+            name="socialMedia"
+            value={formData.socialMedia}
+            onChange={handleInputChange}
+            required
+          >
+            <option value="">Selecione</option>
+            <option value="yes">Sim</option>
+            <option value="no">Não</option>
+          </select>
+        </div>
+        <br />
+        <div>
+          <label htmlFor="paymentIntegration">Integração com meios de pagamento</label>
+          <select
+            id="paymentIntegration"
+            name="paymentIntegration"
+            value={formData.paymentIntegration}
+            onChange={handleInputChange}
+            required
+          >
+            <option value="">Selecione</option>
+            <option value="integracaoPg">Sim</option>
+            <option value="semIntPg">Não</option>
+          </select>
+        </div>
+        <br />
+        <div>
+          <label htmlFor="productReviews">Avaliação de produtos</label>
+          <select
+            id="productReviews"
+            name="productReviews"
+            value={formData.productReviews}
+            onChange={handleInputChange}
+            required
+          >
+            <option value="">Selecione</option>
+            <option value="avaliacaoProdutos">Sim</option>
+            <option value="semAvaProd">Não</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="clientSupport">Suporte ao cliente</label>
+          <select
+            id="clientSupport"
+            name="clientSupport"
+            value={formData.clientSupport}
+            onChange={handleInputChange}
+            required
+          >
+            <option value="">Selecione</option>
+            <option value="suporteYes">Sim</option>
+            <option value="suporteNo">Não</option>
+          </select>
+        </div>
+        <div>
+          <p>Idiomas do Website</p>
+          <div className="custom-checkbox">
+            {[
+              { value: "portugues", label: "Português" },
+              { value: "ingles", label: "Inglês" },
+              { value: "frances", label: "Francês" },
+              { value: "espanhol", label: "Espanhol" },
+            ].map(({ value, label }) => (
+              <div key={value}>
+                <input
+                  type="checkbox"
+                  id={value}
+                  name="languages"
+                  value={value}
+                  checked={formData.languages.includes(value)}
+                  onChange={handleInputChange}
+                />
+                <label htmlFor={value}>{label}</label>
+              </div>
             ))}
           </div>
         </div>
@@ -806,140 +1011,6 @@ try {
       exit="exit"
       variants={slideVariants}
       transition={{ duration: 0.3 }}
-      key="step3"
-      layoutId="formStep"
-    >
-      <h3>Serviços Adicionais</h3>
-      <div>
-        <div>
-          <p>Serviços de Design</p>
-          <div>
-            {[
-              { value: "Logotipo", label: "Logotipo" },
-              { value: "Icons", label: "Icons" },
-              { value: "Banners", label: "Banners" },
-              { value: "outras", label: "Outros" },
-            ].map(({ value, label }) => (
-              <label key={value}>
-                <input
-                  type="checkbox"
-                  name="designServices"
-                  value={value}
-                  checked={formData.designServices.includes(value)}
-                  onChange={handleInputChange}
-                />
-                {label}
-              </label>
-            ))}
-          </div>
-        </div>
-        <div>
-          <label htmlFor="socialMedia">Integração com redes sociais</label>
-          <select
-            id="socialMedia"
-            name="socialMedia"
-              
-            value={formData.socialMedia}
-            onChange={handleInputChange}
-          >
-            <option value="">Selecione</option>
-            <option value="yes">Sim</option>
-            <option value="no">Não</option>
-          </select>
-        </div>
-        <br />
-        <div>
-          <label htmlFor="paymentIntegration">Integração com meios de pagamento</label>
-          <select
-            id="paymentIntegration"
-            name="paymentIntegration"
-              
-            value={formData.paymentIntegration}
-            onChange={handleInputChange}
-          >
-            <option value="">Selecione</option>
-            <option value="integracaoPg">Sim</option>
-            <option value="semIntPg">Não</option>
-          </select>
-        </div>
-        <br />
-        <div>
-          <label htmlFor="productReviews">Avaliação de produtos</label>
-          <select
-            id="productReviews"
-            name="productReviews"
-              
-            value={formData.productReviews}
-            onChange={handleInputChange}
-          >
-            <option value="">Selecione</option>
-            <option value="avaliacaoProdutos">Sim</option>
-            <option value="semAvaProd">Não</option>
-          </select>
-        </div>
-        <div>
-          <label htmlFor="clientSupport">Suporte ao cliente</label>
-          <select
-            id="clientSupport"
-            name="clientSupport"
-              
-            value={formData.clientSupport}
-            onChange={handleInputChange}
-          >
-            <option value="">Selecione</option>
-            <option value="suporteYes">Sim</option>
-            <option value="suporteNo">Não</option>
-          </select>
-        </div>
-        <div>
-          <p>Idiomas do Website</p>
-          <div>
-            {[
-              { value: "portugues", label: "Português" },
-              { value: "ingles", label: "Inglês" },
-              { value: "frances", label: "Francês" },
-              { value: "espanhol", label: "Espanhol" },
-            ].map(({ value, label }) => (
-              <label key={value}>
-                <input
-                  type="checkbox"
-                  name="languages"
-                  value={value}
-                  checked={formData.languages.includes(value)}
-                  onChange={handleInputChange}
-                />
-                {label}
-              </label>
-            ))}
-          </div>
-        </div>
-      </div>
-      <div className="button-container">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={prevStep}
-        >
-          Anterior
-        </motion.button>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={nextStep}
-        >
-          Próximo
-        </motion.button>
-      </div>
-    </motion.div>
-  );
-
-  const Step4 = () => (
-    <motion.div
-      initial={false}
-      animate="center"
-      exit="exit"
-      variants={slideVariants}
-      transition={{ duration: 0.3 }}
       key="step4"
       layoutId="formStep"
     >
@@ -950,9 +1021,9 @@ try {
           <select
             id="maintenance"
             name="maintenance"
-              
             value={formData.maintenance}
             onChange={handleInputChange}
+            required
           >
             <option value="">Selecione</option>
             <option value="umAno">Um ano</option>
@@ -966,9 +1037,9 @@ try {
           <select
             id="updateFrequency"
             name="updateFrequency"
-              
             value={formData.updateFrequency}
             onChange={handleInputChange}
+            required
           >
             <option value="">Selecione</option>
             <option value="semanal">Semanal</option>
@@ -999,29 +1070,11 @@ try {
   // Update the return statement
   return (
     <>
-      <HeaderForm currentStep={step} /> 
-      <div className="container-form">
-        <h2>Solução de Orçamento</h2>
-        <div className="select-container">
-        <label> Websites </label>
-          <select name="tipo" id="tipo">
-            <option value="teste01" className="select-option">Blog</option>
-            <option value="teste02" className="select-option">E-commerce</option>
-            <option value="teste03" className="select-option">CRM</option>
-        </select>
-        <label> Apps Mobile: </label>
-        <select name="apps" id="apps">
-          <option value="teste01" className="select-option">Entregas e Logistica</option>
-          <option value="teste02" className="select-option">Rede Social</option>
-          <option value="teste03" className="select-option">E-Learning</option>
-        </select>
-        </div>
-        <AnimatePresence mode="wait" initial={false}>
-          {step === 1 && <Step1 />}
-          {step === 2 && <Step2 />}
-          {step === 3 && <Step3 />}
-          {step === 4 && <Step4 />}
-        </AnimatePresence>
+      <HeaderForm currentStep={step} />
+      <div className="form-blog-container">
+        {step === 2 && <Step1 />}
+        {step === 3 && <Step2 />}
+        {step === 4 && <Step3 />}
       </div>
     </>
   )
