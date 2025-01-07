@@ -99,6 +99,62 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validation checks
+    const validationErrors = [];
+
+    // Check objective (website type)
+    if (!formData.objective) {
+      validationErrors.push("Por favor selecione se deseja um website novo ou modernização");
+    }
+
+    // Check pages (at least one)
+    if (!formData.pages.length) {
+      validationErrors.push("Por favor selecione pelo menos uma página");
+    }
+
+    // Check design services (at least one)
+    if (!formData.designServices.length) {
+      validationErrors.push("Por favor selecione pelo menos um serviço de design");
+    }
+
+    // Check required selects
+    if (!formData.socialMedia) {
+      validationErrors.push("Por favor selecione a opção de integração com redes sociais");
+    }
+
+    if (!formData.paymentIntegration) {
+      validationErrors.push("Por favor selecione a opção de integração de pagamento");
+    }
+
+    if (!formData.productReviews) {
+      validationErrors.push("Por favor selecione a opção de avaliação de produtos");
+    }
+
+    if (!formData.clientSupport) {
+      validationErrors.push("Por favor selecione a opção de suporte ao cliente");
+    }
+
+    // Check languages (at least one)
+    if (!formData.languages.length) {
+      validationErrors.push("Por favor selecione pelo menos um idioma");
+    }
+
+    // Check maintenance and update frequency
+    if (!formData.maintenance) {
+      validationErrors.push("Por favor selecione um período de manutenção");
+    }
+
+    if (!formData.updateFrequency) {
+      validationErrors.push("Por favor selecione uma frequência de atualização");
+    }
+
+    // If there are validation errors, show them and stop form submission
+    if (validationErrors.length > 0) {
+      alert(validationErrors.join("\n"));
+      return;
+    }
+
+    // If validation passes, continue with existing submit logic
     let total = 0;
 
     // Calculate total based on selections
@@ -232,7 +288,6 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
                         lojaPage: "Loja",
                         userSection: "Secção de users",
                         politicaPage: "Política de devoluções",
-                        outras: "Outras"
                     }[page];
                     return ["", pageLabel, "1",  (PRICE_MAP[page] || 0) + " €"];
                 })
@@ -690,6 +745,22 @@ try {
   }
 
   const nextStep = () => {
+    if (step === 2) {
+      // Validate Step 1
+      if (!formData.objective || !formData.pages.length) {
+        alert("Por favor preencha todos os campos obrigatórios antes de continuar");
+        return;
+      }
+    } else if (step === 3) {
+      // Validate Step 2
+      if (!formData.designServices.length || !formData.socialMedia || 
+          !formData.paymentIntegration || !formData.productReviews || 
+          !formData.clientSupport || !formData.languages.length) {
+        alert("Por favor preencha todos os campos obrigatórios antes de continuar");
+        return;
+      }
+    }
+
     if (step < 4) {
       setStep(step + 1);
     }
@@ -745,6 +816,7 @@ try {
             name="objective"
             value={formData.objective}
             onChange={handleInputChange}
+            required
           >
             <option value="">Selecione</option>
             <option value="novoSite">Novo</option>
@@ -752,8 +824,8 @@ try {
           </select>
         </div>
         <div>
-          <p>Quais páginas o site precisa?</p>
-          <div>
+          <h4>Quais páginas o site precisa?</h4>
+          <div className="custom-checkbox">
             {[
               { value: "mainPage", label: "Página Inicial" },
               { value: "aboutPage", label: "Sobre" },
@@ -761,18 +833,18 @@ try {
               { value: "lojaPage", label: "Loja" },
               { value: "userSection", label: "Secção de users" },
               { value: "politicaPage", label: "Política de devoluções" },
-              { value: "outras", label: "Outras" },
             ].map(({ value, label }) => (
-              <label key={value}>
+              <div key={value}>
                 <input
                   type="checkbox"
+                  id={value}
                   name="pages"
                   value={value}
                   checked={formData.pages.includes(value)}
                   onChange={handleInputChange}
                 />
-                {label}
-              </label>
+                <label htmlFor={value}>{label}</label>
+              </div>
             ))}
           </div>
         </div>
@@ -796,77 +868,6 @@ try {
     </motion.div>
   );
 
-
-/*   const Step2 = () => (
-    <motion.div
-      initial={false}
-      animate="center"
-      exit="exit"
-      variants={slideVariants}
-      transition={{ duration: 0.3 }}
-      key="step2"
-      layoutId="formStep"
-    >
-      <h3>Detalhes do Website</h3>
-      <div>
-        <div>
-          <label htmlFor="objective">Website novo ou modernização?</label>
-          <select
-            id="objective"
-            name="objective"
-            value={formData.objective}
-            onChange={handleInputChange}
-          >
-            <option value="">Selecione</option>
-            <option value="novoSite">Novo</option>
-            <option value="modernizacao">Modernização</option>
-          </select>
-        </div>
-        <div>
-          <p>Quais páginas o site precisa?</p>
-          <div>
-            {[
-              { value: "mainPage", label: "Página Inicial" },
-              { value: "aboutPage", label: "Sobre" },
-              { value: "contactPage", label: "Contato" },
-              { value: "lojaPage", label: "Loja" },
-              { value: "userSection", label: "Secção de users" },
-              { value: "politicaPage", label: "Política de devoluções" },
-              { value: "outras", label: "Outras" },
-            ].map(({ value, label }) => (
-              <label key={value}>
-                <input
-                  type="checkbox"
-                  name="pages"
-                  value={value}
-                  checked={formData.pages.includes(value)}
-                  onChange={handleInputChange}
-                />
-                {label}
-              </label>
-            ))}
-          </div>
-        </div>
-      </div>
-      <div className="button-container">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={prevStep}
-        >
-          Anterior
-        </motion.button>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={nextStep}
-        >
-          Próximo
-        </motion.button>
-      </div>
-    </motion.div>
-  ); */
-
   const Step2 = () => (
     <motion.div
       initial={false}
@@ -881,23 +882,24 @@ try {
       <div>
         <div>
           <p>Serviços de Design</p>
-          <div>
+          <div className="custom-checkbox">
             {[
               { value: "Logotipo", label: "Logotipo" },
               { value: "Icons", label: "Icons" },
               { value: "Banners", label: "Banners" },
               { value: "outras", label: "Outros" },
             ].map(({ value, label }) => (
-              <label key={value}>
+              <div key={value}>
                 <input
                   type="checkbox"
+                  id={value}
                   name="designServices"
                   value={value}
                   checked={formData.designServices.includes(value)}
                   onChange={handleInputChange}
                 />
-                {label}
-              </label>
+                <label htmlFor={value}>{label}</label>
+              </div>
             ))}
           </div>
         </div>
@@ -906,9 +908,9 @@ try {
           <select
             id="socialMedia"
             name="socialMedia"
-              
             value={formData.socialMedia}
             onChange={handleInputChange}
+            required
           >
             <option value="">Selecione</option>
             <option value="yes">Sim</option>
@@ -921,9 +923,9 @@ try {
           <select
             id="paymentIntegration"
             name="paymentIntegration"
-              
             value={formData.paymentIntegration}
             onChange={handleInputChange}
+            required
           >
             <option value="">Selecione</option>
             <option value="integracaoPg">Sim</option>
@@ -936,9 +938,9 @@ try {
           <select
             id="productReviews"
             name="productReviews"
-              
             value={formData.productReviews}
             onChange={handleInputChange}
+            required
           >
             <option value="">Selecione</option>
             <option value="avaliacaoProdutos">Sim</option>
@@ -950,9 +952,9 @@ try {
           <select
             id="clientSupport"
             name="clientSupport"
-              
             value={formData.clientSupport}
             onChange={handleInputChange}
+            required
           >
             <option value="">Selecione</option>
             <option value="suporteYes">Sim</option>
@@ -961,23 +963,24 @@ try {
         </div>
         <div>
           <p>Idiomas do Website</p>
-          <div>
+          <div className="custom-checkbox">
             {[
               { value: "portugues", label: "Português" },
               { value: "ingles", label: "Inglês" },
               { value: "frances", label: "Francês" },
               { value: "espanhol", label: "Espanhol" },
             ].map(({ value, label }) => (
-              <label key={value}>
+              <div key={value}>
                 <input
                   type="checkbox"
+                  id={value}
                   name="languages"
                   value={value}
                   checked={formData.languages.includes(value)}
                   onChange={handleInputChange}
                 />
-                {label}
-              </label>
+                <label htmlFor={value}>{label}</label>
+              </div>
             ))}
           </div>
         </div>
@@ -1018,9 +1021,9 @@ try {
           <select
             id="maintenance"
             name="maintenance"
-              
             value={formData.maintenance}
             onChange={handleInputChange}
+            required
           >
             <option value="">Selecione</option>
             <option value="umAno">Um ano</option>
@@ -1034,9 +1037,9 @@ try {
           <select
             id="updateFrequency"
             name="updateFrequency"
-              
             value={formData.updateFrequency}
             onChange={handleInputChange}
+            required
           >
             <option value="">Selecione</option>
             <option value="semanal">Semanal</option>
