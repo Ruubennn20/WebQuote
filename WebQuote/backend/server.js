@@ -33,7 +33,7 @@ app.post('/send-email', upload.single('pdf'), async (req, res) => {
   const mailOptions = {
     from: 'seu-email@gmail.com', // Seu email
     to: email, // Email do destinatário
-    subject: 'Seu PDF Gerado',
+    subject: 'Pedido de Orçamento WebQuote',
     html: `
     <p>Caro(a) Cliente,</p>
     <p>Conforme solicitado, segue em anexo o documento em formato PDF.</p>
@@ -43,7 +43,6 @@ app.post('/send-email', upload.single('pdf'), async (req, res) => {
     <p><strong>WebQuote</strong></p>
     <img src="cid:logoWebQuote" alt="Logo WebQuote" style="width: 150px;" />
   `,
-   
     attachments: [
       {
         filename: 'website_quotation.pdf', // Nome do arquivo
@@ -51,12 +50,9 @@ app.post('/send-email', upload.single('pdf'), async (req, res) => {
       },
       {
         filename: 'webQuoteLogo.jpg',
-        path: 'C:/Users/cesae/Desktop/WebQuote/WebQuote/src/assets/webQuoteLogo.jpg',
+        path: '../src/assets/webQuoteLogo.jpg',
         cid: 'logoWebQuote',
       },
-    
-   
-     
     ],
   };
 
