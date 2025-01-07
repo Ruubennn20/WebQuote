@@ -273,7 +273,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         `${PRICE_MAP[formData.objective] || 0} €`
       ]],
       headStyles: {
-        fillColor: [26, 188, 156],
+        fillColor: [65, 105, 225],
         textColor: 255,
         fontSize: 10,
       },
@@ -312,7 +312,8 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
                 
               ]],
               headStyles: {
-                fillColor: [26, 188, 156],
+                fillColor: [65, 105, 225],
+
                 textColor: 255,
                 fontSize: 10,
               },
@@ -328,12 +329,12 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
               ["Nada Selecionado.", "", "", "", "Total: 0 €"]
           ],
           headStyles: {
-              fillColor: [26, 188, 156], // Keep the same color
+              fillColor: [65, 105, 225], // Keep the same color
               textColor: 255,
               fontSize: 10,
           },
           footStyles: {
-              fillColor: [26, 188, 156] ,
+            fillColor: [65, 105, 225],
               textColor: 0,
               fontSize: 10,
               cellPadding: 1, // Adjust padding for the footer specifically
@@ -374,7 +375,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         
       ]],
       headStyles: {
-        fillColor: [26, 188, 156],
+        fillColor: [65, 105, 225],
         textColor: 255,
         fontSize: 10,
       },
@@ -391,7 +392,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
           ["No design selected.", "", "", "Total: 0 €"]
       ], 
       headStyles: {
-          fillColor: [26, 188, 156], // Keep the same color
+          fillColor: [65, 105, 225], // Keep the same color
           textColor: 255,
           fontSize: 10,
       },
@@ -436,7 +437,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         `${languagesTotal} €`
       ]],
       headStyles: {
-        fillColor: [26, 188, 156],
+        fillColor: [65, 105, 225],
         textColor: 255,
         fontSize: 10,
       },
@@ -451,7 +452,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
           ["No pages selected.", "Total: 0 €", "", "", ""]
       ],
       headStyles: {
-          fillColor: [26, 188, 156], // Keep the same color
+          fillColor: [65, 105, 225], // Keep the same color
           textColor: 255,
           fontSize: 10,
       },
@@ -493,7 +494,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
        `${integrations.reduce((sum, item) => sum + parseFloat(item[4]), 0) || 0} €`
      ]],
      headStyles: {
-       fillColor: [26, 188, 156],
+       fillColor: [65, 105, 225],
        textColor: 255,
        fontSize: 10,
      },
@@ -508,7 +509,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
           ["Sem Integrações selecionas.", "Total: 0 €", "", "", ""]
       ],
       headStyles: {
-          fillColor: [26, 188, 156], // Keep the same color
+          fillColor: [65, 105, 225], // Keep the same color
           textColor: 255,
           fontSize: 10,
       },
@@ -549,7 +550,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         `${features.reduce((sum, item) => sum + parseFloat(item[4]), 0) || 0} €`
       ]],
       headStyles: {
-        fillColor: [26, 188, 156],
+        fillColor: [65, 105, 225],
         textColor: 255,
         fontSize: 10,
       },
@@ -564,7 +565,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
           ["Sem features selecionas.", "Total: 0 €", "", "", ""]
       ],
       headStyles: {
-          fillColor: [26, 188, 156], // Keep the same color
+          fillColor: [65, 105, 225], // Keep the same color
           textColor: 255,
           fontSize: 10,
       },
@@ -613,7 +614,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
      `${finalDetails.reduce((sum, item) => sum + parseFloat(item[4]), 0) || 0} €`
    ]],
    headStyles: {
-     fillColor: [26, 188, 156],
+     fillColor: [65, 105, 225],
      textColor: 255,
      fontSize: 10,
    },
@@ -628,7 +629,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         ["Sem suporte nosso selecionao", "Total: 0 €", "", "", ""]
     ],
     headStyles: {
-        fillColor: [26, 188, 156], // Keep the same color
+        fillColor: [65, 105, 225], // Keep the same color
         textColor: 255,
         fontSize: 10,
     },
