@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { jsPDF } from "jspdf";
 import { jsPDFTable } from "jspdf-autotable";
 import "../formsFinal.css";
-import logo from "../../../assets/WebQuoteLogo.jpg";
+import logo from "../../../assets/logoPequeno.png";
 import HeaderForm from "../../Header/HeaderForm";
 
 export default function FormECommerce({ formData: initialFormData, setFormData: setInitialFormData, initialStep, onStepBack }) {
@@ -220,26 +220,38 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
 
     const doc = new jsPDF();
     
-    doc.addImage(logo, 'JPEG', 10, 5, 40, 12);
+    doc.addImage(logo, 'JPEG', 10, -4, 40, 30);
     doc.setFontSize(10);
     doc.text('WEBQUOTE', 150, 10);
-    doc.text('Website Blog', 150, 15);
+    doc.text('Orçamento Website E-Commerce', 150, 15);
     doc.setDrawColor(200, 200, 200);
-    doc.line(10, 18, 200, 18);
+    doc.line(10, 22, 200, 22);
     
     // Client Information
-    doc.text('Contact Information', 13, 23);
-    doc.text(`Nome: ${initialFormData.nome || ''}`, 13, 28);
-    doc.text(`Contacto: ${initialFormData.contacto || ''}`, 13, 32);
-    doc.text(`Email: ${initialFormData.email || ''}`, 13, 36);
+    doc.setFont('Helvetica', 'bold');
+    doc.text('Informação do cliente', 13, 27);
+    doc.text('Nome:', 13, 31);
+    doc.text('Contacto:', 13, 35);
+    doc.text('Email:', 13, 39);
+    
+    // Calculate the width of the bold labels to position the values
+    const nomeWidth = doc.getTextWidth('Nome:');
+    const contactoWidth = doc.getTextWidth('Contacto:');
+    const emailWidth = doc.getTextWidth('Email:');
+
+    // Switch to normal font for the values
+    doc.setFont('Helvetica', 'normal');
+    doc.text(initialFormData.nome || '', 13 + nomeWidth + 2, 31);
+    doc.text(initialFormData.contacto || '', 13 + contactoWidth + 2, 35);
+    doc.text(initialFormData.email || '', 13 + emailWidth + 2, 39);
     
     // Quote details
     doc.setFont('Helvetica', 'bold');
-    doc.text('Fatura Num    :', 130, 23);
-    doc.text('Data          :', 130, 27);
+    doc.text('Fatura Num:    ', 130, 27);
+    doc.text('Data:    ', 130, 31);
     doc.setFont('Helvetica', 'normal');
-    doc.text(`WQ${Date.now().toString().slice(-6)}`, 155, 23);
-    doc.text(new Date().toLocaleDateString(), 155, 27);
+    doc.text(`WQ${Date.now().toString().slice(-6)}`, 155, 27);
+    doc.text(new Date().toLocaleDateString(), 155, 31);
 
     // Tabela para o tipo de website novo ou modernizar
     doc.autoTable({
