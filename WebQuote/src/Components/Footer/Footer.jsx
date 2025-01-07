@@ -22,22 +22,22 @@ export default function Footer() {
           <div className="footerContent">
             <div className="menu">
               <ul className="menu-coluna1">
-                <li><Link to="/">Home</Link></li>
-                <li><Link to="/sobre-nos">Sobre Nós</Link></li>
-                <li><Link to="/contactos">Contactos</Link></li>
+                <li className="HomeFooter"><Link to="/">Home</Link></li>
+                <li className="SobreNosFooter"><Link to="/sobre-nos">Sobre Nós</Link></li>
+                <li className="ContactosFooter"><Link to="/contactos">Contactos</Link></li>
               </ul>
               <ul className="menu-coluna2">
-              <li><Link to="/politica-cookies">Política de Cookies</Link></li>
-                <li><a href="#politica-privacidade">Política de Privacidade</a></li>
+              <li className="CookiesFooter"><Link to="/politica-cookies">Política de Cookies</Link></li>
+                <li PoliticaFooter><a href="#politica-privacidade">Política de Privacidade</a></li>
               </ul>
               <ul className="menu-coluna3">
-                <li>
+                <li className="ReclamacoesFooter">
                   <a href="https://www.livroreclamacoes.pt/Inicio/" target="_blank" rel="noopener noreferrer">
                     Livro de Reclamações
                   </a>
                 </li>
-                <li><a href="#perguntas-respostas">Perguntas e Respostas</a></li>
-                <li><a href="#termos-servico">Termos de Serviço</a></li>
+                <li className="Q&AFooter"><a href="#perguntas-respostas">Perguntas e Respostas</a></li>
+                <li className="TermosFooter"><a href="#termos-servico">Termos de Serviço</a></li>
               </ul>
             </div>
             <div className="footer-logo">

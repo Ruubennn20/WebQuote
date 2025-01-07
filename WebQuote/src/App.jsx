@@ -13,12 +13,15 @@ import FormInicial from "./Components/Forms/formcomPDFGenerator";
 import FormAdmin from "./Pages/formAdmin";
 import PoliticaDeCookies from "./Pages/PoliticaDeCookies";
 import FormMainComponente from "./Components/Forms/FormMainComponente"; 
+import ScrollToTop from "./Components/ScrollToTop"; // Importar o ScrollToTop
 
 
 
 function App() {
   return (
     <Router>
+      {/* ScrollToTop para garantir que a página inicie no topo */}
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/homepage" element={<Homepage />} />
