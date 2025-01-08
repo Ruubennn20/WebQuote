@@ -9,12 +9,13 @@ import HeaderForm from "../../Header/HeaderForm";
 export default function FormECommerce({ formData: initialFormData, setFormData: setInitialFormData, initialStep, onStepBack }) {
   const PRICE_MAP = {
    //Paginas
-    mainPage: 100,
-    aboutPage: 100,
-    contactPage:100,
-    lojaPage: 100,
-    userSection: 100,
-    politicaPage: 100,
+   //preço por hora é de 20€
+    mainPage: 160,
+    aboutPage: 160,
+    contactPage:160,
+    lojaPage: 320,
+    userSection: 160,
+    politicaPage: 160,
     
     //tipo de site
     novoSite: 0,
@@ -22,22 +23,22 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     // nao adcionar um preço aqui pois depois tenho que fazer um calculo se for site novo é o preço a multiplicar por 1.5x por exemplo e se for modernização é o preço a multiplicar por 1.25x por exemplo
    
     //Servicos de Design
-    Logotipo: 50,
-    Icons: 40,
-    Banners:50,
-    outras: 10,
+    Logotipo: 80,
+    Icons: 80,
+    Banners:80,
+    outras: 20,
 
-    //Redes Sociais
-    socialMedia: 80,
+    //Redes Sociais 12horas
+    socialMedia: 140,
 
-    //Meios de Pagamento
-    paymentIntegration: 80,
+    //Meios de Pagamento 12horas
+    paymentIntegration: 140,
 
-    //Avaliação de Produtos
-    productReviews: 80,
+    //Avaliação de Produtos 12horas
+    productReviews: 140,
 
-    //Suporte ao cliente
-    clientSupport: 200,
+    //Suporte ao cliente 12horas
+    clientSupport: 140,
 
     //Manutençao
     umAno: 200,
@@ -46,9 +47,9 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     
 
     //Atualizaçao
-    semanal: 100,
-    mensal: 50,
-    trimestral: 20,
+    semanal: 400,
+    mensal: 250,
+    trimestral: 150,
 
     //Idiomas
     portugues: 10,
@@ -56,7 +57,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     frances: 20,
     espanhol: 20,
   };
-  const [selectedForm, setSelectedForm] = useState(null);
+/*   const [selectedForm, setSelectedForm] = useState(null); */
   const [formData, setFormData] = useState({
     nome: '',
     contacto: '',
@@ -256,26 +257,23 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     // Tabela para o tipo de website novo ou modernizar
     doc.autoTable({
       startY: 45,
-      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+      head: [['Tipo de serviço', "", '', '']],
       body: [[
-        "Type",
-        formData.objective === "novoSite" ? "New Website Development" : 
-        formData.objective === "modernizacao" ? "Website Modernization" : "",
-        "1",
-        "Service",
+        "Website",
+        formData.objective === "novoSite" ? "Desenvolvimento de um website novo" : 
+        formData.objective === "modernizacao" ? "Modernização de um website existente" : "",
+        "",
+        "",
         formData.objective ? PRICE_MAP[formData.objective] + " €" : "0 €"
       ]],
-      foot: [[
-        '',
-        'Subtotal',
-        '',
-        '',
-        `${PRICE_MAP[formData.objective] || 0} €`
-      ]],
+      
       headStyles: {
         fillColor: [65, 105, 225],
         textColor: 255,
         fontSize: 10,
+      },
+      footStyles: {
+        fillColor: [65, 105, 225],
       },
       styles: { fontSize: 10, cellPadding: 3 },
       theme: 'grid',
@@ -285,13 +283,12 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     let finalY = doc.lastAutoTable.finalY;
 
     //Tabela para as páginas
-    if (formData.pages.length > 0) {
         const pagesTotal = formData.pages.reduce((sum, page) => sum + (PRICE_MAP[page] || 0), 0);
         doc.autoTable({
             startY: finalY + 10,
-            head: [['Type', 'Tipo de serviço', 'Horas', 'Price (€)']],
+            head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
             body: [
-                ["Pages", "", formData.pages.length.toString(), "20€ / Hora", "-"],
+                ["Páginas: ", "", "", "20€ / Hora", "-"],
                 ...formData.pages.map(page => {
                     const pageLabel = {
                         mainPage: "Página Inicial",
@@ -301,62 +298,39 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
                         userSection: "Secção de users",
                         politicaPage: "Política de devoluções",
                     }[page];
-                    return ["", pageLabel, "1",  (PRICE_MAP[page] || 0) + " €"];
-                })
-              ],
-              foot: [[
-                '',
-                'Subtotal',
-                '',
-                `${pagesTotal} €` 
-                
-              ]],
-              headStyles: {
-                fillColor: [65, 105, 225],
 
+                    // Set hours based on page type
+                    const hours = page === 'lojaPage' ? "16" : "8";
+                    return ["", pageLabel, hours, (PRICE_MAP[page] || 0) + " €"];
+                })
+            ],
+            foot: [[
+                '',
+                '',
+                'Subtotal: ',
+                `${pagesTotal} €` 
+            ]],
+            headStyles: {
+                fillColor: [65, 105, 225],
                 textColor: 255,
                 fontSize: 10,
-              },
-              styles: { fontSize: 10, cellPadding: 3 },
-              theme: 'grid',
-            });
-    } else {
-        // If no pages are selected, show a message in the table while keeping the Type header
-        doc.autoTable({
-          startY: finalY + 10,
-          head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
-          body: [
-              ["Nada Selecionado.", "", "", "", "Total: 0 €"]
-          ],
-          headStyles: {
-              fillColor: [65, 105, 225], // Keep the same color
-              textColor: 255,
-              fontSize: 10,
-          },
-          footStyles: {
-            fillColor: [65, 105, 225],
-              textColor: 0,
-              fontSize: 10,
-              cellPadding: 1, // Adjust padding for the footer specifically
-          },
-          styles: { 
-              fontSize: 10, 
-              cellPadding: 3 // Keep this for the rest of the table
-          },
-          theme: 'grid',
-      });
-    }
-    
+            },
+            footStyles: {
+              fillColor: [65, 105, 225],
+            },
+            styles: { fontSize: 10, cellPadding: 3 },
+            theme: 'grid',
+        });
+
     // Tabela para os serviços de design
     finalY = doc.lastAutoTable.finalY;
-    if(formData.designServices.length > 0){
       console.log("Design Services Selected:", formData.designServices);
       const designTotal = formData.designServices.reduce((sum, service) => sum + (PRICE_MAP[service] || 0), 0);
       doc.autoTable({
       startY: finalY + 10,
-      head: [['Type', 'Tipo de serviço', 'Horas', 'Price (€)']],
+      head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
       body: [
-        ["Design", "", formData.designServices.length.toString(), "10€ / Hora", "-"],
+        ["Design", "", "", "10€ / Hora", "-"],
         ...formData.designServices.map(service => {
         const designLabel = {
           Logotipo: "Logotipo",
@@ -364,14 +338,15 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
           Banners: "Banners",
           outras: "Outros"
         }[service];
-        return ["",designLabel, "4", PRICE_MAP[service] + " €"];
+        const design = service === 'outras' ? "2" : "8";
+        return ["",designLabel, design, PRICE_MAP[service] + " €"];
       }),
     ],
       foot: [[
         '',
-        'Subtotal',
         '',
-        `${designTotal} €` 
+        'Subtotal',
+        `${designTotal} €`
         
       ]],
       headStyles: {
@@ -379,61 +354,39 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         textColor: 255,
         fontSize: 10,
       },
+      footStyles: {
+        fillColor: [65, 105, 225],
+      },
       styles: { fontSize: 10, cellPadding: 3 },
       theme: 'grid',
     });
 
-    
-  }else{
-    doc.autoTable({
-      startY: finalY + 10,
-      head: [['Type', 'Tipo de serviço', 'Horas', 'Price (€)']],
-      body: [
-          ["No design selected.", "", "", "Total: 0 €"]
-      ], 
-      headStyles: {
-          fillColor: [65, 105, 225], // Keep the same color
-          textColor: 255,
-          fontSize: 10,
-      },
-      footStyles: {
-          fillColor: [200, 200, 200], // Keep the same color
-          textColor: 0,
-          fontSize: 10,
-          cellPadding: 1, // Adjust padding for the footer specifically
-      },
-      styles: { 
-          fontSize: 10, 
-          cellPadding: 3
-      },
-      theme: 'grid',
-  });
-  }
 
     // Languages Table
     finalY = doc.lastAutoTable.finalY;
-    if(formData.languages.length >0){
       const languagesTotal = formData.languages.reduce((sum, lang) => sum + (PRICE_MAP[lang] || 0), 0);
       doc.autoTable({
       startY: finalY + 10,
-      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+      head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
      
-      body:[["Linguagem", "", formData.languages.length.toString(), "20€ / Hora", "-"],
+      body:[["Linguagem", "", "", "20€ / Hora", "-"],
       ...formData.languages.map(lang => {
         const langLabel = {
-          portugues: "portugues",
-          ingles: "ingles",
-          frances: "frances",
-          espanhol: "espanhol"
+          portugues: "Português",
+          ingles: "Inglês",
+          frances: "Francês",
+          espanhol: "Espanhol"
         }[lang];
-        return ["", langLabel, "1", "Unit", PRICE_MAP[lang] + " €"];
+        // Each language takes 0.5 hour for portugues and 1 hour for others
+        const hours = lang === 'portugues' ? "0.5" : "1";
+
+        return ["", langLabel, hours, PRICE_MAP[lang] + "€" ];
       }),
     ],
       foot: [[
         '',
+        '',
         'Subtotal',
-        '',
-        '',
         `${languagesTotal} €`
       ]],
       headStyles: {
@@ -441,222 +394,168 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         textColor: 255,
         fontSize: 10,
       },
+      footStyles: {
+        fillColor: [65, 105, 225],
+      },
       styles: { fontSize: 10, cellPadding: 3 },
       theme: 'grid',
     });
-  }else{
-    doc.autoTable({
-      startY: finalY + 10,
-      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
-      body: [
-          ["No pages selected.", "Total: 0 €", "", "", ""]
-      ],
-      headStyles: {
-          fillColor: [65, 105, 225], // Keep the same color
-          textColor: 255,
-          fontSize: 10,
-      },
-      footStyles: {
-          fillColor: [200, 200, 200], // Keep the same color
-          textColor: 0,
-          fontSize: 10,
-          cellPadding: 1, // Adjust padding for the footer specifically
-      },
-      styles: { 
-          fontSize: 10, 
-          cellPadding: 3 // Keep this for the rest of the table
-      },
-      theme: 'grid',
-  });
-  }
 
-    // Social Media Integration Table
-    finalY = doc.lastAutoTable.finalY;
+
+
+//Tabela PDF para as integrações
+  finalY = doc.lastAutoTable.finalY;
    const integrations = [];
    if (formData.socialMedia === "yes") {
-     integrations.push(["", "Social Media Integration", "1", "Service", `${PRICE_MAP.socialMedia} €`]);
+     integrations.push(["", "Redes Sociais", "12", `${PRICE_MAP.socialMedia} €`]);
    }
    if (formData.productReviews === "avaliacaoProdutos") {
-     integrations.push(["", "Product Reviews System", "1", "Service", `${PRICE_MAP.productReviews} €`]);
+     integrations.push(["", "Sistema de Avaliação de Produtos", "12", `${PRICE_MAP.productReviews} €`]);
    }
-   if(integrations.length > 0 ){
+   
     doc.autoTable({
      startY: finalY + 10,
-     head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+     head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
      body: [["Integrações", "", "", "20€ / Hora", "-"],
-     ...integrations.length > 0 ? integrations : [["No integrstions selected.", "", "", "", "Total: 0 €"]],
+     ...integrations.length > 0 ? integrations : [["Sem integraçoes selecionadas.", "", "", "", "Subtotal: 0 €"]],
    ],
      foot: [[
        '',
+       '',
        'Subtotal',
-       '',
-       '',
-       `${integrations.reduce((sum, item) => sum + parseFloat(item[4]), 0) || 0} €`
+       `${(
+        (formData.socialMedia === "yes" ? PRICE_MAP.socialMedia : 0) + 
+        (formData.productReviews === "avaliacaoProdutos" ? PRICE_MAP.productReviews : 0)
+    ).toFixed(2)} €`
      ]],
      headStyles: {
        fillColor: [65, 105, 225],
        textColor: 255,
        fontSize: 10,
      },
+     footStyles: {
+      fillColor: [65, 105, 225],
+    },
      styles: { fontSize: 10, cellPadding: 3 },
      theme: 'grid',
    });
-  }else{
-    doc.autoTable({
-      startY: finalY + 10,
-      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
-      body: [
-          ["Sem Integrações selecionas.", "Total: 0 €", "", "", ""]
-      ],
-      headStyles: {
-          fillColor: [65, 105, 225], // Keep the same color
-          textColor: 255,
-          fontSize: 10,
-      },
-      footStyles: {
-          fillColor: [200, 200, 200], // Keep the same color
-          textColor: 0,
-          fontSize: 10,
-          cellPadding: 1, // Adjust padding for the footer specifically
-      },
-      styles: { 
-          fontSize: 10, 
-          cellPadding: 3 // Keep this for the rest of the table
-      },
-      theme: 'grid',
-  });
-  }
 
+   //Tabela PDF para as features
     const features = []
     if (formData.paymentIntegration === "integracaoPg") {
-      features.push(["", "Payment Integration", "1", "Service", `${PRICE_MAP.paymentIntegration} €`]);
+      features.push(["", "Métodos de Pagamento", "12", `${PRICE_MAP.paymentIntegration} €`]);
     }
     if(formData.clientSupport === "suporteYes"){
-      features.push(["", "Suporte ao Cliente", "1", "Service", `${PRICE_MAP.clientSupport} €`]);
+      features.push(["", "Suporte ao Cliente", "12", `${PRICE_MAP.clientSupport} €`]);
     }
-    if(features.length > 0){
+
     finalY = doc.lastAutoTable.finalY;
     doc.autoTable({
       startY: finalY + 10,
-      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
+      head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
       body: [["Features", "", "", "20€ / Hora", "-"],
-      ...features.length > 0 ? features : [["No features selected.", "", "", "", "Total: 0 €"]],
+      ...features.length > 0 ? features : [["Sem features selecionadas.", "", "", "", "Subtotal: 0 €"]],
     ],
       foot: [[
         '',
+        '',
         'Subtotal',
-        '',
-        '',
-        `${features.reduce((sum, item) => sum + parseFloat(item[4]), 0) || 0} €`
+        `${(
+            (formData.paymentIntegration === "integracaoPg" ? PRICE_MAP.paymentIntegration : 0) + 
+            (formData.clientSupport === "suporteYes" ? PRICE_MAP.clientSupport : 0)
+        ).toFixed(2)} €`
       ]],
       headStyles: {
         fillColor: [65, 105, 225],
         textColor: 255,
         fontSize: 10,
       },
+      footStyles: {
+        fillColor: [65, 105, 225],
+      },
       styles: { fontSize: 10, cellPadding: 3 },
       theme: 'grid',
     });
-  }else{
-    doc.autoTable({
-      startY: finalY + 10,
-      head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
-      body: [
-          ["Sem features selecionas.", "Total: 0 €", "", "", ""]
-      ],
-      headStyles: {
-          fillColor: [65, 105, 225], // Keep the same color
-          textColor: 255,
-          fontSize: 10,
-      },
-      footStyles: {
-          fillColor: [200, 200, 200], // Keep the same color
-          textColor: 0,
-          fontSize: 10,
-          cellPadding: 1, // Adjust padding for the footer specifically
-      },
-      styles: { 
-          fontSize: 10, 
-          cellPadding: 3 // Keep this for the rest of the table
-      },
-      theme: 'grid',
-  });
-  }
+  
 
   finalY = doc.lastAutoTable.finalY;
   const finalDetails = [];
   // Check for MaintenanceormData.maintenance) {
    finalDetails.push(["Manutenção", {
-     umAno: "One Year Maintenance",
-     doisAnos: "Two Years Maintenance",
-     tresAnos: "Three Years Maintenance"
-   }[formData.maintenance], "1", "Service", `${PRICE_MAP[formData.maintenance]} €`]);
-  // Check for Update Frequency
-  if (formData.updateFrequency) {
+     umAno: "1 Ano de Manutenção",
+     doisAnos: "2 Anos de Manutenção",
+     tresAnos: "3 Anos de Manutenção"
+   }[formData.maintenance], "1", `${PRICE_MAP[formData.maintenance]} €`]);
+ 
+   // Check for Update Frequency
+ 
    finalDetails.push(["Atualizações", {
-     semanal: "Weekly Updates",
-     mensal: "Monthly Updates",
-     trimestral: "Quarterly Updates"
-   }[formData.updateFrequency], "1", "Service", `${PRICE_MAP[formData.updateFrequency]} €`]);
+     semanal: "Atualizações Semanais",
+     mensal: "Atualizações Mensais",
+     trimestral: "Atualizações Trimestrais"
+   }[formData.updateFrequency], "1", `${PRICE_MAP[formData.updateFrequency]} €`]);
   
   // Draw the Final Table
   doc.autoTable({
    startY: finalY + 10,
-   head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
-   body: [["Pós venda ", "", " ", "20€ / Hora", "-"],
-   ...finalDetails.length > 0 ? finalDetails : [["No maintenance or update frequency selected.", "", "", "", "Total: 0 €"]],
+   head: [['Tipo de serviço', "", ' ', 'Preço (€)']],
+   body: [["Pós venda ", "", " ", "Unitário €", "-"],
+   ...finalDetails.length > 0 ? finalDetails : [["Sem manutenção ou frequência de atualização selecionada.", "", "", "", "Subtotal: 0 €"]],
   ],
    foot: [[
      '',
+     '',
      'Subtotal',
-     '',
-     '',
-     `${finalDetails.reduce((sum, item) => sum + parseFloat(item[4]), 0) || 0} €`
+     `${(
+        (PRICE_MAP[formData.maintenance] || 0) + 
+        (PRICE_MAP[formData.updateFrequency] || 0)
+    ).toFixed(2)} €`
    ]],
    headStyles: {
      fillColor: [65, 105, 225],
      textColor: 255,
      fontSize: 10,
    },
+   footStyles: {
+    fillColor: [65, 105, 225],
+  },
    styles: { fontSize: 10, cellPadding: 3 },
    theme: 'grid',
   })
-}else{
-  doc.autoTable({
-    startY: finalY + 10,
-    head: [['Type', 'Item Name', 'Quantity', 'UOM', 'Price (€)']],
-    body: [
-        ["Sem suporte nosso selecionao", "Total: 0 €", "", "", ""]
-    ],
-    headStyles: {
-        fillColor: [65, 105, 225], // Keep the same color
-        textColor: 255,
-        fontSize: 10,
-    },
-    footStyles: {
-        fillColor: [200, 200, 200], // Keep the same color
-        textColor: 0,
-        fontSize: 10,
-        cellPadding: 1, // Adjust padding for the footer specifically
-    },
-    styles: { 
-        fontSize: 10, 
-        cellPadding: 3 // Keep this for the rest of the table
-    },
-    theme: 'grid',
-});
-}
 
     // Final Total Table
     finalY = doc.lastAutoTable.finalY;
+    const finalTotal = (
+      // Website Type multiplier
+      (
+        // Pages cost
+        formData.pages.reduce((sum, page) => sum + (PRICE_MAP[page] || 0), 0) +
+        // Design Services
+        formData.designServices.reduce((sum, service) => sum + (PRICE_MAP[service] || 0), 0) +
+        // Social Media Integration
+        (formData.socialMedia === "yes" ? PRICE_MAP.socialMedia : 0) +
+        // Payment Integration
+        (formData.paymentIntegration === "integracaoPg" ? PRICE_MAP.paymentIntegration : 0) +
+        // Product Reviews
+        (formData.productReviews === "avaliacaoProdutos" ? PRICE_MAP.productReviews : 0) +
+        // Customer Support
+        (formData.clientSupport === "suporteYes" ? PRICE_MAP.clientSupport : 0) +
+        // Languages
+        formData.languages.reduce((sum, lang) => sum + (PRICE_MAP[lang] || 0), 0) +
+        // Maintenance
+        (PRICE_MAP[formData.maintenance] || 0) +
+        // Update Frequency
+        (PRICE_MAP[formData.updateFrequency] || 0)
+      ) 
+    );
+
     doc.autoTable({
       startY: finalY + 10,
       body: [[
         '',
-        'Total Amount',
         '',
-        '',
-        `${total.toFixed(2)} €`
+        'Total Final: ',
+        `${finalTotal.toFixed(2)} €`
       ]],
       styles: { 
         fontSize: 10, 
@@ -820,7 +719,7 @@ try {
       key="step2"
       layoutId="formStep"
     >
-      <h3>Detalhes do Website</h3>
+      <h3 className="h3title">Detalhes do Website</h3>
       <div>
         <div>
           <label htmlFor="objective">Website novo ou modernização?</label>
@@ -891,10 +790,10 @@ try {
       key="step3"
       layoutId="formStep"
     >
-      <h3>Serviços Adicionais</h3>
+      <h3 className="h3title">Serviços Adicionais</h3>
       <div>
         <div>
-          <p>Serviços de Design</p>
+          <p className="labels">Serviços de Design:</p>
           <div className="custom-checkbox">
             {[
               { value: "Logotipo", label: "Logotipo" },
@@ -916,8 +815,9 @@ try {
             ))}
           </div>
         </div>
+      
         <div>
-          <label htmlFor="socialMedia">Integração com redes sociais</label>
+          <label htmlFor="socialMedia" className="labels">Integração com redes sociais:</label>
           <select
             id="socialMedia"
             name="socialMedia"
@@ -975,7 +875,7 @@ try {
           </select>
         </div>
         <div>
-          <p>Idiomas do Website</p>
+          <p className="labels">Idiomas do Website</p>
           <div className="custom-checkbox">
             {[
               { value: "portugues", label: "Português" },
@@ -1027,7 +927,7 @@ try {
       key="step4"
       layoutId="formStep"
     >
-      <h3>Finalização</h3>
+      <h3 className="h3title">Finalização</h3>
       <div>
         <div>
           <label htmlFor="maintenance">Período de manutenção</label>
@@ -1088,6 +988,7 @@ try {
         {step === 2 && <Step1 />}
         {step === 3 && <Step2 />}
         {step === 4 && <Step3 />}
+        <p className="p">*obrigatório</p>
       </div>
     </>
   )
