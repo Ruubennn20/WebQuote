@@ -6,71 +6,61 @@ import "../formsFinal.css";
 import logo from "../../../assets/logoPequeno.png";
 import HeaderForm from "../../Header/HeaderForm";
 
-export default function FormECommerce({ formData: initialFormData, setFormData: setInitialFormData, initialStep, onStepBack }) {
+export default function FormCRM({ formData: initialFormData, setFormData: setInitialFormData, initialStep, onStepBack }) {
   const PRICE_MAP = {
-   //Paginas
-   //preço por é de 20€
-    mainPage: 160,
-    aboutPage: 160,
-    contactPage:160,
-    lojaPage: 320,
-    userSection: 160,
-    politicaPage: 160,
+
+    // Core CRM Features (base pages)
+    dashboard: 200,     
+    contactos: 160,          
+    tarefas: 160,         
+    relatorios: 200,      
+    documentos: 160,     
     
-    //tipo de site
+    // Type of system
     novoSite: 0,
-    modernizacao: 0, 
-    // nao adcionar um preço aqui pois depois tenho que fazer um calculo se for site novo é o preço a multiplicar por 1.5x por exemplo e se for modernização é o preço a multiplicar por 1.25x por exemplo
-   
-    //Servicos de Design
-    Logotipo: 80,
-    Icons: 80,
-    Banners:80,
-    outras: 20,
-
-    //Redes Sociais 12horas
-    socialMedia: 140,
-
-    //Meios de Pagamento 12horas
-    paymentIntegration: 140,
-
-    //Avaliação de Produtos 12horas
-    productReviews: 140,
-
-    //Suporte ao cliente 12horas
-    clientSupport: 140,
-
-    //Manutençao
-    umAno: 200,
-    doisAnos: 350,
-    tresAnos: 500,
+    modernizacao: 0,
     
-
-    //Atualizaçao
+    // Advanced Features
+    automaçaoWorkflow: 200,        
+    integraçaoCalendario: 120, 
+    sistemaArmazenamento: 100,   
+    
+    // Analytics Features
+    analisesBasicas: 160,       // Basic reporting
+    analisesAvançadas: 300,    // Advanced analytics & forecasting
+    relatoriosPersonalizados: 200,        // Custom report builder
+    
+    // Integration Features
+    integraçaoEmail: 140,        // Email service integration
+    integraçaoAplicaçoes: 180,      // Third-party app integration
+    acessoAPI: 250,           // API access for custom integration
+    
+    // Maintenance
+    umAno: 300,
+    doisAnos: 500,
+    tresAnos: 700,
+    
+    // Updates
     semanal: 400,
     mensal: 250,
     trimestral: 150,
-
-    //Idiomas
+    
+    // Languages
     portugues: 10,
     ingles: 20,
     frances: 20,
     espanhol: 20,
   };
-/*   const [selectedForm, setSelectedForm] = useState(null); */
+
   const [formData, setFormData] = useState({
     nome: '',
     contacto: '',
     email: '',
     objective: "",
     pages: [],
-    designServices: [],
+    advancedFeatures: [],
+    analyticsFeatures: [],
     integrations: [],
-    features: [],
-    socialMedia: "",
-    paymentIntegration: "",
-    productReviews: "",
-    customerSupport: [],
     maintenancePeriod: "",
     updateFrequency: "",
     languages: [],
@@ -114,7 +104,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     }
 
     // Check design services (at least one)
-    if (!formData.designServices.length) {
+    if (!formData.advancedFeatures.length) {
       validationErrors.push("Por favor selecione pelo menos um serviço de design");
     }
 
@@ -169,7 +159,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     });
 
     // Design Services
-    formData.designServices.forEach(service => {
+    formData.advancedFeatures.forEach(service => {
       total += PRICE_MAP[service] || 0;
     });
 
@@ -351,29 +341,29 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     
     // Tabela para os serviços de design
     finalY = doc.lastAutoTable.finalY;
-    if(formData.designServices.length > 0){
-      console.log("Design Services Selected:", formData.designServices);
-      const designTotal = formData.designServices.reduce((sum, service) => sum + (PRICE_MAP[service] || 0), 0);
+    if(formData.advancedFeatures.length > 0){
+      console.log("Design Services Selected:", formData.advancedFeatures);
+      const avaçançadosTotal = formData.advancedFeatures.reduce((sum, service) => sum + (PRICE_MAP[service] || 0), 0);
       doc.autoTable({
       startY: finalY + 10,
       head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
       body: [
-        ["Design", "", "", "10€ / Hora", "-"],
-        ...formData.designServices.map(service => {
-        const designLabel = {
-          Logotipo: "Logotipo",
-          Icons: "Icons",
-          Banners: "Banners",
-          outras: "Outros"
+        ["Recursos Avançados", "", "", "20€ / Hora", "-"],
+        ...formData.advancedFeatures.map(service => {
+        const avançadosLabel = {
+          AutomaçaoWorkflow: "Automaçao de Workflow",
+          integraçaoEmail: "Integraçao de Email",
+          integraçaoCalendario: "Integraçao de Calendario",
+          sistemaArmazenamento: "Sistema de Armazenamento",
         }[service];
-        return ["",designLabel, "", PRICE_MAP[service] + " €"];
+        return ["",avançadosLabel, "", PRICE_MAP[service] + " €"];
       }),
     ],
       foot: [[
         '',
         '',
         'Subtotal',
-        `${designTotal} €`
+        `${avaçançadosTotal} €`
         
       ]],
       headStyles: {
@@ -665,7 +655,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         // Pages cost
         formData.pages.reduce((sum, page) => sum + (PRICE_MAP[page] || 0), 0) +
         // Design Services
-        formData.designServices.reduce((sum, service) => sum + (PRICE_MAP[service] || 0), 0) +
+        formData.advancedFeatures.reduce((sum, service) => sum + (PRICE_MAP[service] || 0), 0) +
         // Social Media Integration
         (formData.socialMedia === "yes" ? PRICE_MAP.socialMedia : 0) +
         // Payment Integration
@@ -756,7 +746,7 @@ try {
       detalhesWebsite: {
         tipoWebsite: formData.objective === "novoSite" ? "Novo Website" : "Modernização",
         paginas: formData.pages,
-        servicosDesign: formData.designServices,
+        recursosAvançados: formData.advancedFeatures,
         redesSociais: formData.socialMedia === "yes" ? "Sim" : "Não",
         integracaoPagamento: formData.paymentIntegration === "integracaoPg" ? "Sim" : "Não",
         avaliacaoProdutos: formData.productReviews === "avaliacaoProdutos" ? "Sim" : "Não",
@@ -799,7 +789,7 @@ try {
       }
     } else if (step === 3) {
       // Validate Step 2
-      if (!formData.designServices.length || !formData.socialMedia || 
+      if (!formData.advancedFeatures.length || !formData.socialMedia || 
           !formData.paymentIntegration || !formData.productReviews || 
           !formData.clientSupport || !formData.languages.length) {
         alert("Por favor preencha todos os campos obrigatórios antes de continuar");
@@ -853,7 +843,7 @@ try {
       key="step2"
       layoutId="formStep"
     >
-      <h3 className="h3title">Detalhes do Website</h3>
+      <h3 className="h3title">Detalhes do Website CRM</h3>
       <div>
         <div>
           <label htmlFor="objective">Website novo ou modernização?</label>
@@ -865,20 +855,20 @@ try {
             required
           >
             <option value="">Selecione</option>
-            <option value="novoSite">Novo</option>
+            <option value="novoSite">Novo Website</option>
             <option value="modernizacao">Modernização</option>
           </select>
         </div>
         <div>
-          <h4>Quais páginas o site precisa?</h4>
+          <h4>Módulos Base do CRM</h4>
           <div className="custom-checkbox">
             {[
-              { value: "mainPage", label: "Página Inicial" },
-              { value: "aboutPage", label: "Sobre" },
-              { value: "contactPage", label: "Contato" },
-              { value: "lojaPage", label: "Loja" },
-              { value: "userSection", label: "Secção de users" },
-              { value: "politicaPage", label: "Política de devoluções" },
+              { value: "dashboard", label: "Dashboard Principal" },
+              { value: "contactos", label: "Gestão de Contactos" },
+              { value: "leads", label: "Gestão de Leads" },
+              { value: "tarefas", label: "Gestão de Tarefas" },
+              { value: "relatorios", label: "Relatórios e Análises" },
+              { value: "documentos", label: "Gestão Documental" },
             ].map(({ value, label }) => (
               <div key={value}>
                 <input
@@ -924,24 +914,24 @@ try {
       key="step3"
       layoutId="formStep"
     >
-      <h3 className="h3title">Serviços Adicionais</h3>
+      <h3 className="h3title">Funcionalidades Avançadas</h3>
       <div>
         <div>
-          <p className="labels">Serviços de Design:</p>
+          <p className="labels">Recursos Avançados:</p>
           <div className="custom-checkbox">
             {[
-              { value: "Logotipo", label: "Logotipo" },
-              { value: "Icons", label: "Icons" },
-              { value: "Banners", label: "Banners" },
-              { value: "outras", label: "Outros" },
+              { value: "automationFeature", label: "Automação de Workflows" },
+              { value: "emailIntegration", label: "Integração de Email" },
+              { value: "calendarIntegration", label: "Integração de Calendário" },
+              { value: "fileStorage", label: "Sistema de Armazenamento" },
             ].map(({ value, label }) => (
               <div key={value}>
                 <input
                   type="checkbox"
                   id={value}
-                  name="designServices"
+                  name="advancedFeatures"
                   value={value}
-                  checked={formData.designServices.includes(value)}
+                  checked={formData.advancedFeatures.includes(value)}
                   onChange={handleInputChange}
                 />
                 <label htmlFor={value}>{label}</label>
@@ -949,7 +939,30 @@ try {
             ))}
           </div>
         </div>
-      
+
+        <div>
+          <p className="labels">Análises e Relatórios:</p>
+          <div className="custom-checkbox">
+            {[
+              { value: "basicAnalytics", label: "Análises Básicas" },
+              { value: "advancedAnalytics", label: "Análises Avançadas" },
+              { value: "customReports", label: "Relatórios Personalizados" },
+            ].map(({ value, label }) => (
+              <div key={value}>
+                <input
+                  type="checkbox"
+                  id={value}
+                  name="analyticsFeatures"
+                  value={value}
+                  checked={formData.analyticsFeatures.includes(value)}
+                  onChange={handleInputChange}
+                />
+                <label htmlFor={value}>{label}</label>
+              </div>
+            ))}
+          </div>
+        </div>
+
         <div>
           <label htmlFor="socialMedia" className="labels">Integração com redes sociais:</label>
           <select
