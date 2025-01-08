@@ -8,7 +8,6 @@ import HeaderForm from "../../Header/HeaderForm";
 
 export default function FormCRM({ formData: initialFormData, setFormData: setInitialFormData, initialStep, onStepBack }) {
   const PRICE_MAP = {
-<<<<<<< HEAD
 
     // Core CRM Features (base pages)
     dashboard: 200,     
@@ -16,16 +15,10 @@ export default function FormCRM({ formData: initialFormData, setFormData: setIni
     tarefas: 160,         
     relatorios: 200,      
     documentos: 160,     
-=======
+
    //Paginas
    //preço por hora é de 20€
-    mainPage: 160,
-    aboutPage: 160,
-    contactPage:160,
-    lojaPage: 320,
-    userSection: 160,
-    politicaPage: 160,
->>>>>>> af97c40653b8cb9887ae83aa75b6a0575f9dc5e9
+
     
     // Type of system
     novoSite: 0,
@@ -52,7 +45,7 @@ export default function FormCRM({ formData: initialFormData, setFormData: setIni
     tresAnos: 700,
     
     // Updates
-    semanal: 400,
+    semanal: 410,
     mensal: 250,
     trimestral: 150,
     
@@ -331,14 +324,11 @@ export default function FormCRM({ formData: initialFormData, setFormData: setIni
 
     // Tabela para os serviços de design
     finalY = doc.lastAutoTable.finalY;
-<<<<<<< HEAD
+
     if(formData.advancedFeatures.length > 0){
       console.log("Design Services Selected:", formData.advancedFeatures);
       const avaçançadosTotal = formData.advancedFeatures.reduce((sum, service) => sum + (PRICE_MAP[service] || 0), 0);
-=======
-      console.log("Design Services Selected:", formData.designServices);
-      const designTotal = formData.designServices.reduce((sum, service) => sum + (PRICE_MAP[service] || 0), 0);
->>>>>>> af97c40653b8cb9887ae83aa75b6a0575f9dc5e9
+
       doc.autoTable({
       startY: finalY + 10,
       head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
@@ -351,12 +341,8 @@ export default function FormCRM({ formData: initialFormData, setFormData: setIni
           integraçaoCalendario: "Integraçao de Calendario",
           sistemaArmazenamento: "Sistema de Armazenamento",
         }[service];
-<<<<<<< HEAD
         return ["",avançadosLabel, "", PRICE_MAP[service] + " €"];
-=======
-        const design = service === 'outras' ? "2" : "8";
-        return ["",designLabel, design, PRICE_MAP[service] + " €"];
->>>>>>> af97c40653b8cb9887ae83aa75b6a0575f9dc5e9
+
       }),
     ],
       foot: [[
