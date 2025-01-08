@@ -16,8 +16,8 @@ export default function Body() {
               <h1 className="webQuoteTitle">WebQuote</h1>
               <p className="webQuoteSubTitle">Soluções de Orçamento</p>
               <p className="webQuoteSubTitle">Clique no botão para pedir um orçamento</p>
-              <Link to="/form-com-pdf" className="button-body">
-                Clique aqui para o orçamento
+              <Link to="/form-main" className="button-body">
+                Clique aqui para o iniciar o orçamento
               </Link>
             </div>
             <div className="right-content">
