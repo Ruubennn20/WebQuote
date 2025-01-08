@@ -85,7 +85,7 @@ export default function FormMainComponente() {
     <>
       <HeaderForm currentStep={currentStep} />
       <div className="container-form">
-        <h2>Solução de Orçamento WebQuoteL</h2>
+        <h2>Solução de Orçamento WebQuote</h2>
         <AnimatePresence mode="wait" initial={false}>
           {renderForm()}
         </AnimatePresence>
