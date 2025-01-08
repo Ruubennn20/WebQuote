@@ -266,13 +266,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         "",
         formData.objective ? PRICE_MAP[formData.objective] + " €" : "0 €"
       ]],
-      foot: [[
-        '',
-        '',
-        '',
-        'Subtotal',
-        `${PRICE_MAP[formData.objective] || 0} €`
-      ]],
+      
       headStyles: {
         fillColor: [65, 105, 225],
         textColor: 255,
