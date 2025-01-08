@@ -9,7 +9,7 @@ import HeaderForm from "../../Header/HeaderForm";
 export default function FormECommerce({ formData: initialFormData, setFormData: setInitialFormData, initialStep, onStepBack }) {
   const PRICE_MAP = {
    //Paginas
-   //preço por é de 20€
+   //preço por hora é de 20€
     mainPage: 160,
     aboutPage: 160,
     contactPage:160,
@@ -257,13 +257,13 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     // Tabela para o tipo de website novo ou modernizar
     doc.autoTable({
       startY: 45,
-      head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
+      head: [['Tipo de serviço', "", '', '']],
       body: [[
         "Website",
         formData.objective === "novoSite" ? "Desenvolvimento de um website novo" : 
         formData.objective === "modernizacao" ? "Modernização de um website existente" : "",
-        "ver o que meter aqui",
-        "ver aqui tambem",
+        "",
+        "",
         formData.objective ? PRICE_MAP[formData.objective] + " €" : "0 €"
       ]],
       foot: [[
@@ -278,6 +278,9 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         textColor: 255,
         fontSize: 10,
       },
+      footStyles: {
+        fillColor: [65, 105, 225],
+      },
       styles: { fontSize: 10, cellPadding: 3 },
       theme: 'grid',
     });
@@ -286,7 +289,6 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     let finalY = doc.lastAutoTable.finalY;
 
     //Tabela para as páginas
-    if (formData.pages.length > 0) {
         const pagesTotal = formData.pages.reduce((sum, page) => sum + (PRICE_MAP[page] || 0), 0);
         doc.autoTable({
             startY: finalY + 10,
@@ -319,39 +321,15 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
                 textColor: 255,
                 fontSize: 10,
             },
+            footStyles: {
+              fillColor: [65, 105, 225],
+            },
             styles: { fontSize: 10, cellPadding: 3 },
             theme: 'grid',
         });
-    } else {
-        // If no pages are selected, show a message in the table while keeping the Type header
-        doc.autoTable({
-          startY: finalY + 10,
-          head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
-          body: [
-              ["Nada Selecionado.", "", "", "", "Subtotal: 0 €"]
-          ],
-          headStyles: {
-              fillColor: [65, 105, 225], // Keep the same color
-              textColor: 255,
-              fontSize: 10,
-          },
-          footStyles: {
-            fillColor: [65, 105, 225],
-              textColor: 0,
-              fontSize: 10,
-              cellPadding: 1, // Adjust padding for the footer specifically
-          },
-          styles: { 
-              fontSize: 10, 
-              cellPadding: 3 // Keep this for the rest of the table
-          },
-          theme: 'grid',
-      });
-    }
-    
+
     // Tabela para os serviços de design
     finalY = doc.lastAutoTable.finalY;
-    if(formData.designServices.length > 0){
       console.log("Design Services Selected:", formData.designServices);
       const designTotal = formData.designServices.reduce((sum, service) => sum + (PRICE_MAP[service] || 0), 0);
       doc.autoTable({
@@ -366,7 +344,8 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
           Banners: "Banners",
           outras: "Outros"
         }[service];
-        return ["",designLabel, "", PRICE_MAP[service] + " €"];
+        const design = service === 'outras' ? "2" : "8";
+        return ["",designLabel, design, PRICE_MAP[service] + " €"];
       }),
     ],
       foot: [[
@@ -381,40 +360,16 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         textColor: 255,
         fontSize: 10,
       },
+      footStyles: {
+        fillColor: [65, 105, 225],
+      },
       styles: { fontSize: 10, cellPadding: 3 },
       theme: 'grid',
     });
 
-    
-  }else{
-    doc.autoTable({
-      startY: finalY + 10,
-      head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
-      body: [
-          ["Sem design selecionado.", "", "", "Total: 0 €"]
-      ], 
-      headStyles: {
-          fillColor: [65, 105, 225], // Keep the same color
-          textColor: 255,
-          fontSize: 10,
-      },
-      footStyles: {
-          fillColor: [200, 200, 200], // Keep the same color
-          textColor: 0,
-          fontSize: 10,
-          cellPadding: 1, // Adjust padding for the footer specifically
-      },
-      styles: { 
-          fontSize: 10, 
-          cellPadding: 3
-      },
-      theme: 'grid',
-  });
-  }
 
     // Languages Table
     finalY = doc.lastAutoTable.finalY;
-    if(formData.languages.length >0){
       const languagesTotal = formData.languages.reduce((sum, lang) => sum + (PRICE_MAP[lang] || 0), 0);
       doc.autoTable({
       startY: finalY + 10,
@@ -445,37 +400,17 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         textColor: 255,
         fontSize: 10,
       },
+      footStyles: {
+        fillColor: [65, 105, 225],
+      },
       styles: { fontSize: 10, cellPadding: 3 },
       theme: 'grid',
     });
-  }else{
-    doc.autoTable({
-      startY: finalY + 10,
-      head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
-      body: [
-          ["Sem páginas selecionadas.", "Subtotal: 0 €", "", "", ""]
-      ],
-      headStyles: {
-          fillColor: [65, 105, 225], // Keep the same color
-          textColor: 255,
-          fontSize: 10,
-      },
-      footStyles: {
-          fillColor: [200, 200, 200], // Keep the same color
-          textColor: 0,
-          fontSize: 10,
-          cellPadding: 1, // Adjust padding for the footer specifically
-      },
-      styles: { 
-          fontSize: 10, 
-          cellPadding: 3 // Keep this for the rest of the table
-      },
-      theme: 'grid',
-  });
-  }
 
-    // Social Media Integration Table
-    finalY = doc.lastAutoTable.finalY;
+
+
+//Tabela PDF para as integrações
+  finalY = doc.lastAutoTable.finalY;
    const integrations = [];
    if (formData.socialMedia === "yes") {
      integrations.push(["", "Redes Sociais", "12", `${PRICE_MAP.socialMedia} €`]);
@@ -483,7 +418,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
    if (formData.productReviews === "avaliacaoProdutos") {
      integrations.push(["", "Sistema de Avaliação de Produtos", "12", `${PRICE_MAP.productReviews} €`]);
    }
-   if(integrations.length > 0 ){
+   
     doc.autoTable({
      startY: finalY + 10,
      head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
@@ -504,35 +439,14 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
        textColor: 255,
        fontSize: 10,
      },
+     footStyles: {
+      fillColor: [65, 105, 225],
+    },
      styles: { fontSize: 10, cellPadding: 3 },
      theme: 'grid',
    });
-  }else{
-    doc.autoTable({
-      startY: finalY + 10,
-      head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
-      body: [
-          ["Sem Integrações selecionas.", "Total: 0 €", "", "", ""]
-      ],
-      headStyles: {
-          fillColor: [65, 105, 225], // Keep the same color
-          textColor: 255,
-          fontSize: 10,
-      },
-      footStyles: {
-          fillColor: [200, 200, 200], // Keep the same color
-          textColor: 0,
-          fontSize: 10,
-          cellPadding: 1, // Adjust padding for the footer specifically
-      },
-      styles: { 
-          fontSize: 10, 
-          cellPadding: 3 // Keep this for the rest of the table
-      },
-      theme: 'grid',
-  });
-  }
 
+   //Tabela PDF para as features
     const features = []
     if (formData.paymentIntegration === "integracaoPg") {
       features.push(["", "Métodos de Pagamento", "12", `${PRICE_MAP.paymentIntegration} €`]);
@@ -540,7 +454,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     if(formData.clientSupport === "suporteYes"){
       features.push(["", "Suporte ao Cliente", "12", `${PRICE_MAP.clientSupport} €`]);
     }
-    if(features.length > 0){
+
     finalY = doc.lastAutoTable.finalY;
     doc.autoTable({
       startY: finalY + 10,
@@ -562,34 +476,13 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         textColor: 255,
         fontSize: 10,
       },
+      footStyles: {
+        fillColor: [65, 105, 225],
+      },
       styles: { fontSize: 10, cellPadding: 3 },
       theme: 'grid',
     });
-  }else{
-    doc.autoTable({
-      startY: finalY + 10,
-      head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
-      body: [
-          ["Sem features selecionas.", "Total: 0 €", "", "", ""]
-      ],
-      headStyles: {
-          fillColor: [65, 105, 225], // Keep the same color
-          textColor: 255,
-          fontSize: 10,
-      },
-      footStyles: {
-          fillColor: [200, 200, 200], // Keep the same color
-          textColor: 0,
-          fontSize: 10,
-          cellPadding: 1, // Adjust padding for the footer specifically
-      },
-      styles: { 
-          fontSize: 10, 
-          cellPadding: 3 // Keep this for the rest of the table
-      },
-      theme: 'grid',
-  });
-  }
+  
 
   finalY = doc.lastAutoTable.finalY;
   const finalDetails = [];
@@ -599,8 +492,9 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
      doisAnos: "2 Anos de Manutenção",
      tresAnos: "3 Anos de Manutenção"
    }[formData.maintenance], "1", `${PRICE_MAP[formData.maintenance]} €`]);
-  // Check for Update Frequency
-  if (formData.updateFrequency) {
+ 
+   // Check for Update Frequency
+ 
    finalDetails.push(["Atualizações", {
      semanal: "Atualizações Semanais",
      mensal: "Atualizações Mensais",
@@ -628,34 +522,12 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
      textColor: 255,
      fontSize: 10,
    },
+   footStyles: {
+    fillColor: [65, 105, 225],
+  },
    styles: { fontSize: 10, cellPadding: 3 },
    theme: 'grid',
   })
-}else{
-  doc.autoTable({
-    startY: finalY + 10,
-    head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
-    body: [
-        ["Sem manutenção ou frequência de atualização selecionada.", "Total: 0 €", "", "", ""]
-    ],
-    headStyles: {
-        fillColor: [65, 105, 225], // Keep the same color
-        textColor: 255,
-        fontSize: 10,
-    },
-    footStyles: {
-        fillColor: [200, 200, 200], // Keep the same color
-        textColor: 0,
-        fontSize: 10,
-        cellPadding: 1, // Adjust padding for the footer specifically
-    },
-    styles: { 
-        fontSize: 10, 
-        cellPadding: 3 // Keep this for the rest of the table
-    },
-    theme: 'grid',
-});
-}
 
     // Final Total Table
     finalY = doc.lastAutoTable.finalY;
