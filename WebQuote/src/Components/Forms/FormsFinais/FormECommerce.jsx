@@ -9,7 +9,7 @@ import HeaderForm from "../../Header/HeaderForm";
 export default function FormECommerce({ formData: initialFormData, setFormData: setInitialFormData, initialStep, onStepBack }) {
   const PRICE_MAP = {
    //Paginas
-   //preço por é de 20€
+   //preço por hora é de 20€
     mainPage: 160,
     aboutPage: 160,
     contactPage:160,
@@ -257,13 +257,13 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     // Tabela para o tipo de website novo ou modernizar
     doc.autoTable({
       startY: 45,
-      head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
+      head: [['Tipo de serviço', "", '', '']],
       body: [[
         "Website",
         formData.objective === "novoSite" ? "Desenvolvimento de um website novo" : 
         formData.objective === "modernizacao" ? "Modernização de um website existente" : "",
-        "ver o que meter aqui",
-        "ver aqui tambem",
+        "",
+        "",
         formData.objective ? PRICE_MAP[formData.objective] + " €" : "0 €"
       ]],
       foot: [[
@@ -277,6 +277,9 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         fillColor: [65, 105, 225],
         textColor: 255,
         fontSize: 10,
+      },
+      footStyles: {
+        fillColor: [65, 105, 225],
       },
       styles: { fontSize: 10, cellPadding: 3 },
       theme: 'grid',
@@ -318,6 +321,9 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
                 fillColor: [65, 105, 225],
                 textColor: 255,
                 fontSize: 10,
+            },
+            footStyles: {
+              fillColor: [65, 105, 225],
             },
             styles: { fontSize: 10, cellPadding: 3 },
             theme: 'grid',
@@ -366,7 +372,8 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
           Banners: "Banners",
           outras: "Outros"
         }[service];
-        return ["",designLabel, "", PRICE_MAP[service] + " €"];
+        const design = service === 'outras' ? "2" : "8";
+        return ["",designLabel, design, PRICE_MAP[service] + " €"];
       }),
     ],
       foot: [[
@@ -380,6 +387,9 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         fillColor: [65, 105, 225],
         textColor: 255,
         fontSize: 10,
+      },
+      footStyles: {
+        fillColor: [65, 105, 225],
       },
       styles: { fontSize: 10, cellPadding: 3 },
       theme: 'grid',
@@ -445,6 +455,9 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         textColor: 255,
         fontSize: 10,
       },
+      footStyles: {
+        fillColor: [65, 105, 225],
+      },
       styles: { fontSize: 10, cellPadding: 3 },
       theme: 'grid',
     });
@@ -504,6 +517,9 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
        textColor: 255,
        fontSize: 10,
      },
+     footStyles: {
+      fillColor: [65, 105, 225],
+    },
      styles: { fontSize: 10, cellPadding: 3 },
      theme: 'grid',
    });
@@ -561,6 +577,9 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         fillColor: [65, 105, 225],
         textColor: 255,
         fontSize: 10,
+      },
+      footStyles: {
+        fillColor: [65, 105, 225],
       },
       styles: { fontSize: 10, cellPadding: 3 },
       theme: 'grid',
@@ -628,6 +647,9 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
      textColor: 255,
      fontSize: 10,
    },
+   footStyles: {
+    fillColor: [65, 105, 225],
+  },
    styles: { fontSize: 10, cellPadding: 3 },
    theme: 'grid',
   })
