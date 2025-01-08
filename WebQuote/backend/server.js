@@ -50,7 +50,7 @@ app.post('/send-email', upload.single('pdf'), async (req, res) => {
       },
       {
         filename: 'webQuoteLogo.jpg',
-        path: '../src/assets/webQuoteLogo.jpg',
+        path: '../src/assets/logosSemFundo.png',
         cid: 'logoWebQuote',
       },
     ],
