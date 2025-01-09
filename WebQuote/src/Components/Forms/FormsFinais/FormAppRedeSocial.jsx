@@ -572,8 +572,6 @@ try {
       pdf: pdfBase64
     }];
     localStorage.setItem('orcamentos', JSON.stringify(newOrcamentos));
-
-
   }
 
 
