@@ -1,56 +1,107 @@
-import React, { useState, useEffect } from 'react';
-import { getQuoteData } from '../http';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
-import './FormAdmin.css';  
+import React, { useState, useEffect } from "react";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
+import "./FormAdmin.css";
 
 export default function FormAdmin() {
-  const [availableData, setAvailableData] = useState([]);
+  const [orcamentos, setOrcamentos] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [statusMap, setStatusMap] = useState({});
 
   useEffect(() => {
-    fetchData();
+    fetchOrcamentos();
   }, []);
 
-  const fetchData = async () => {
+  const fetchOrcamentos = async () => {
     try {
-      const data = await getQuoteData();
-      setAvailableData(data);
+      const response = await fetch("http://localhost:3000/orcamento");
+      if (!response.ok) throw new Error("Failed to fetch");
+      const data = await response.json();
+      const initialStatusMap = {};
+      data.forEach((orcamento) => {
+        initialStatusMap[orcamento.orderNumber] =
+          orcamento.status || "Aguardando processamento";
+      });
+      setStatusMap(initialStatusMap);
+      setOrcamentos(data);
+      setLoading(false);
     } catch (error) {
-      console.error('Erro ao buscar dados:', error);
+      console.error("Error fetching data:", error);
+      setLoading(false);
     }
   };
 
-  const handleStatusChange = (timestamp, newStatus) => {
+  const downloadPDF = async (orderNumber) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/${orderNumber}/pdf`
+      );
+      if (!response.ok) throw new Error("Failed to fetch PDF");
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `orcamento_${orderNumber}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
+    }
+  };
+
+  const handleStatusChange = (orderNumber, newStatus) => {
     setStatusMap((prev) => ({
       ...prev,
-      [timestamp]: newStatus,
+      [orderNumber]: newStatus,
     }));
   };
 
-  const generateOrderNumber = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear().toString();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    const seconds = date.getSeconds().toString().padStart(2, '0');
-    
-    return `${year}${month}${day}${hours}${minutes}${seconds}`;
-  };
+  const exportToPDF = () => {
+    const doc = new jsPDF("landscape");
 
-  const exportToPDF = async () => {
-    const element = document.getElementById('exportableTable');
-    const canvas = await html2canvas(element);
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF();
-    const imgProps = pdf.getImageProperties(imgData);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    // Define columns for the table
+    const columns = [
+      "Nº Pedido",
+      "Nome",
+      "Email",
+      "Contacto",
+      "Tipo Website",
+      "Valor Total",
+      "Data",
+      "Status",
+    ];
 
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    pdf.save('orcamentos.pdf');
+    // Convert orcamentos data to rows
+    const rows = orcamentos.map((orcamento) => [
+      orcamento.orderNumber,
+      orcamento.informacoesCliente.nome,
+      orcamento.informacoesCliente.email,
+      orcamento.informacoesCliente.telefone,
+      orcamento.detalhesWebsite.tipoWebsite,
+      `${orcamento.orcamento.valorTotal} ${orcamento.orcamento.moeda}`,
+      new Date(orcamento.dataSubmissao).toLocaleDateString(),
+      statusMap[orcamento.orderNumber] || "Aguardando processamento",
+    ]);
+
+    // Add title
+    doc.setFontSize(16);
+    doc.text("Orçamentos Submetidos", 14, 15);
+
+    // Add table
+    doc.autoTable({
+      head: [columns],
+      body: rows,
+      startY: 25,
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [41, 128, 185], textColor: 255 },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
+      margin: { top: 20 },
+    });
+
+    doc.save("orcamentos.pdf");
   };
 
   const statusOptions = [
@@ -58,43 +109,48 @@ export default function FormAdmin() {
     "Em Análise",
     "Aprovado",
     "Em Desenvolvimento",
-    "Concluído"
+    "Concluído",
   ];
 
+  if (loading) return <div>Loading...</div>;
+
   return (
-    <div className="container">
-      <h1 className="title">Orçamentos Recebidos</h1>
-      <button className="export-button" onClick={exportToPDF}>
-        Exportar para PDF
-      </button>
+    <div className="admin-container">
+      <h2 className=" title">Orçamentos Submetidos</h2>
+      <hr className="linha" />
       <div className="table-container" id="exportableTable">
-        <table className="table">
+        <table>
           <thead>
             <tr>
-              <th>Nº Orçamento</th>
+              <th>Número do Pedido</th>
               <th>Nome</th>
-              <th>Telefone</th>
               <th>Email</th>
+              <th>Contacto</th>
+              <th>Tipo Website</th>
               <th>Valor Total</th>
+              <th>Data Submissão</th>
               <th>Status</th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody>
-            {availableData.map((orcamento, index) => (
-              <tr key={orcamento.timestamp} className={index % 2 === 0 ? 'even' : 'odd'}>
-                <td className="order-number">
-                  {generateOrderNumber(orcamento.dataSubmissao)}
-                </td>
-                <td>{orcamento.informacoesCliente.nome || 'Não informado'}</td>
-                <td>{orcamento.informacoesCliente.telefone || 'Não informado'}</td>
-                <td>{orcamento.informacoesCliente.email || 'Não informado'}</td>
-                <td className="total-value">
+            {orcamentos.map((orcamento) => (
+              <tr key={orcamento.orderNumber}>
+                <td>{orcamento.orderNumber}</td>
+                <td>{orcamento.informacoesCliente.nome}</td>
+                <td>{orcamento.informacoesCliente.email}</td>
+                <td>{orcamento.informacoesCliente.telefone}</td>
+                <td>{orcamento.detalhesWebsite.tipoWebsite}</td>
+                <td>
                   {orcamento.orcamento.valorTotal} {orcamento.orcamento.moeda}
                 </td>
                 <td>
+                  {new Date(orcamento.dataSubmissao).toLocaleDateString()}
+                </td>
+                <td>
                   <select
-                    value={statusMap[orcamento.timestamp] || "Aguardando processamento"}
-                    onChange={(e) => handleStatusChange(orcamento.timestamp, e.target.value)}
+                    value={statusMap[orcamento.orderNumber] || "Aguardando processamento"}
+                    onChange={(e) => handleStatusChange(orcamento.orderNumber, e.target.value)}
                     className="status-select"
                   >
                     {statusOptions.map((option) => (
@@ -104,10 +160,20 @@ export default function FormAdmin() {
                     ))}
                   </select>
                 </td>
+                <td>
+                  <button onClick={() => downloadPDF(orcamento.orderNumber)}>
+                    Download PDF
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="export-button-container">
+        <button className="export-button" onClick={exportToPDF}>
+          Exportar relatório para PDF
+        </button>
       </div>
     </div>
   );
