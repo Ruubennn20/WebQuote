@@ -16,8 +16,8 @@ app.use(express.json());
 const transporter = nodemailer.createTransport({
   service: 'gmail', // Pode usar outro provedor ou configuração SMTP
   auth: {
-    user: 'zoroarkchico@gmail.com', // Substitua pelo seu email
-    pass: 'gijw ncfw ochc fset', // Senha do app ou senha do email
+    user: 'geral.webquote@gmail.com', // Substitua pelo seu email
+    pass: 'seeg xgxx korg wrvp', // Senha do app ou senha do email
   },
 });
 
@@ -78,8 +78,8 @@ app.post('/send-contact-form', async (req, res) => {
 
     // Monta o objeto de email
     const mailOptions = {
-      from: 'zoroarkchico@gmail.com', // email remetente (o mesmo que está na auth)
-      to: 'zoroarkchico@gmail.com',   // para quem o email será enviado
+      from: 'geral.webquote@gmail.com', // email remetente (o mesmo que está na auth)
+      to: 'geral.webquote@gmail.com',   // para quem o email será enviado
       subject: `Contacto de  ${name}`, 
       html: `
         <p><strong>Nome:</strong> ${name}</p>
