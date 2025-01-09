@@ -639,9 +639,28 @@ try {
         valorTotal: total.toFixed(2),
         moeda: "€"
       },
-      dataSubmissao: new Date().toISOString()
+      dataSubmissao: new Date().toISOString(),
+      status: "Aguardando processamento"
     };
+
+    // Convert PDF to base64
+    const pdfBase64 = doc.output('datauristring');
+
+    // Store data in localStorage
+    const existingOrcamentos = JSON.parse(localStorage.getItem('orcamentos') || '[]');
+    const newOrcamentos = [...existingOrcamentos, {
+      ...dadosOrcamento,
+      pdf: pdfBase64
+    }];
+    localStorage.setItem('orcamentos', JSON.stringify(newOrcamentos));
+
+    // Alert success and optionally redirect
+    alert('Orçamento salvo com sucesso!');
+    // Optional: Redirect to admin page
+    // window.location.href = '/admin';
   }
+
+  
 
   const nextStep = () => {
     if (step === 2) {

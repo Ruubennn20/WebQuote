@@ -9,46 +9,25 @@ export default function FormAdmin() {
   const [statusMap, setStatusMap] = useState({});
 
   useEffect(() => {
-    fetchOrcamentos();
+    const storedOrcamentos = JSON.parse(localStorage.getItem('orcamentos') || '[]');
+    const initialStatusMap = {};
+    storedOrcamentos.forEach((orcamento) => {
+      initialStatusMap[orcamento.orderNumber] = orcamento.status || "Aguardando processamento";
+    });
+    setStatusMap(initialStatusMap);
+    setOrcamentos(storedOrcamentos);
+    setLoading(false);
   }, []);
 
-  const fetchOrcamentos = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/orcamento");
-      if (!response.ok) throw new Error("Failed to fetch");
-      const data = await response.json();
-      const initialStatusMap = {};
-      data.forEach((orcamento) => {
-        initialStatusMap[orcamento.orderNumber] =
-          orcamento.status || "Aguardando processamento";
-      });
-      setStatusMap(initialStatusMap);
-      setOrcamentos(data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setLoading(false);
-    }
-  };
-
   const downloadPDF = async (orderNumber) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/${orderNumber}/pdf`
-      );
-      if (!response.ok) throw new Error("Failed to fetch PDF");
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `orcamento_${orderNumber}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    } catch (error) {
-      console.error("Error downloading PDF:", error);
+    const orcamento = orcamentos.find(o => o.orderNumber === orderNumber);
+    if (orcamento && orcamento.pdf) {
+      const link = document.createElement('a');
+      link.href = orcamento.pdf;
+      link.download = `orcamento_${orderNumber}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   };
 
