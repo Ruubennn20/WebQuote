@@ -6,7 +6,7 @@ import "../formsFinal.css";
 import logo from "../../../assets/logoPequeno.png";
 import HeaderForm from "../../Header/HeaderForm";
 
-export default function FormECommerce({ formData: initialFormData, setFormData: setInitialFormData, initialStep, onStepBack }) {
+export default function FormAppLogistica({ formData: initialFormData, setFormData: setInitialFormData, initialStep, onStepBack }) {
   const PRICE_MAP = {
    //Paginas
    //preço por hora é de 20€
@@ -58,25 +58,23 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     espanhol: 20,
   };
 /*   const [selectedForm, setSelectedForm] = useState(null); */
-  const [formData, setFormData] = useState({
-    nome: '',
-    contacto: '',
-    email: '',
-    objective: "",
-    pages: [],
-    designServices: [],
-    integrations: [],
-    features: [],
-    socialMedia: "",
-    paymentIntegration: "",
-    productReviews: "",
-    customerSupport: [],
-    maintenancePeriod: "",
-    updateFrequency: "",
-    languages: [],
-    budget: "",
-    references: "",
-  });
+const [formData, setFormData] = useState({
+  nome: '',
+  contacto: '',
+  email: '',
+  objective: "",
+  pages: [],
+  designServices: [],
+  integrations: [],
+  features: [],
+  socialMedia: "",
+  clientSupport: "",
+  maintenance: "", // Corrigido de maintenancePeriod para maintenance
+  updateFrequency: "",
+  languages: [],
+  budget: "",
+  references: "",
+});
   const [step, setStep] = useState(initialStep || 2);
 
   const handleInputChange = (e) => {
@@ -121,14 +119,6 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     // Check required selects
     if (!formData.socialMedia) {
       validationErrors.push("Por favor selecione a opção de integração com redes sociais");
-    }
-
-    if (!formData.paymentIntegration) {
-      validationErrors.push("Por favor selecione a opção de integração de pagamento");
-    }
-
-    if (!formData.productReviews) {
-      validationErrors.push("Por favor selecione a opção de avaliação de produtos");
     }
 
     if (!formData.clientSupport) {
@@ -178,15 +168,6 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
       total += PRICE_MAP.socialMedia;
     }
 
-    // Payment Integration
-    if (formData.paymentIntegration === "integracaoPg") {
-      total += PRICE_MAP.paymentIntegration;
-    }
-
-    // Product Reviews
-    if (formData.productReviews === "avaliacaoProdutos") {
-      total += PRICE_MAP.productReviews;
-    }
 
     // Customer Support
     if (formData.clientSupport === "suporteYes") {
@@ -415,10 +396,8 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
    if (formData.socialMedia === "yes") {
      integrations.push(["", "Redes Sociais", "12", `${PRICE_MAP.socialMedia} €`]);
    }
-   if (formData.productReviews === "avaliacaoProdutos") {
-     integrations.push(["", "Sistema de Avaliação de Produtos", "12", `${PRICE_MAP.productReviews} €`]);
-   }
    
+  
     doc.autoTable({
      startY: finalY + 10,
      head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
@@ -430,8 +409,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
        '',
        'Subtotal',
        `${(
-        (formData.socialMedia === "yes" ? PRICE_MAP.socialMedia : 0) + 
-        (formData.productReviews === "avaliacaoProdutos" ? PRICE_MAP.productReviews : 0)
+        (formData.socialMedia === "yes" ? PRICE_MAP.socialMedia : 0) 
     ).toFixed(2)} €`
      ]],
      headStyles: {
@@ -448,9 +426,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
 
    //Tabela PDF para as features
     const features = []
-    if (formData.paymentIntegration === "integracaoPg") {
-      features.push(["", "Métodos de Pagamento", "12", `${PRICE_MAP.paymentIntegration} €`]);
-    }
+    
     if(formData.clientSupport === "suporteYes"){
       features.push(["", "Suporte ao Cliente", "12", `${PRICE_MAP.clientSupport} €`]);
     }
@@ -459,7 +435,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     doc.autoTable({
       startY: finalY + 10,
       head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
-      body: [["Features", "", "", "20€ / Hora", "-"],
+      body: [["Serviços adicionais", "", "", "20€ / Hora", "-"],
       ...features.length > 0 ? features : [["Sem features selecionadas.", "", "", "", "Subtotal: 0 €"]],
     ],
       foot: [[
@@ -467,7 +443,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         '',
         'Subtotal',
         `${(
-            (formData.paymentIntegration === "integracaoPg" ? PRICE_MAP.paymentIntegration : 0) + 
+            
             (formData.clientSupport === "suporteYes" ? PRICE_MAP.clientSupport : 0)
         ).toFixed(2)} €`
       ]],
@@ -541,9 +517,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         // Social Media Integration
         (formData.socialMedia === "yes" ? PRICE_MAP.socialMedia : 0) +
         // Payment Integration
-        (formData.paymentIntegration === "integracaoPg" ? PRICE_MAP.paymentIntegration : 0) +
-        // Product Reviews
-        (formData.productReviews === "avaliacaoProdutos" ? PRICE_MAP.productReviews : 0) +
+        
         // Customer Support
         (formData.clientSupport === "suporteYes" ? PRICE_MAP.clientSupport : 0) +
         // Languages
@@ -630,8 +604,6 @@ try {
         paginas: formData.pages,
         servicosDesign: formData.designServices,
         redesSociais: formData.socialMedia === "yes" ? "Sim" : "Não",
-        integracaoPagamento: formData.paymentIntegration === "integracaoPg" ? "Sim" : "Não",
-        avaliacaoProdutos: formData.productReviews === "avaliacaoProdutos" ? "Sim" : "Não",
         suporteCliente: formData.clientSupport === "suporteYes" ? "Sim" : "Não",
         periodoManutencao: formData.maintenance,
         frequenciaAtualizacao: formData.updateFrequency,
@@ -672,7 +644,7 @@ try {
     } else if (step === 3) {
       // Validate Step 2
       if (!formData.designServices.length || !formData.socialMedia || 
-          !formData.paymentIntegration || !formData.productReviews || 
+           
           !formData.clientSupport || !formData.languages.length) {
         alert("Por favor preencha todos os campos obrigatórios antes de continuar");
         return;
@@ -748,7 +720,7 @@ try {
               { value: "mainPage", label: "Página Inicial" },
               { value: "aboutPage", label: "Sobre" },
               { value: "contactPage", label: "Contato" },
-              { value: "lojaPage", label: "Loja" },
+              { value: "lojaPage", label: "Acompanhar encomenda" },
               { value: "userSection", label: "Secção de users" },
               { value: "politicaPage", label: "Política de devoluções" },
             ].map(({ value, label }) => (
@@ -829,8 +801,7 @@ try {
             name="socialMedia"
             value={formData.socialMedia}
             onChange={handleInputChange}
-            required
-          >
+            required>
             <option value="">Selecione</option>
             <option value="yes">Sim</option>
             <option value="no">Não</option>
@@ -838,43 +809,13 @@ try {
         </div>
         <br />
         <div>
-          <label htmlFor="paymentIntegration">Integração com meios de pagamento</label>
-          <select
-            id="paymentIntegration"
-            name="paymentIntegration"
-            value={formData.paymentIntegration}
-            onChange={handleInputChange}
-            required
-          >
-            <option value="">Selecione</option>
-            <option value="integracaoPg">Sim</option>
-            <option value="semIntPg">Não</option>
-          </select>
-        </div>
-        <br />
-        <div>
-          <label htmlFor="productReviews">Avaliação de produtos</label>
-          <select
-            id="productReviews"
-            name="productReviews"
-            value={formData.productReviews}
-            onChange={handleInputChange}
-            required
-          >
-            <option value="">Selecione</option>
-            <option value="avaliacaoProdutos">Sim</option>
-            <option value="semAvaProd">Não</option>
-          </select>
-        </div>
-        <div>
           <label htmlFor="clientSupport">Suporte ao cliente</label>
           <select
             id="clientSupport"
             name="clientSupport"
             value={formData.clientSupport}
             onChange={handleInputChange}
-            required
-          >
+            required>
             <option value="">Selecione</option>
             <option value="suporteYes">Sim</option>
             <option value="suporteNo">Não</option>
