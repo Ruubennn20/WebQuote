@@ -99,8 +99,11 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Generate order number
+    const orderNumber = `WQ${Date.now().toString().slice(-6)}`;
 
-    // Validation checks
+    
     const validationErrors = [];
 
     // Check objective (website type)
@@ -614,10 +617,11 @@ try {
   
     // Captura dos dados do formulário
     const dadosOrcamento = {
+      orderNumber: orderNumber,
       informacoesCliente: {
-        nome: document.querySelector('input[placeholder="Digite o nome e apelido"]').value,
-        telefone: document.querySelector('input[placeholder="Digite o contacto"]').value,
-        email: document.querySelector('input[placeholder="Digite o email"]').value
+        nome: initialFormData.nome,
+        telefone: initialFormData.contacto,
+        email: initialFormData.email
       },
       detalhesWebsite: {
         tipoWebsite: formData.objective === "novoSite" ? "Novo Website" : "Modernização",
@@ -637,23 +641,6 @@ try {
       },
       dataSubmissao: new Date().toISOString()
     };
-  
-    try {
-      // Envio dos dados para o servidor
-      const response = await fetch('http://localhost:3000/api/orcamento', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dadosOrcamento)
-      });
-      if (!response.ok) {
-        throw new Error('Erro ao salvar orçamento');
-      }
-      alert("Orçamento enviado com sucesso!")
-    } catch (error) {
-      console.error('Erro ao salvar orçamento:', error);
-    }
   }
 
   const nextStep = () => {
