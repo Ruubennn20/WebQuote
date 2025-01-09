@@ -61,7 +61,7 @@ export default function Contactos() {
               loading="lazy"
               title="Mapa de Rua de Fundões São João da Madeira"
             />
-            <p className="map-text">Morada:</p>
+            <p className="map-text">Morada :</p>
             <p className="map-text">
               Rua de Fundões 151, 3700-121 São João da Madeira
             </p>
