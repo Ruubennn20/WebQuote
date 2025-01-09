@@ -98,6 +98,9 @@ export default function FormBlog({ formData: initialFormData, setFormData: setIn
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Generate order number once at the start
+    const orderNumber = `WQ${Date.now().toString().slice(-6)}`;
 
     // Validation checks
     const validationErrors = [];
@@ -245,7 +248,7 @@ export default function FormBlog({ formData: initialFormData, setFormData: setIn
     doc.text('Fatura Num:    ', 130, 27);
     doc.text('Data:    ', 130, 31);
     doc.setFont('Helvetica', 'normal');
-    doc.text(`WQ${Date.now().toString().slice(-6)}`, 155, 27);
+    doc.text(orderNumber, 155, 27);
     doc.text(new Date().toLocaleDateString(), 155, 31);
 
     // Tabela para o tipo de website novo ou modernizar
@@ -609,46 +612,65 @@ try {
   
     // Captura dos dados do formulário
     const dadosOrcamento = {
+      orderNumber: orderNumber,
       informacoesCliente: {
-        nome: document.querySelector('input[placeholder="Digite o nome e apelido"]').value,
-        telefone: document.querySelector('input[placeholder="Digite o contacto"]').value,
-        email: document.querySelector('input[placeholder="Digite o email"]').value
+        nome: initialFormData.nome,
+        telefone: initialFormData.contacto,
+        email: initialFormData.email
       },
       detalhesWebsite: {
-        tipoWebsite: formData.objective === "novoSite" ? "Novo Website" : "Modernização",
-        paginas: formData.pages,
-        servicosDesign: formData.designServices,
+        tipoWebsite: formData.objective === "novoSite" ? "Novo Website Blog" : "Modernização de Website Blog",
+        paginas: formData.pages.map(page => ({
+          mainPage: "Página Inicial",
+          aboutPage: "Sobre",
+          contactPage: "Contato"
+        }[page])),
+        servicosDesign: formData.designServices.map(service => ({
+          Logotipo: "Logotipo",
+          Icons: "Icons",
+          Banners: "Banners",
+          outras: "Outros"
+        }[service])),
         redesSociais: formData.socialMedia === "yes" ? "Sim" : "Não",
-        assinanteNewsletter: formData.newsletterSigns === "newsSigns" ? "Sim" : "Não",
-        avaliacaoUsuarios: formData.userReviews === "yesReviews" ? "Sim" : "Não",
-        periodoManutencao: formData.maintenance,
-        frequenciaAtualizacao: formData.updateFrequency,
-        idiomas: formData.languages
+        newsletterSigns: formData.newsletterSigns === "newsSign" ? "Sim" : "Não",
+        userReviews: formData.userReviews === "yesReviews" ? "Sim" : "Não",
+        periodoManutencao: {
+          umAno: "1 Ano",
+          doisAnos: "2 Anos",
+          tresAnos: "3 Anos"
+        }[formData.maintenance] || "",
+        frequenciaAtualizacao: {
+          semanal: "Semanal",
+          mensal: "Mensal",
+          trimestral: "Trimestral"
+        }[formData.updateFrequency] || "",
+        idiomas: formData.languages.map(lang => ({
+          portugues: "Português",
+          ingles: "Inglês",
+          frances: "Francês",
+          espanhol: "Espanhol"
+        }[lang]))
       },
       orcamento: {
-        valorTotal: total.toFixed(2),
+        valorTotal: finalTotal.toFixed(2),
         moeda: "€"
       },
-      dataSubmissao: new Date().toISOString()
+      dataSubmissao: new Date().toISOString(),
+      status: "Aguardando processamento"
     };
-  
-    try {
-      // Envio dos dados para o servidor
-      const response = await fetch('http://localhost:3000/api/orcamento', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dadosOrcamento)
-      });
-      if (!response.ok) {
-        throw new Error('Erro ao salvar orçamento');
-      }
-      alert("Orçamento enviado com sucesso!")
-    } catch (error) {
-      console.error('Erro ao salvar orçamento:', error);
-    }
+
+    // Convert PDF to base64
+    const pdfBase64 = doc.output('datauristring');
+
+    // Store data in localStorage
+    const existingOrcamentos = JSON.parse(localStorage.getItem('orcamentos') || '[]');
+    const newOrcamentos = [...existingOrcamentos, {
+      ...dadosOrcamento,
+      pdf: pdfBase64
+    }];
+    localStorage.setItem('orcamentos', JSON.stringify(newOrcamentos));
   }
+
 
   const nextStep = () => {
     if (step === 2) {
@@ -725,8 +747,8 @@ try {
             required
           >
             <option value="">Selecione</option>
-            <option value="novoSite">Novo</option>
-            <option value="modernizacao">Modernização</option>
+            <option value="novoSite">Novo website de blog</option>
+            <option value="modernizacao">Modernização de website de blog</option>
           </select>
         </div>
         <div>

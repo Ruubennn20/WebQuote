@@ -93,6 +93,9 @@ export default function FormCRM({ formData: initialFormData, setFormData: setIni
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Generate order number once
+    const orderNumber = `WQ${Date.now().toString().slice(-6)}`;
+
     // Validation checks
     const validationErrors = [];
 
@@ -224,7 +227,7 @@ export default function FormCRM({ formData: initialFormData, setFormData: setIni
     doc.text('Fatura Num:    ', 130, 27);
     doc.text('Data:    ', 130, 31);
     doc.setFont('Helvetica', 'normal');
-    doc.text(`WQ${Date.now().toString().slice(-6)}`, 155, 27);
+    doc.text(orderNumber, 155, 27);
     doc.text(new Date().toLocaleDateString(), 155, 31);
 
     // Tabela para o tipo de website novo ou modernizar
@@ -578,45 +581,74 @@ try {
   
     // Captura dos dados do formulário
     const dadosOrcamento = {
+      orderNumber: orderNumber,
       informacoesCliente: {
-        nome: document.querySelector('input[placeholder="Digite o nome e apelido"]').value,
-        telefone: document.querySelector('input[placeholder="Digite o contacto"]').value,
-        email: document.querySelector('input[placeholder="Digite o email"]').value
+        nome: initialFormData.nome,
+        telefone: initialFormData.contacto,
+        email: initialFormData.email
       },
       detalhesWebsite: {
-        tipoWebsite: formData.objective === "novoSite" ? "Novo Website" : "Modernização",
-        paginas: formData.pages,
-        analises: formData.analyticsFeatures,
-        integrações: formData.integrations,
-        idiomas: formData.languages,
+        tipoWebsite: formData.objective === "novoSite" ? "Novo Sistema CRM" : "Modernização CRM",
+        paginas: formData.pages.map(page => ({
+          dashboardPage: "Dashboard Principal",
+          contactsPage: "Gestão de Contactos",
+          leadsPage: "Gestão de Leads",
+          tasksPage: "Gestão de Tarefas",
+          reportsPage: "Relatórios e Análises",
+          documentsPage: "Gestão documental"
+        }[page])),
+        recursosAvancados: formData.advancedFeatures.map(feature => ({
+          automationFeature: "Automação de Workflows",
+          calendarIntegration: "Integração de Calendário",
+          fileStorage: "Sistema de Armazenamento"
+        }[feature])),
+        analises: formData.analyticsFeatures.map(analytic => ({
+          basicAnalytics: "Análises Básicas",
+          advancedAnalytics: "Análises Avançadas",
+          customReports: "Relatórios Personalizados"
+        }[analytic])),
+        integracoes: formData.integrations.map(integration => ({
+          emailProvider: "Integração de Email",
+          thirdPartyApps: "Integração de Aplicações Terceiras",
+          apiAccess: "Acesso à API"
+        }[integration])),
         suporteCliente: formData.companySupport === "suporteYes" ? "Sim" : "Não",
-        periodoManutencao: formData.maintenance,
-        frequenciaAtualizacao: formData.updateFrequency,
-        idiomas: formData.languages
+        periodoManutencao: {
+          umAno: "1 Ano",
+          doisAnos: "2 Anos",
+          tresAnos: "3 Anos"
+        }[formData.maintenance],
+        frequenciaAtualizacao: {
+          semanal: "Semanal",
+          mensal: "Mensal",
+          trimestral: "Trimestral"
+        }[formData.updateFrequency],
+        idiomas: formData.languages.map(lang => ({
+          portugues: "Português",
+          ingles: "Inglês",
+          frances: "Francês",
+          espanhol: "Espanhol"
+        }[lang]))
       },
       orcamento: {
         valorTotal: finalTotalPreco.toFixed(2),
         moeda: "€"
       },
-      dataSubmissao: new Date().toISOString()
+      dataSubmissao: new Date().toISOString(),
+      status: "Aguardando processamento"
     };
-  
-    try {
-      // Envio dos dados para o servidor
-      const response = await fetch('http://localhost:3000/api/orcamento', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dadosOrcamento)
-      });
-      if (!response.ok) {
-        throw new Error('Erro ao salvar orçamento');
-      }
-      alert("Orçamento enviado com sucesso!")
-    } catch (error) {
-      console.error('Erro ao salvar orçamento:', error);
-    }
+
+    // Convert PDF to base64
+    const pdfBase64 = doc.output('datauristring');
+
+    // Store data in localStorage
+    const existingOrcamentos = JSON.parse(localStorage.getItem('orcamentos') || '[]');
+    const newOrcamentos = [...existingOrcamentos, {
+      ...dadosOrcamento,
+      pdf: pdfBase64
+    }];
+    localStorage.setItem('orcamentos', JSON.stringify(newOrcamentos));
+
   }
 
   const nextStep = () => {
@@ -693,8 +725,8 @@ try {
             required
           >
             <option value="">Selecione</option>
-            <option value="novoSite">Novo Sistema</option>
-            <option value="modernizacao">Modernização</option>
+            <option value="novoSite">Novo Website de CRM</option>
+            <option value="modernizacao">Modernização de website CRM</option>
           </select>
         </div>
         <div>
