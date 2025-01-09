@@ -159,7 +159,7 @@ export default function FormAppRedeSocial({ formData: initialFormData, setFormDa
     doc.text('Nome:', 13, 31);
     doc.text('Contacto:', 13, 35);
     doc.text('Email:', 13, 39);
-    
+
     // Calculate the width of the bold labels to position the values
     const nomeWidth = doc.getTextWidth('Nome:');
     const contactoWidth = doc.getTextWidth('Contacto:');
@@ -250,8 +250,7 @@ export default function FormAppRedeSocial({ formData: initialFormData, setFormDa
         styles: { fontSize: 10, cellPadding: 3 },
         theme: 'grid',
     });
-
-    // Social Features Table
+    
     finalY = doc.lastAutoTable.finalY;
     const socialFeaturesTotal = formData.socialFeatures.reduce((sum, feature) => sum + (PRICE_MAP[feature] || 0), 0);
     doc.autoTable({

@@ -6,16 +6,16 @@ import "../formsFinal.css";
 import logo from "../../../assets/logoPequeno.png";
 import HeaderForm from "../../Header/HeaderForm";
 
-export default function FormECommerce({ formData: initialFormData, setFormData: setInitialFormData, initialStep, onStepBack }) {
+export default function FormBlog({ formData: initialFormData, setFormData: setInitialFormData, initialStep, onStepBack }) {
   const PRICE_MAP = {
    //Paginas
    //preço por hora é de 20€
     mainPage: 160,
     aboutPage: 160,
     contactPage:160,
-    lojaPage: 320,
-    userSection: 160,
-    politicaPage: 160,
+    
+    
+  
     
     //tipo de site
     novoSite: 0,
@@ -32,13 +32,13 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     socialMedia: 140,
 
     //Meios de Pagamento 12horas
-    paymentIntegration: 140,
+    newsletterSigns: 140,
 
     //Avaliação de Produtos 12horas
-    productReviews: 140,
+    userReviews: 140,
 
     //Suporte ao cliente 12horas
-    clientSupport: 140,
+  
 
     //Manutençao
     umAno: 200,
@@ -68,9 +68,8 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     integrations: [],
     features: [],
     socialMedia: "",
-    paymentIntegration: "",
-    productReviews: "",
-    customerSupport: [],
+    newsletterSigns: "",
+    userReviews: "",
     maintenancePeriod: "",
     updateFrequency: "",
     languages: [],
@@ -123,17 +122,14 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
       validationErrors.push("Por favor selecione a opção de integração com redes sociais");
     }
 
-    if (!formData.paymentIntegration) {
+    if (!formData.newsletterSigns) {
       validationErrors.push("Por favor selecione a opção de integração de pagamento");
     }
 
-    if (!formData.productReviews) {
+    if (!formData.userReviews) {
       validationErrors.push("Por favor selecione a opção de avaliação de produtos");
     }
 
-    if (!formData.clientSupport) {
-      validationErrors.push("Por favor selecione a opção de suporte ao cliente");
-    }
 
     // Check languages (at least one)
     if (!formData.languages.length) {
@@ -179,19 +175,17 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     }
 
     // Payment Integration
-    if (formData.paymentIntegration === "integracaoPg") {
-      total += PRICE_MAP.paymentIntegration;
+    if (formData.newsletterSigns === "newsSign") {
+      total += PRICE_MAP.newsletterSigns;
     }
 
     // Product Reviews
-    if (formData.productReviews === "avaliacaoProdutos") {
-      total += PRICE_MAP.productReviews;
+    if (formData.userReviews === "yesReviews") {
+      total += PRICE_MAP.userReviews;
     }
 
     // Customer Support
-    if (formData.clientSupport === "suporteYes") {
-      total += PRICE_MAP.clientSupport;
-    }
+
 
     // Cálculo do custo do website
     total += PRICE_MAP[formData.objective] || 0;
@@ -224,7 +218,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     doc.addImage(logo, 'JPEG', 10, -4, 40, 30);
     doc.setFontSize(10);
     doc.text('WEBQUOTE', 150, 10);
-    doc.text('Orçamento Website E-Commerce', 150, 15);
+    doc.text('Orçamento Website Blog', 150, 15);
     doc.setDrawColor(200, 200, 200);
     doc.line(10, 22, 200, 22);
     
@@ -300,9 +294,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
                         mainPage: "Página Inicial",
                         aboutPage: "Sobre",
                         contactPage: "Contato",
-                        lojaPage: "Loja",
-                        userSection: "Secção de users",
-                        politicaPage: "Política de devoluções",
+                  
                     }[page];
 
                     // Set hours based on page type
@@ -415,8 +407,8 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
    if (formData.socialMedia === "yes") {
      integrations.push(["", "Redes Sociais", "12", `${PRICE_MAP.socialMedia} €`]);
    }
-   if (formData.productReviews === "avaliacaoProdutos") {
-     integrations.push(["", "Sistema de Avaliação de Produtos", "12", `${PRICE_MAP.productReviews} €`]);
+   if (formData.userReviews === "yesReviews") {
+     integrations.push(["", "Sistema de Avaliação de Usuários", "12", `${PRICE_MAP.userReviews} €`]);
    }
    
     doc.autoTable({
@@ -431,7 +423,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
        'Subtotal',
        `${(
         (formData.socialMedia === "yes" ? PRICE_MAP.socialMedia : 0) + 
-        (formData.productReviews === "avaliacaoProdutos" ? PRICE_MAP.productReviews : 0)
+        (formData.userReviews === "yesReviews" ? PRICE_MAP.userReviews : 0)
     ).toFixed(2)} €`
      ]],
      headStyles: {
@@ -448,27 +440,25 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
 
    //Tabela PDF para as features
     const features = []
-    if (formData.paymentIntegration === "integracaoPg") {
-      features.push(["", "Métodos de Pagamento", "12", `${PRICE_MAP.paymentIntegration} €`]);
+    if (formData.newsletterSigns === "newsSign") {
+      features.push(["", "Assinantes de newsletter", "12", `${PRICE_MAP.newsletterSigns} €`]);
     }
-    if(formData.clientSupport === "suporteYes"){
-      features.push(["", "Suporte ao Cliente", "12", `${PRICE_MAP.clientSupport} €`]);
-    }
+    
 
     finalY = doc.lastAutoTable.finalY;
     doc.autoTable({
       startY: finalY + 10,
       head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
-      body: [["Features", "", "", "20€ / Hora", "-"],
-      ...features.length > 0 ? features : [["Sem features selecionadas.", "", "", "", "Subtotal: 0 €"]],
+      body: [["Serviços", "", "", "20€ / Hora", "-"],
+      ...features.length > 0 ? features : [["Sem serviços selecionadas.", "", "", "", "Subtotal: 0 €"]],
     ],
       foot: [[
         '',
         '',
         'Subtotal',
         `${(
-            (formData.paymentIntegration === "integracaoPg" ? PRICE_MAP.paymentIntegration : 0) + 
-            (formData.clientSupport === "suporteYes" ? PRICE_MAP.clientSupport : 0)
+            (formData.newsletterSigns === "newsSigns" ? PRICE_MAP.newsletterSigns : 0) 
+            
         ).toFixed(2)} €`
       ]],
       headStyles: {
@@ -541,11 +531,10 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         // Social Media Integration
         (formData.socialMedia === "yes" ? PRICE_MAP.socialMedia : 0) +
         // Payment Integration
-        (formData.paymentIntegration === "integracaoPg" ? PRICE_MAP.paymentIntegration : 0) +
+        (formData.newsletterSigns === "newsSign" ? PRICE_MAP.newsletterSigns : 0) +
         // Product Reviews
-        (formData.productReviews === "avaliacaoProdutos" ? PRICE_MAP.productReviews : 0) +
+        (formData.userReviews === "yesReviews" ? PRICE_MAP.userReviews : 0) +
         // Customer Support
-        (formData.clientSupport === "suporteYes" ? PRICE_MAP.clientSupport : 0) +
         // Languages
         formData.languages.reduce((sum, lang) => sum + (PRICE_MAP[lang] || 0), 0) +
         // Maintenance
@@ -630,9 +619,8 @@ try {
         paginas: formData.pages,
         servicosDesign: formData.designServices,
         redesSociais: formData.socialMedia === "yes" ? "Sim" : "Não",
-        integracaoPagamento: formData.paymentIntegration === "integracaoPg" ? "Sim" : "Não",
-        avaliacaoProdutos: formData.productReviews === "avaliacaoProdutos" ? "Sim" : "Não",
-        suporteCliente: formData.clientSupport === "suporteYes" ? "Sim" : "Não",
+        assinanteNewsletter: formData.newsletterSigns === "newsSigns" ? "Sim" : "Não",
+        avaliacaoUsuarios: formData.userReviews === "yesReviews" ? "Sim" : "Não",
         periodoManutencao: formData.maintenance,
         frequenciaAtualizacao: formData.updateFrequency,
         idiomas: formData.languages
@@ -672,8 +660,8 @@ try {
     } else if (step === 3) {
       // Validate Step 2
       if (!formData.designServices.length || !formData.socialMedia || 
-          !formData.paymentIntegration || !formData.productReviews || 
-          !formData.clientSupport || !formData.languages.length) {
+          !formData.newsletterSigns || !formData.userReviews || 
+          !formData.languages.length) {
         alert("Por favor preencha todos os campos obrigatórios antes de continuar");
         return;
       }
@@ -748,9 +736,7 @@ try {
               { value: "mainPage", label: "Página Inicial" },
               { value: "aboutPage", label: "Sobre" },
               { value: "contactPage", label: "Contato" },
-              { value: "lojaPage", label: "Loja" },
-              { value: "userSection", label: "Secção de users" },
-              { value: "politicaPage", label: "Política de devoluções" },
+              
             ].map(({ value, label }) => (
               <div key={value}>
                 <input
@@ -838,46 +824,32 @@ try {
         </div>
         <br />
         <div>
-          <label htmlFor="paymentIntegration">Integração com meios de pagamento</label>
+          <label htmlFor="newsletterSigns">Seção para assinantes de newsletter:</label>
           <select
-            id="paymentIntegration"
-            name="paymentIntegration"
-            value={formData.paymentIntegration}
+            id="newsletterSigns"
+            name="newsletterSigns"
+            value={formData.newsletterSigns}
             onChange={handleInputChange}
             required
           >
             <option value="">Selecione</option>
-            <option value="integracaoPg">Sim</option>
-            <option value="semIntPg">Não</option>
+            <option value="newsSign">Sim</option>
+            <option value="noNews">Não</option>
           </select>
         </div>
         <br />
         <div>
-          <label htmlFor="productReviews">Avaliação de produtos</label>
+          <label htmlFor="userReviews">Comentários de Usuários:</label>
           <select
-            id="productReviews"
-            name="productReviews"
-            value={formData.productReviews}
+            id="userReviews"
+            name="userReviews"
+            value={formData.userReviews}
             onChange={handleInputChange}
             required
           >
             <option value="">Selecione</option>
-            <option value="avaliacaoProdutos">Sim</option>
-            <option value="semAvaProd">Não</option>
-          </select>
-        </div>
-        <div>
-          <label htmlFor="clientSupport">Suporte ao cliente</label>
-          <select
-            id="clientSupport"
-            name="clientSupport"
-            value={formData.clientSupport}
-            onChange={handleInputChange}
-            required
-          >
-            <option value="">Selecione</option>
-            <option value="suporteYes">Sim</option>
-            <option value="suporteNo">Não</option>
+            <option value="yesReviews">Sim</option>
+            <option value="noReviews">Não</option>
           </select>
         </div>
         <div>
