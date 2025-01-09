@@ -360,73 +360,10 @@ export default function FormAppRedeSocial({ formData: initialFormData, setFormDa
     });
 
     // API Integrations Table
-    finalY = doc.lastAutoTable.finalY;
-    const apiTotal = formData.apiIntegrations.reduce((sum, api) => sum + (PRICE_MAP[api] || 0), 0);
-    doc.autoTable({
-        startY: finalY + 10,
-        head: [['Tipo de serviço', "Descrição", 'Horas', 'Preço (€)']],
-        body: [
-            ["Integrações API", "", "", "25€ / Hora"],
-            ...formData.apiIntegrations.map(api => {
-                const apiLabel = {
-                    googleAuth: "Autenticação Google",
-                    facebookAuth: "Autenticação Facebook",
-                    cloudStorage: "Armazenamento em Nuvem",
-                    locationServices: "Serviços de Localização"
-                }[api];
-                return ["", apiLabel, "6", PRICE_MAP[api] + " €"];
-            })
-        ],
-        foot: [[
-            '',
-            '',
-            'Subtotal',
-            `${apiTotal} €`
-        ]],
-        headStyles: {
-            fillColor: [65, 105, 225],
-            textColor: 255,
-            fontSize: 10,
-        },
-        footStyles: {
-          fillColor: [65, 105, 225],
-        },
-        styles: { fontSize: 10, cellPadding: 3 },
-        theme: 'grid',
-    });
+    
 
     // Infrastructure Table
-    finalY = doc.lastAutoTable.finalY;
-    const infraTotal = (PRICE_MAP[formData.serverInfra] || 0);
-    doc.autoTable({
-        startY: finalY + 10,
-        head: [['Tipo de serviço', "Descrição", 'Setup', 'Preço (€)']],
-        body: [
-            ["Infraestrutura", "", "", "Preço Fixo"],
-            ["Servidor", formData.serverInfra ? {
-                basicServer: "Servidor Básico",
-                scalableServer: "Servidor Escalável",
-                loadBalancing: "Load Balancing"
-            }[formData.serverInfra] : "-", "1", (PRICE_MAP[formData.serverInfra] || 0) + " €"],
-        ],
-        foot: [[
-            '',
-            '',
-            'Subtotal',
-            `${infraTotal} €`
-        ]],
-        headStyles: {
-            fillColor: [65, 105, 225],
-            textColor: 255,
-            fontSize: 10,
-        },
-        footStyles: {
-          fillColor: [65, 105, 225],
-        },
-        styles: { fontSize: 10, cellPadding: 3 },
-        theme: 'grid',
-    });
-
+    
     // Languages Table
     finalY = doc.lastAutoTable.finalY;
       const languagesTotal = formData.languages.reduce((sum, lang) => sum + (PRICE_MAP[lang] || 0), 0);

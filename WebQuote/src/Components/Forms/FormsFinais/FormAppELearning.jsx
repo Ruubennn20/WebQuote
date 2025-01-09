@@ -6,14 +6,13 @@ import "../formsFinal.css";
 import logo from "../../../assets/logoPequeno.png";
 import HeaderForm from "../../Header/HeaderForm";
 
-export default function FormECommerce({ formData: initialFormData, setFormData: setInitialFormData, initialStep, onStepBack }) {
+export default function FormAppELearning({ formData: initialFormData, setFormData: setInitialFormData, initialStep, onStepBack }) {
   const PRICE_MAP = {
    //Paginas
    //preço por hora é de 20€
     mainPage: 160,
     aboutPage: 160,
     contactPage:160,
-    lojaPage: 320,
     userSection: 160,
     politicaPage: 160,
     
@@ -748,7 +747,6 @@ try {
               { value: "mainPage", label: "Página Inicial" },
               { value: "aboutPage", label: "Sobre" },
               { value: "contactPage", label: "Contato" },
-              { value: "lojaPage", label: "Loja" },
               { value: "userSection", label: "Secção de users" },
               { value: "politicaPage", label: "Política de devoluções" },
             ].map(({ value, label }) => (
@@ -853,7 +851,7 @@ try {
         </div>
         <br />
         <div>
-          <label htmlFor="productReviews">Avaliação de produtos</label>
+          <label htmlFor="productReviews">Avaliação de cursos</label>
           <select
             id="productReviews"
             name="productReviews"

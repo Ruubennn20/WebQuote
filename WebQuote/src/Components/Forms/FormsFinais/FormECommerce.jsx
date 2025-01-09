@@ -453,7 +453,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     doc.autoTable({
       startY: finalY + 10,
       head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
-      body: [["Features", "", "", "20€ / Hora", "-"],
+      body: [["Serviços adicionais", "", "", "20€ / Hora", "-"],
       ...features.length > 0 ? features : [["Sem features selecionadas.", "", "", "", "Subtotal: 0 €"]],
     ],
       foot: [[
