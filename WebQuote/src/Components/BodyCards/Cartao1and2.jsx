@@ -14,7 +14,7 @@ export default function Cartao1and2() {
             <h2 className="card-title02">Escolher a WebQuote ?</h2>
             <h3 className="card-subtitle02">Orçamentos na hora...</h3>
             <p className="card-text02">
-              Na nossa empresa, simplificamos o processo de planejar e orçamentar o seu webSite e/ou E-Commerce.
+              Na nossa empresa, simplificamos o processo de planejar e orçamentar o seu webSite e/ou APP.
               Com a nossa ferramenta automatizada, você pode personalizar o projeto de acordo com suas necessidades,
               escolhendo o tipo de webSite, funcionalidades desejadas e serviços adicionais.
               Em poucos cliques, geramos um orçamento detalhado em PDF, com transparência e clareza,

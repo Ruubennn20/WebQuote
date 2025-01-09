@@ -113,4 +113,15 @@
     padding: 10px 20px;
     cursor: pointer;
   }
+  .logo-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 20px; /* Adiciona espaço entre o logotipo e a tabela */
+  }
+  
+  .logo {
+    max-width: 100px; /* Ajuste o tamanho do logotipo */
+    height: auto;
+  }
   
