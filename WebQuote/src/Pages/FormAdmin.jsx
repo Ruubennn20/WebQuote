@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import "./FormAdmin.css";
+import { Link } from "react-router-dom";
+import logoPequeno from '../assets/logoComBorda.png'
 
 export default function FormAdmin() {
   const [orcamentos, setOrcamentos] = useState([]);
@@ -9,26 +11,25 @@ export default function FormAdmin() {
   const [statusMap, setStatusMap] = useState({});
 
   useEffect(() => {
-    const storedOrcamentos = JSON.parse(localStorage.getItem('orcamentos') || '[]');
-    // Sort orcamentos by date in descending order (newest first)
-    const sortedOrcamentos = storedOrcamentos.sort((a, b) => 
-      new Date(b.dataSubmissao) - new Date(a.dataSubmissao)
+    const storedOrcamentos = JSON.parse(localStorage.getItem("orcamentos") || "[]");
+    const sortedOrcamentos = storedOrcamentos.sort(
+      (a, b) => new Date(b.dataSubmissao) - new Date(a.dataSubmissao)
     );
-    
+
     const initialStatusMap = {};
     sortedOrcamentos.forEach((orcamento) => {
       initialStatusMap[orcamento.orderNumber] = orcamento.status || "Aguardando processamento";
     });
-    
+
     setStatusMap(initialStatusMap);
     setOrcamentos(sortedOrcamentos);
     setLoading(false);
   }, []);
 
   const downloadPDF = async (orderNumber) => {
-    const orcamento = orcamentos.find(o => o.orderNumber === orderNumber);
+    const orcamento = orcamentos.find((o) => o.orderNumber === orderNumber);
     if (orcamento && orcamento.pdf) {
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = orcamento.pdf;
       link.download = `orcamento_${orderNumber}.pdf`;
       document.body.appendChild(link);
@@ -47,7 +48,6 @@ export default function FormAdmin() {
   const exportToPDF = () => {
     const doc = new jsPDF("landscape");
 
-    // Define columns for the table
     const columns = [
       "Nº Pedido",
       "Nome",
@@ -59,7 +59,6 @@ export default function FormAdmin() {
       "Status",
     ];
 
-    // Convert orcamentos data to rows
     const rows = orcamentos.map((orcamento) => [
       orcamento.orderNumber,
       orcamento.informacoesCliente.nome,
@@ -71,11 +70,9 @@ export default function FormAdmin() {
       statusMap[orcamento.orderNumber] || "Aguardando processamento",
     ]);
 
-    // Add title
     doc.setFontSize(16);
     doc.text("Orçamentos Submetidos", 14, 15);
 
-    // Add table
     doc.autoTable({
       head: [columns],
       body: rows,
@@ -101,7 +98,12 @@ export default function FormAdmin() {
 
   return (
     <div className="admin-container">
-      <h2 className=" title">Orçamentos Submetidos</h2>
+      <div className="logo-container">
+      <Link to="/">
+        <img src={logoPequeno} alt="Logo" className="logo" href="/homepage"/>
+        </Link>
+      </div>
+      <h2 className="title">Orçamentos Submetidos</h2>
       <hr className="linha" />
       <div className="table-container" id="exportableTable">
         <table>
@@ -131,9 +133,7 @@ export default function FormAdmin() {
                 <td>
                   {parseFloat(orcamento.orcamento.valorTotal).toFixed(2)} {orcamento.orcamento.moeda}
                 </td>
-                <td>
-                  {new Date(orcamento.dataSubmissao).toLocaleDateString()}
-                </td>
+                <td>{new Date(orcamento.dataSubmissao).toLocaleDateString()}</td>
                 <td>
                   <select
                     value={statusMap[orcamento.orderNumber] || "Aguardando processamento"}
@@ -148,9 +148,7 @@ export default function FormAdmin() {
                   </select>
                 </td>
                 <td>
-                  <button onClick={() => downloadPDF(orcamento.orderNumber)}>
-                    Download PDF
-                  </button>
+                  <button onClick={() => downloadPDF(orcamento.orderNumber)}>Download PDF</button>
                 </td>
               </tr>
             ))}

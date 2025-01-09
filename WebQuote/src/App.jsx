@@ -1,6 +1,4 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
@@ -11,6 +9,8 @@ import FormContacto from "./Components/Forms/FormContacto";
 import FormExemplo from "./Components/Forms/FormExemplo";
 import FormInicial from "./Components/Forms/formcomPDFGenerator";
 import FormAdmin from "./Pages/formAdmin";
+import Login from "./Components/Login";
+import ProtectedRoute from "./Components/ProtectRoute";
 import PoliticaDeCookies from "./Pages/PoliticaDeCookies";
 import FormMainComponente from "./Components/Forms/FormMainComponente"; 
 import ScrollToTop from "./Components/ScrollToTop"; // Importar o ScrollToTop
@@ -18,6 +18,7 @@ import ScrollToTop from "./Components/ScrollToTop"; // Importar o ScrollToTop
 
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   return (
     <Router>
       {/* ScrollToTop para garantir que a página inicie no topo */}
@@ -30,7 +31,15 @@ function App() {
         <Route path="/form" element={<FormContacto />} />
         <Route path="/form-exemplo" element={<FormExemplo />} />
         <Route path="/form-com-pdf" element={<FormInicial />} />
-        <Route path="/form-admin" element={<FormAdmin />} />
+        <Route
+          path="/form-admin"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <FormAdmin />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/login" element={<Login onLogin={setIsAuthenticated} />} />
         <Route path="/politica-cookies" element={<PoliticaDeCookies />} />
         <Route path="/form-main" element={<FormMainComponente />} />
       </Routes>
