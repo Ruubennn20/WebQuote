@@ -50,7 +50,7 @@ app.post('/send-email', upload.single('pdf'), async (req, res) => {
       },
       {
         filename: 'webQuoteLogo.jpg',
-        path: '../src/assets/webQuoteLogo.jpg',
+        path: '../src/assets/logosSemFundo.png',
         cid: 'logoWebQuote',
       },
     ],
@@ -64,6 +64,41 @@ app.post('/send-email', upload.single('pdf'), async (req, res) => {
     res.status(500).json({ error: 'Erro ao enviar email.' });
   }
 });
+
+
+// Rota para envio do formulário de contato
+app.post('/send-contact-form', async (req, res) => {
+  try {
+    const { name, email, message } = req.body;
+
+    // Validações básicas
+    if (!name || !email || !message) {
+      return res.status(400).json({ error: 'Dados incompletos.' });
+    }
+
+    // Monta o objeto de email
+    const mailOptions = {
+      from: 'zoroarkchico@gmail.com', // email remetente (o mesmo que está na auth)
+      to: 'zoroarkchico@gmail.com',   // para quem o email será enviado
+      subject: `Contacto de  ${name}`, 
+      html: `
+        <p><strong>Nome:</strong> ${name}</p>
+        <p><strong>Email de contato:</strong> ${email}</p>
+        <p><strong>Mensagem:</strong></p>
+        <p>${message}</p>
+      `,
+    };
+
+    // Envia o email via nodemailer
+    await transporter.sendMail(mailOptions);
+
+    return res.status(200).json({ message: 'Email enviado com sucesso!' });
+  } catch (error) {
+    console.error('Erro ao enviar email:', error);
+    return res.status(500).json({ error: 'Erro ao enviar email.' });
+  }
+});
+
 
 // Inicia o servidor
 app.listen(3000, () => console.log('Servidor rodando na porta 3000'));

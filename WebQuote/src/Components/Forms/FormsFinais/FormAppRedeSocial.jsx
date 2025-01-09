@@ -6,56 +6,76 @@ import "../formsFinal.css";
 import logo from "../../../assets/logoPequeno.png";
 import HeaderForm from "../../Header/HeaderForm";
 
-export default function FormECommerce({ formData: initialFormData, setFormData: setInitialFormData, initialStep, onStepBack }) {
+export default function FormAppRedeSocial({ formData: initialFormData, setFormData: setInitialFormData, initialStep, onStepBack }) {
   const PRICE_MAP = {
-   //Paginas
-   //preço por hora é de 20€
-    mainPage: 160,
-    aboutPage: 160,
-    contactPage:160,
-    lojaPage: 320,
-    userSection: 160,
-    politicaPage: 160,
+   // Core Features (base pages)
+    feedPage: 320,        // Complex feed with posts
+    profilePage: 160,     // User profile
+    messagesPage: 240,    // Chat/messaging system
+    notificationsPage: 160, // Notifications center
+    searchPage: 160,      // Search functionality
+    settingsPage: 160,    // User settings
     
-    //tipo de site
-    novoSite: 0,
-    modernizacao: 0, 
-    // nao adcionar um preço aqui pois depois tenho que fazer um calculo se for site novo é o preço a multiplicar por 1.5x por exemplo e se for modernização é o preço a multiplicar por 1.25x por exemplo
-   
-    //Servicos de Design
+    // Type of app
+    novoApp: 0,
+    modernizacao: 0,
+    
+    // Design Services
     Logotipo: 80,
     Icons: 80,
-    Banners:80,
+    Banners: 80,
     outras: 20,
 
-    //Redes Sociais 12horas
-    socialMedia: 140,
+    // Social Features
+    userFollowing: 140,    // Follow/unfollow system
+    contentSharing: 140,   // Ability to share posts
+    reactions: 140,        // Likes, reactions, comments
+    tagging: 140,         // User tagging in posts
 
-    //Meios de Pagamento 12horas
-    paymentIntegration: 140,
+    // Media Features
+    photoUpload: 140,     // Photo upload and handling
+    videoUpload: 200,     // Video upload and handling
+    audioUpload: 160,     // Audio upload and handling
+    filters: 180,         // Media filters and effects
 
-    //Avaliação de Produtos 12horas
-    productReviews: 140,
-
-    //Suporte ao cliente 12horas
-    clientSupport: 140,
-
-    //Manutençao
+    // Maintenance
     umAno: 200,
     doisAnos: 350,
     tresAnos: 500,
-    
 
-    //Atualizaçao
+    // Updates
     semanal: 400,
     mensal: 250,
     trimestral: 150,
 
-    //Idiomas
+    // Languages
     portugues: 10,
     ingles: 20,
     frances: 20,
     espanhol: 20,
+
+    // Backend Services
+    userAuth: 200,         // User authentication system
+    dataStorage: 180,      // Database setup and management
+    pushNotifications: 160, // Push notification system
+    analytics: 140,        // Analytics integration
+    
+    // API Integration
+    googleAuth: 120,       // Google authentication
+    facebookAuth: 120,     // Facebook authentication
+    cloudStorage: 160,     // Cloud storage integration
+    locationServices: 140, // Geolocation services
+    
+    // Security Features
+    encryption: 180,       // Data encryption
+    contentModeration: 200, // Content moderation system
+    privacyControls: 160,  // Privacy settings and controls
+    
+    // Server Infrastructure
+    basicServer: 100,      // Basic server setup
+    scalableServer: 200,   // Scalable server architecture
+    loadBalancing: 160,    // Load balancing setup
+    
   };
 /*   const [selectedForm, setSelectedForm] = useState(null); */
   const [formData, setFormData] = useState({
@@ -65,23 +85,23 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     objective: "",
     pages: [],
     designServices: [],
-    integrations: [],
-    features: [],
-    socialMedia: "",
-    paymentIntegration: "",
-    productReviews: "",
-    customerSupport: [],
-    maintenancePeriod: "",
+    socialFeatures: [],
+    mediaFeatures: [],
+    maintenance: "",
     updateFrequency: "",
     languages: [],
-    budget: "",
-    references: "",
+    backendServices: [],
+    apiIntegrations: [],
+    securityFeatures: [],
+    serverInfra: "",
+    databaseType: "",
+    hostingType: "",
   });
+  
   const [step, setStep] = useState(initialStep || 2);
 
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
-
     if (type === "checkbox") {
       setFormData((prevData) => ({
         ...prevData,
@@ -102,125 +122,30 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
 
     // Validation checks
     const validationErrors = [];
-
-    // Check objective (website type)
     if (!formData.objective) {
       validationErrors.push("Por favor selecione se deseja um website novo ou modernização");
     }
-
-    // Check pages (at least one)
     if (!formData.pages.length) {
       validationErrors.push("Por favor selecione pelo menos uma página");
     }
-
-    // Check design services (at least one)
     if (!formData.designServices.length) {
       validationErrors.push("Por favor selecione pelo menos um serviço de design");
     }
-
-    // Check required selects
-    if (!formData.socialMedia) {
-      validationErrors.push("Por favor selecione a opção de integração com redes sociais");
-    }
-
-    if (!formData.paymentIntegration) {
-      validationErrors.push("Por favor selecione a opção de integração de pagamento");
-    }
-
-    if (!formData.productReviews) {
-      validationErrors.push("Por favor selecione a opção de avaliação de produtos");
-    }
-
-    if (!formData.clientSupport) {
-      validationErrors.push("Por favor selecione a opção de suporte ao cliente");
-    }
-
-    // Check languages (at least one)
     if (!formData.languages.length) {
       validationErrors.push("Por favor selecione pelo menos um idioma");
     }
-
-    // Check maintenance and update frequency
     if (!formData.maintenance) {
       validationErrors.push("Por favor selecione um período de manutenção");
     }
-
     if (!formData.updateFrequency) {
       validationErrors.push("Por favor selecione uma frequência de atualização");
     }
-
-    // If there are validation errors, show them and stop form submission
     if (validationErrors.length > 0) {
       alert(validationErrors.join("\n"));
       return;
     }
 
-    // If validation passes, continue with existing submit logic
-    let total = 0;
-
-    // Calculate total based on selections
-    // Website Type multiplier
-    const websiteMultiplier = formData.objective === "novoSite" ? 1.5 : 
-                             formData.objective === "modernizacao" ? 1.25 : 1;
-
-    // Pages cost
-    formData.pages.forEach(page => {
-      total += PRICE_MAP[page] || 0;
-    });
-
-    // Design Services
-    formData.designServices.forEach(service => {
-      total += PRICE_MAP[service] || 0;
-    });
-
-    // Social Media Integration
-    if (formData.socialMedia === "yes") {
-      total += PRICE_MAP.socialMedia;
-    }
-
-    // Payment Integration
-    if (formData.paymentIntegration === "integracaoPg") {
-      total += PRICE_MAP.paymentIntegration;
-    }
-
-    // Product Reviews
-    if (formData.productReviews === "avaliacaoProdutos") {
-      total += PRICE_MAP.productReviews;
-    }
-
-    // Customer Support
-    if (formData.clientSupport === "suporteYes") {
-      total += PRICE_MAP.clientSupport;
-    }
-
-    // Cálculo do custo do website
-    total += PRICE_MAP[formData.objective] || 0;
-  
-    // Cálculo do custo das páginas
-    formData.pages.forEach((page) => {
-      total += PRICE_MAP[page] || 0;
-    });
-  
-    // Cálculo do custo de manutenção
-    if (formData.maintenance) {
-      total += PRICE_MAP[formData.maintenance];
-    }
-
-    // Update Frequency
-    if (formData.updateFrequency) {
-      total += PRICE_MAP[formData.updateFrequency];
-    }
-
-    // Languages
-    formData.languages.forEach(lang => {
-      total += PRICE_MAP[lang] || 0;
-    });
-
-    // Apply website type multiplier to final total
-    total = total * websiteMultiplier; 
-
     const doc = new jsPDF();
-    
     doc.addImage(logo, 'JPEG', 10, -4, 40, 30);
     doc.setFontSize(10);
     doc.text('WEBQUOTE', 150, 10);
@@ -260,8 +185,8 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
       head: [['Tipo de serviço', "", '', '']],
       body: [[
         "Website",
-        formData.objective === "novoSite" ? "Desenvolvimento de um website novo" : 
-        formData.objective === "modernizacao" ? "Modernização de um website existente" : "",
+        formData.objective === "novoApp" ? "Desenvolvimento de um app novo" : 
+        formData.objective === "modernizacao" ? "Modernização de um app existente" : "",
         "",
         "",
         formData.objective ? PRICE_MAP[formData.objective] + " €" : "0 €"
@@ -287,94 +212,227 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
 
     // Pages Table
     let finalY = doc.lastAutoTable.finalY;
+    const pagesTotal = formData.pages.reduce((sum, page) => sum + (PRICE_MAP[page] || 0), 0);
+    doc.autoTable({
+        startY: finalY + 10,
+        head: [['Tipo de serviço', "Descrição", 'Horas', 'Preço (€)']],
+        body: [
+            ["Páginas: ", "", "", "20€ / Hora"],
+            ...formData.pages.map(page => {
+                const pageLabel = {
+                    feedPage: "Feed Principal",
+                    profilePage: "Perfil de Usuário",
+                    messagesPage: "Mensagens",
+                    notificationsPage: "Notificações",
+                    searchPage: "Pesquisa",
+                    settingsPage: "Configurações",
+                }[page];
 
-    //Tabela para as páginas
-        const pagesTotal = formData.pages.reduce((sum, page) => sum + (PRICE_MAP[page] || 0), 0);
-        doc.autoTable({
-            startY: finalY + 10,
-            head: [['Tipo de serviço', " ", 'Horas', 'Preço (€)']],
-            body: [
-                ["Páginas: ", "", "", "20€ / Hora", "-"],
-                ...formData.pages.map(page => {
-                    const pageLabel = {
-                        mainPage: "Página Inicial",
-                        aboutPage: "Sobre",
-                        contactPage: "Contato",
-                        lojaPage: "Loja",
-                        userSection: "Secção de users",
-                        politicaPage: "Política de devoluções",
-                    }[page];
-
-                    // Set hours based on page type
-                    const hours = page === 'lojaPage' ? "16" : "8";
-                    return [" ", pageLabel, hours, (PRICE_MAP[page] || 0) + " €"];
-                })
-            ],
-            foot: [[
-                '',
-                '',
-                'Subtotal: ',
-                `${pagesTotal} €` 
-            ]],
-            headStyles: {
-                fillColor: [65, 105, 225],
-                textColor: 255,
-                fontSize: 10,
-            },
-            footStyles: {
-              fillColor: [65, 105, 225],
-            },
-            styles: { fontSize: 10, cellPadding: 3 },
-            theme: 'grid',
-        });
-
-    // Tabela para os serviços de design
+                // Set hours based on page type
+                const hours = page === 'feedPage' ? "16" : "8";
+                return ["", pageLabel, hours, (PRICE_MAP[page] || 0) + " €"];
+            })
+        ],
+        foot: [[
+            '',
+            '',
+            'Subtotal: ',
+            `${pagesTotal} €` 
+        ]],
+        headStyles: {
+            fillColor: [65, 105, 225],
+            textColor: 255,
+            fontSize: 10,
+        },
+        footStyles: {
+          fillColor: [65, 105, 225],
+        },
+        styles: { fontSize: 10, cellPadding: 3 },
+        theme: 'grid',
+    });
+    
     finalY = doc.lastAutoTable.finalY;
-      console.log("Design Services Selected:", formData.designServices);
-      const designTotal = formData.designServices.reduce((sum, service) => sum + (PRICE_MAP[service] || 0), 0);
-      doc.autoTable({
-      startY: finalY + 10,
-      head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
-      body: [
-        ["Design", "", "", "10€ / Hora", "-"],
-        ...formData.designServices.map(service => {
-        const designLabel = {
-          Logotipo: "Logotipo",
-          Icons: "Icons",
-          Banners: "Banners",
-          outras: "Outros"
-        }[service];
-        const design = service === 'outras' ? "2" : "8";
-        return ["",designLabel, design, PRICE_MAP[service] + " €"];
-      }),
-    ],
-      foot: [[
-        '',
-        '',
-        'Subtotal',
-        `${designTotal} €`
-        
-      ]],
-      headStyles: {
-        fillColor: [65, 105, 225],
-        textColor: 255,
-        fontSize: 10,
-      },
-      footStyles: {
-        fillColor: [65, 105, 225],
-      },
-      styles: { fontSize: 10, cellPadding: 3 },
-      theme: 'grid',
+    const socialFeaturesTotal = formData.socialFeatures.reduce((sum, feature) => sum + (PRICE_MAP[feature] || 0), 0);
+    doc.autoTable({
+        startY: finalY + 10,
+        head: [['Tipo de serviço', "Descrição", 'Horas', 'Preço (€)']],
+        body: [
+            ["Recursos Sociais", "", "", "20€ /Hora"],
+            ...formData.socialFeatures.map(feature => {
+                const featureLabel = {
+                    userFollowing: "Sistema de Seguidores",
+                    contentSharing: "Compartilhamento de Conteúdo",
+                    reactions: "Reações e Comentários",
+                    tagging: "Marcação de Usuários"
+                }[feature];
+                return ["", featureLabel, "7", PRICE_MAP[feature] + " €"];
+            })
+        ],
+        foot: [[
+            '',
+            '',
+            'Subtotal',
+            `${socialFeaturesTotal} €`
+        ]],
+        headStyles: {
+            fillColor: [65, 105, 225],
+            textColor: 255,
+            fontSize: 10,
+        },
+        footStyles: {
+          fillColor: [65, 105, 225],
+        },
+        styles: { fontSize: 10, cellPadding: 3 },
+        theme: 'grid',
     });
 
+    // Media Features Table
+    finalY = doc.lastAutoTable.finalY;
+    const mediaFeaturesTotal = formData.mediaFeatures.reduce((sum, feature) => sum + (PRICE_MAP[feature] || 0), 0);
+    doc.autoTable({
+        startY: finalY + 10,
+        head: [['Tipo de serviço', "Descrição", 'Horas', 'Preço (€)']],
+        body: [
+            ["Recursos de Mídia", "", "", "20€/ Hora"],
+            ...formData.mediaFeatures.map(feature => {
+                const featureLabel = {
+                    photoUpload: "Upload de Fotos",
+                    videoUpload: "Upload de Vídeos",
+                    audioUpload: "Upload de Áudio",
+                    filters: "Filtros e Efeitos"
+                }[feature];
+                const hours = feature === 'videoUpload' ? "10" :"7";
+                return ["", featureLabel, hours, PRICE_MAP[feature]+ " €"];
+            })
+        ],
+        foot: [[
+            '',
+            '',
+            'Subtotal',
+            `${mediaFeaturesTotal} €`
+        ]],
+        headStyles: {
+            fillColor: [65, 105, 225],
+            textColor: 255,
+            fontSize: 10,
+        },
+        footStyles: {
+          fillColor: [65, 105, 225],
+        },
+        styles: { fontSize: 10, cellPadding: 3 },
+        theme: 'grid',
+    });
+
+    // Backend Services Table
+    finalY = doc.lastAutoTable.finalY;
+    const backendTotal = formData.backendServices.reduce((sum, service)=> sum + (PRICE_MAP[service] || 0), 0);
+    doc.autoTable({
+        startY: finalY + 10,
+        head: [['Tipo de serviço', "Descrição", 'Horas', 'Preço (€)']],
+        body: [
+            ["Serviços Backend", "", "", "25€ /Hora"],
+            ...formData.backendServices.map(service => {
+                const serviceLabel = {
+                    userAuth: "Sistema de Autenticação",
+                    dataStorage: "Armazenamento de Dados",
+                    pushNotifications: "Notificações Push",
+                    analytics: "Analytics"
+                }[service];
+                return ["", serviceLabel, "8", PRICE_MAP[service] + " €"];
+            })
+        ],
+        foot: [[
+            '',
+            '',
+            'Subtotal',
+            `${backendTotal} €`
+        ]],
+        headStyles: {
+            fillColor: [65, 105, 225],
+            textColor: 255,
+            fontSize: 10,
+        },
+        footStyles: {
+          fillColor: [65, 105, 225],
+        },
+        styles: { fontSize: 10, cellPadding: 3 },
+        theme: 'grid',
+    });
+
+    // API Integrations Table
+    finalY = doc.lastAutoTable.finalY;
+    const apiTotal = formData.apiIntegrations.reduce((sum, api) => sum + (PRICE_MAP[api] || 0), 0);
+    doc.autoTable({
+        startY: finalY + 10,
+        head: [['Tipo de serviço', "Descrição", 'Horas', 'Preço (€)']],
+        body: [
+            ["Integrações API", "", "", "25€ / Hora"],
+            ...formData.apiIntegrations.map(api => {
+                const apiLabel = {
+                    googleAuth: "Autenticação Google",
+                    facebookAuth: "Autenticação Facebook",
+                    cloudStorage: "Armazenamento em Nuvem",
+                    locationServices: "Serviços de Localização"
+                }[api];
+                return ["", apiLabel, "6", PRICE_MAP[api] + " €"];
+            })
+        ],
+        foot: [[
+            '',
+            '',
+            'Subtotal',
+            `${apiTotal} €`
+        ]],
+        headStyles: {
+            fillColor: [65, 105, 225],
+            textColor: 255,
+            fontSize: 10,
+        },
+        footStyles: {
+          fillColor: [65, 105, 225],
+        },
+        styles: { fontSize: 10, cellPadding: 3 },
+        theme: 'grid',
+    });
+
+    // Infrastructure Table
+    finalY = doc.lastAutoTable.finalY;
+    const infraTotal = (PRICE_MAP[formData.serverInfra] || 0);
+    doc.autoTable({
+        startY: finalY + 10,
+        head: [['Tipo de serviço', "Descrição", 'Setup', 'Preço (€)']],
+        body: [
+            ["Infraestrutura", "", "", "Preço Fixo"],
+            ["Servidor", formData.serverInfra ? {
+                basicServer: "Servidor Básico",
+                scalableServer: "Servidor Escalável",
+                loadBalancing: "Load Balancing"
+            }[formData.serverInfra] : "-", "1", (PRICE_MAP[formData.serverInfra] || 0) + " €"],
+        ],
+        foot: [[
+            '',
+            '',
+            'Subtotal',
+            `${infraTotal} €`
+        ]],
+        headStyles: {
+            fillColor: [65, 105, 225],
+            textColor: 255,
+            fontSize: 10,
+        },
+        footStyles: {
+          fillColor: [65, 105, 225],
+        },
+        styles: { fontSize: 10, cellPadding: 3 },
+        theme: 'grid',
+    });
 
     // Languages Table
     finalY = doc.lastAutoTable.finalY;
       const languagesTotal = formData.languages.reduce((sum, lang) => sum + (PRICE_MAP[lang] || 0), 0);
       doc.autoTable({
       startY: finalY + 10,
-      head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
-     
+      head: [['Tipo de serviço', "Descrição", 'Horas', 'Preço (€)']],
       body:[["Linguagem", "", "", "20€ / Hora", "-"],
       ...formData.languages.map(lang => {
         const langLabel = {
@@ -406,83 +464,6 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
       styles: { fontSize: 10, cellPadding: 3 },
       theme: 'grid',
     });
-
-
-
-//Tabela PDF para as integrações
-  finalY = doc.lastAutoTable.finalY;
-   const integrations = [];
-   if (formData.socialMedia === "yes") {
-     integrations.push(["", "Redes Sociais", "12", `${PRICE_MAP.socialMedia} €`]);
-   }
-   if (formData.productReviews === "avaliacaoProdutos") {
-     integrations.push(["", "Sistema de Avaliação de Produtos", "12", `${PRICE_MAP.productReviews} €`]);
-   }
-   
-    doc.autoTable({
-     startY: finalY + 10,
-     head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
-     body: [["Integrações", "", "", "20€ / Hora", "-"],
-     ...integrations.length > 0 ? integrations : [["Sem integraçoes selecionadas.", "", "", "", "Subtotal: 0 €"]],
-   ],
-     foot: [[
-       '',
-       '',
-       'Subtotal',
-       `${(
-        (formData.socialMedia === "yes" ? PRICE_MAP.socialMedia : 0) + 
-        (formData.productReviews === "avaliacaoProdutos" ? PRICE_MAP.productReviews : 0)
-    ).toFixed(2)} €`
-     ]],
-     headStyles: {
-       fillColor: [65, 105, 225],
-       textColor: 255,
-       fontSize: 10,
-     },
-     footStyles: {
-      fillColor: [65, 105, 225],
-    },
-     styles: { fontSize: 10, cellPadding: 3 },
-     theme: 'grid',
-   });
-
-   //Tabela PDF para as features
-    const features = []
-    if (formData.paymentIntegration === "integracaoPg") {
-      features.push(["", "Métodos de Pagamento", "12", `${PRICE_MAP.paymentIntegration} €`]);
-    }
-    if(formData.clientSupport === "suporteYes"){
-      features.push(["", "Suporte ao Cliente", "12", `${PRICE_MAP.clientSupport} €`]);
-    }
-
-    finalY = doc.lastAutoTable.finalY;
-    doc.autoTable({
-      startY: finalY + 10,
-      head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
-      body: [["Features", "", "", "20€ / Hora", "-"],
-      ...features.length > 0 ? features : [["Sem features selecionadas.", "", "", "", "Subtotal: 0 €"]],
-    ],
-      foot: [[
-        '',
-        '',
-        'Subtotal',
-        `${(
-            (formData.paymentIntegration === "integracaoPg" ? PRICE_MAP.paymentIntegration : 0) + 
-            (formData.clientSupport === "suporteYes" ? PRICE_MAP.clientSupport : 0)
-        ).toFixed(2)} €`
-      ]],
-      headStyles: {
-        fillColor: [65, 105, 225],
-        textColor: 255,
-        fontSize: 10,
-      },
-      footStyles: {
-        fillColor: [65, 105, 225],
-      },
-      styles: { fontSize: 10, cellPadding: 3 },
-      theme: 'grid',
-    });
-  
 
   finalY = doc.lastAutoTable.finalY;
   const finalDetails = [];
@@ -538,14 +519,10 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         formData.pages.reduce((sum, page) => sum + (PRICE_MAP[page] || 0), 0) +
         // Design Services
         formData.designServices.reduce((sum, service) => sum + (PRICE_MAP[service] || 0), 0) +
-        // Social Media Integration
-        (formData.socialMedia === "yes" ? PRICE_MAP.socialMedia : 0) +
-        // Payment Integration
-        (formData.paymentIntegration === "integracaoPg" ? PRICE_MAP.paymentIntegration : 0) +
-        // Product Reviews
-        (formData.productReviews === "avaliacaoProdutos" ? PRICE_MAP.productReviews : 0) +
-        // Customer Support
-        (formData.clientSupport === "suporteYes" ? PRICE_MAP.clientSupport : 0) +
+        // Social Features
+        formData.socialFeatures.reduce((sum, feature) => sum + (PRICE_MAP[feature] || 0), 0) +
+        // Media Features
+        formData.mediaFeatures.reduce((sum, feature) => sum + (PRICE_MAP[feature] || 0), 0) +
         // Languages
         formData.languages.reduce((sum, lang) => sum + (PRICE_MAP[lang] || 0), 0) +
         // Maintenance
@@ -626,7 +603,7 @@ try {
         email: document.querySelector('input[placeholder="Digite o email"]').value
       },
       detalhesWebsite: {
-        tipoWebsite: formData.objective === "novoSite" ? "Novo Website" : "Modernização",
+        tipoWebsite: formData.objective === "novoApp" ? "Novo App" : "Modernização",
         paginas: formData.pages,
         servicosDesign: formData.designServices,
         redesSociais: formData.socialMedia === "yes" ? "Sim" : "Não",
@@ -664,17 +641,32 @@ try {
 
   const nextStep = () => {
     if (step === 2) {
-      // Validate Step 1
-      if (!formData.objective || !formData.pages.length) {
-        alert("Por favor preencha todos os campos obrigatórios antes de continuar");
+      // Validate Step 1 (Basic App Setup)
+      if (!formData.objective) {
+        alert("Por favor selecione se deseja um app novo ou modernização");
         return;
       }
-    } else if (step === 3) {
-      // Validate Step 2
-      if (!formData.designServices.length || !formData.socialMedia || 
-          !formData.paymentIntegration || !formData.productReviews || 
-          !formData.clientSupport || !formData.languages.length) {
-        alert("Por favor preencha todos os campos obrigatórios antes de continuar");
+      if (!formData.pages.length) {
+        alert("Por favor selecione pelo menos uma página");
+        return;
+      }
+      if (!formData.designServices.length) {
+        alert("Por favor selecione pelo menos um serviço de design");
+        return;
+      }
+    } 
+    else if (step === 3) {
+      // Validate Step 2 (Features and Backend)
+      if (!formData.socialFeatures.length) {
+        alert("Por favor selecione pelo menos um recurso social");
+        return;
+      }
+      if (!formData.mediaFeatures.length) {
+        alert("Por favor selecione pelo menos um recurso de mídia");
+        return;
+      }
+      if (!formData.backendServices.length) {
+        alert("Por favor selecione pelo menos um serviço backend");
         return;
       }
     }
@@ -714,9 +706,9 @@ try {
     }
   };
 
-  //Primeiro Componente Criado
+  // Step 1: Basic App Setup
   const Step1 = () => (
-<motion.div
+    <motion.div
       initial={false}
       animate="center"
       exit="exit"
@@ -725,10 +717,10 @@ try {
       key="step2"
       layoutId="formStep"
     >
-      <h3 className="h3title">Detalhes do Website</h3>
+      <h3 className="h3title">Detalhes da App</h3>
       <div>
         <div>
-          <label htmlFor="objective">Website novo ou modernização?</label>
+          <label htmlFor="objective">App nova ou modernização?</label>
           <select
             id="objective"
             name="objective"
@@ -737,20 +729,20 @@ try {
             required
           >
             <option value="">Selecione</option>
-            <option value="novoSite">Novo</option>
+            <option value="novoApp">Nova</option>
             <option value="modernizacao">Modernização</option>
           </select>
         </div>
         <div>
-          <h4>Quais páginas o site precisa?</h4>
+          <h4>Páginas Principais</h4>
           <div className="custom-checkbox">
             {[
-              { value: "mainPage", label: "Página Inicial" },
-              { value: "aboutPage", label: "Sobre" },
-              { value: "contactPage", label: "Contato" },
-              { value: "lojaPage", label: "Loja" },
-              { value: "userSection", label: "Secção de users" },
-              { value: "politicaPage", label: "Política de devoluções" },
+              { value: "feedPage", label: "Feed Principal" },
+              { value: "profilePage", label: "Perfil de Usuário" },
+              { value: "messagesPage", label: "Mensagens" },
+              { value: "notificationsPage", label: "Notificações" },
+              { value: "searchPage", label: "Pesquisa" },
+              { value: "settingsPage", label: "Configurações" },
             ].map(({ value, label }) => (
               <div key={value}>
                 <input
@@ -759,6 +751,29 @@ try {
                   name="pages"
                   value={value}
                   checked={formData.pages.includes(value)}
+                  onChange={handleInputChange}
+                />
+                <label htmlFor={value}>{label}</label>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h4>Serviços de Design</h4>
+          <div className="custom-checkbox">
+            {[
+              { value: "Logotipo", label: "Logotipo" },
+              { value: "Icons", label: "Ícones" },
+              { value: "Banners", label: "Banners" },
+              { value: "outras", label: "Outras Artes" },
+            ].map(({ value, label }) => (
+              <div key={value}>
+                <input
+                  type="checkbox"
+                  id={value}
+                  name="designServices"
+                  value={value}
+                  checked={formData.designServices.includes(value)}
                   onChange={handleInputChange}
                 />
                 <label htmlFor={value}>{label}</label>
@@ -786,6 +801,7 @@ try {
     </motion.div>
   );
 
+  // Step 2: Features and Backend
   const Step2 = () => (
     <motion.div
       initial={false}
@@ -796,24 +812,24 @@ try {
       key="step3"
       layoutId="formStep"
     >
-      <h3 className="h3title">Serviços Adicionais</h3>
+      <h3 className="h3title">Recursos e Backend</h3>
       <div>
         <div>
-          <p className="labels">Serviços de Design:</p>
+          <p className="labels">Recursos Sociais:</p>
           <div className="custom-checkbox">
             {[
-              { value: "Logotipo", label: "Logotipo" },
-              { value: "Icons", label: "Icons" },
-              { value: "Banners", label: "Banners" },
-              { value: "outras", label: "Outros" },
+              { value: "userFollowing", label: "Sistema de Seguidores" },
+              { value: "contentSharing", label: "Compartilhamento" },
+              { value: "reactions", label: "Reações e Comentários" },
+              { value: "tagging", label: "Marcação de Usuários" },
             ].map(({ value, label }) => (
               <div key={value}>
                 <input
                   type="checkbox"
                   id={value}
-                  name="designServices"
+                  name="socialFeatures"
                   value={value}
-                  checked={formData.designServices.includes(value)}
+                  checked={formData.socialFeatures.includes(value)}
                   onChange={handleInputChange}
                 />
                 <label htmlFor={value}>{label}</label>
@@ -821,67 +837,89 @@ try {
             ))}
           </div>
         </div>
-      
+
         <div>
-          <label htmlFor="socialMedia" className="labels">Integração com redes sociais:</label>
-          <select
-            id="socialMedia"
-            name="socialMedia"
-            value={formData.socialMedia}
-            onChange={handleInputChange}
-            required
-          >
-            <option value="">Selecione</option>
-            <option value="yes">Sim</option>
-            <option value="no">Não</option>
-          </select>
+          <p className="labels">Recursos de Mídia:</p>
+          <div className="custom-checkbox">
+            {[
+              { value: "photoUpload", label: "Upload de Fotos" },
+              { value: "videoUpload", label: "Upload de Vídeos" },
+              { value: "audioUpload", label: "Upload de Áudio" },
+              { value: "filters", label: "Filtros e Efeitos" },
+            ].map(({ value, label }) => (
+              <div key={value}>
+                <input
+                  type="checkbox"
+                  id={value}
+                  name="mediaFeatures"
+                  value={value}
+                  checked={formData.mediaFeatures.includes(value)}
+                  onChange={handleInputChange}
+                />
+                <label htmlFor={value}>{label}</label>
+              </div>
+            ))}
+          </div>
         </div>
-        <br />
+
         <div>
-          <label htmlFor="paymentIntegration">Integração com meios de pagamento</label>
-          <select
-            id="paymentIntegration"
-            name="paymentIntegration"
-            value={formData.paymentIntegration}
-            onChange={handleInputChange}
-            required
-          >
-            <option value="">Selecione</option>
-            <option value="integracaoPg">Sim</option>
-            <option value="semIntPg">Não</option>
-          </select>
+          <p className="labels">Serviços Backend:</p>
+          <div className="custom-checkbox">
+            {[
+              { value: "userAuth", label: "Sistema de Autenticação" },
+              { value: "dataStorage", label: "Armazenamento de Dados" },
+              { value: "pushNotifications", label: "Notificações Push" },
+              { value: "analytics", label: "Analytics" },
+            ].map(({ value, label }) => (
+              <div key={value}>
+                <input
+                  type="checkbox"
+                  id={value}
+                  name="backendServices"
+                  value={value}
+                  checked={formData.backendServices.includes(value)}
+                  onChange={handleInputChange}
+                />
+                <label htmlFor={value}>{label}</label>
+              </div>
+            ))}
+          </div>
         </div>
-        <br />
+      </div>
+      <div className="button-container">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={prevStep}
+        >
+          Anterior
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={nextStep}
+        >
+          Próximo
+        </motion.button>
+      </div>
+    </motion.div>
+  );
+
+  // Step 3: Final Configuration
+  const Step3 = () => (
+    <motion.div
+      initial={false}
+      animate="center"
+      exit="exit"
+      variants={slideVariants}
+      transition={{ duration: 0.3 }}
+      key="step4"
+      layoutId="formStep"
+    >
+      <h3 className="h3title">Configuração Final</h3>
+      <div>
         <div>
-          <label htmlFor="productReviews">Avaliação de produtos</label>
-          <select
-            id="productReviews"
-            name="productReviews"
-            value={formData.productReviews}
-            onChange={handleInputChange}
-            required
-          >
-            <option value="">Selecione</option>
-            <option value="avaliacaoProdutos">Sim</option>
-            <option value="semAvaProd">Não</option>
-          </select>
-        </div>
-        <div>
-          <label htmlFor="clientSupport">Suporte ao cliente</label>
-          <select
-            id="clientSupport"
-            name="clientSupport"
-            value={formData.clientSupport}
-            onChange={handleInputChange}
-            required
-          >
-            <option value="">Selecione</option>
-            <option value="suporteYes">Sim</option>
-            <option value="suporteNo">Não</option>
-          </select>
-        </div>
-        <div>
-          <p className="labels">Idiomas do Website</p>
+          <p className="labels">Idiomas:</p>
           <div className="custom-checkbox">
             {[
               { value: "portugues", label: "Português" },
@@ -903,40 +941,9 @@ try {
             ))}
           </div>
         </div>
-      </div>
-      <div className="button-container">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={prevStep}
-        >
-          Anterior
-        </motion.button>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={nextStep}
-        >
-          Próximo
-        </motion.button>
-      </div>
-    </motion.div>
-  );
 
-  const Step3 = () => (
-    <motion.div
-      initial={false}
-      animate="center"
-      exit="exit"
-      variants={slideVariants}
-      transition={{ duration: 0.3 }}
-      key="step4"
-      layoutId="formStep"
-    >
-      <h3 className="h3title">Finalização</h3>
-      <div>
         <div>
-          <label htmlFor="maintenance">Período de manutenção</label>
+          <label htmlFor="maintenance">Período de Manutenção:</label>
           <select
             id="maintenance"
             name="maintenance"
@@ -945,14 +952,14 @@ try {
             required
           >
             <option value="">Selecione</option>
-            <option value="umAno">Um ano</option>
-            <option value="doisAnos">Dois anos</option>
-            <option value="tresAnos">Três anos</option>
+            <option value="umAno">1 Ano</option>
+            <option value="doisAnos">2 Anos</option>
+            <option value="tresAnos">3 Anos</option>
           </select>
         </div>
-        <br />
+
         <div>
-          <label htmlFor="updateFrequency">Frequência de Atualização</label>
+          <label htmlFor="updateFrequency">Frequência de Atualizações:</label>
           <select
             id="updateFrequency"
             name="updateFrequency"
@@ -997,6 +1004,7 @@ try {
         <p className="p">*obrigatório</p>
       </div>
     </>
-  )
+  );
 }
+
 
