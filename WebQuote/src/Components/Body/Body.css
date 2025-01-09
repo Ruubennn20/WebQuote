@@ -11,13 +11,13 @@ body {
 .webQuoteTitle{
     font-size: 15vh;
     font-weight: bold;          
-    
+    margin-bottom: 1rem;
 }
 
 .webQuoteSubTitle{
     font-size: 150%;
     font-weight: bold;
-    margin-top: -4%;
+    margin: 1rem 0 2rem;
 }
 
 /* Seção principal do corpo */
@@ -28,30 +28,31 @@ body {
     margin-top: 45px;
     align-items: center;
     justify-content: center;
-    height: 52vh;
+    height: 90svh;
     width: 100%;
     color: #fff;
-    padding: 0 15px; /* Adiciona um pouco de espaço nas laterais */
+    padding: 0 15px; 
+    border-bottom-left-radius: 70% 270px;
+    border-bottom-right-radius:  280px;/* Adiciona um pouco de espaço nas laterais */
 }
 
 /* Container para o conteúdo */
 .content-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
     max-width: 1200px;
-    z-index: 1;
-    flex-wrap: wrap; /* Permite que os itens se movam para uma nova linha em telas pequenas */
-    gap: 20px; /* Espaçamento entre os elementos */
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+    transform: translateY(-10vh);
 }
 
 /* Estilos para a parte esquerda */
 .left-content {
     flex: 1;
-    text-align: left;
-    padding-left: 50px;
-    padding-top: 10vh;
+    text-align: center;
+    padding: 0;
 }
 
 /* Estilos para a parte direita */
@@ -60,15 +61,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 10vh; /* Ajusta o espaçamento superior */
 }
 
 /* Imagem da direita */
 .right-image {
-    max-width: 100%;
-    max-height: 70%;
-    object-fit: contain; /* Ajusta a imagem dentro da área sem distorcer */
-    padding-top: 25vh;
+    max-width: 120%;
+    height: auto;
+    object-fit: contain;
+    padding-top: 0;
 }
 
 /* Imagem de fundo curva (ellipse) */
@@ -108,145 +108,122 @@ body {
 
 /* Seção de features */
 .features-section {
-    padding: 40px 15px;
-    background-color: #f8f8f8;
-    text-align: center;
-    margin-bottom: -10vh;
-    margin-top: 35vh;
+    position: relative;
+    padding: 60px 15px;
     background-color: #FFF5E6;
-
+    text-align: center;
+    margin-top: 10vh;
+    margin-bottom: 0;
+    z-index: 1;
 }
 
 .features-section h2 {
-    margin-bottom: 30px;
-    font-size: 2rem;
+    color: #333;
+    font-size: 3.2rem;
+    font-weight: bold;
+    margin-bottom: 3rem;
+    position: relative;
+    display: inline-block;
+}
+
+.features-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: #333;
+    border-radius: 2px;
+    opacity: 0.8;
 }
 
 .features-grid {
+    position: relative;
     display: flex;
-    justify-content: space-around;
-    gap: 20px;
-    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: nowrap;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 .feature-card {
-    background-color: #2D4DAF;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 30%;
+    background: #ffffff; /* Keep cards white */
+    padding: 2rem 1.5rem;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(65, 105, 225, 0.12);
+    width: 300px;
+    flex: 0 0 auto;
     text-align: center;
-    color: #fff;
-    border: 2px solid #000000;
-
-}
-.feature-card:hover {
-    background-color: #4169E1;
-    color: #ffffff;
-    transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transition: all 0.4s ease;
 }
 
 .feature-card h3 {
-    margin-bottom: 10px;
+    color: #4169e1; /* Blue headings */
     font-size: 1.5rem;
-}
-.feature-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    margin-bottom: 1rem;
 }
 
 .feature-card p {
-    font-size: 1rem;
+    color: #666; /* Dark gray text */
+    line-height: 1.6;
 }
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(65, 105, 225, 0.2);
+    background: #4169e1; /* Blue on hover */
+}
+
+.feature-card:hover h3,
+.feature-card:hover p {
+    color: #ffffff; /* White text on hover */
+}
+
+/* Add icons to cards */
+.feature-card::before {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, #4169e1, #2D4DAF);
+    border-radius: 50%;
+    opacity: 0.9;
+}
+
+/* Smooth transition to next section */
+.benefits-section {
+    background-color: #FFF5E6;
+    position: relative;
+    padding: 60px 15px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 .h2Benefits{
     margin-top: -1vh;
 }
 
-/* Seção de benefícios */
-.benefits-section {
-    padding: 40px 15px;
-    background-color: #4169e1;
-    color: #fff;
-    text-align: center;
-    margin-top: 9vh;
-}
-
-.benefits-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.benefit-item {
-    background-color: #FFF5E6;
-    color: #333;
-    padding: 20px;
-    border-radius: 10px;
-    width: 45%;
-    text-align: center;
-    border: 2px solid #000000;
-
-}
-
-.benefit-item h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-}
-
-.benefit-item p {
-    font-size: 1rem;
-}
-
-/* Responsividade para telas menores */
-
-/* Para tablets e telas médias */
+/* Add responsive behavior for smaller screens */
 @media (max-width: 1024px) {
-    .content-container {
-        flex-direction: column; /* Coloca o conteúdo em coluna */
-        align-items: center;
-        gap: 30px;
-    }
-
-    .left-content {
-        text-align: center;
-        padding-left: 0;
-    }
-
-    .right-content {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .right-image {
-        padding-top: 10vh; /* Ajusta o padding para que a imagem não fique afastada */
-        max-height: 60%;
-    }
-
-    .button-body {
-        width: 250px;
-        font-size: 18px;
-        
+    .features-grid {
+        flex-wrap: wrap;
+        gap: 1.5rem;
     }
     
-    .features-grid {
-        flex-direction: column; /* Empilha as feature cards em telas menores */
-        align-items: center;
-    }
-
     .feature-card {
-        width: 80%;
+        width: calc(33% - 1rem);
     }
+}
 
-    .benefits-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .benefit-item {
-        width: 80%;
+@media (max-width: 768px) {
+    .feature-card {
+        width: 100%;
     }
 }
 
@@ -326,3 +303,4 @@ body {
         font-size: 0.9rem; /* Reduz o tamanho do texto */
     }
 }
+

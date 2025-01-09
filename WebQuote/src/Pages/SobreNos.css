@@ -1,7 +1,7 @@
 /* Estilo principal da página */
 .sobrenos-container {
   padding: 60px 40px;
-  background: linear-gradient(to bottom right, #FFF8DC, #fff);
+  background-color: #FFF5E6;
   font-family: 'Inter', 'Roboto', system-ui, sans-serif;
   min-height: 100vh;
   position: relative;

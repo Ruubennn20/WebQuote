@@ -1,134 +1,160 @@
-.footerContainer {
+.footer {
+  position: relative;
+  background-color: #f8f9fa;
+  padding: 4rem 0 2rem;
+  color: #333;
+}
+
+.footer-wrapper {
+  position: relative;
+  width: 100%;
+  margin-top: 300px;
+}
+
+.extra-images {
   display: flex;
   justify-content: center;
-  align-items: center;
+  gap: 20px;
+  position: absolute;
+  top: -20rem; /* Adjust this value to move cards up/down */
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+.extra-image1,
+.extra-image2 {
+  width: 380px;
+  height: auto;
+  object-fit: cover;
+}
+
+.footer-curve {
+  position: relative;
+  margin-top: 200px; /* Adjust this to control where the blue section starts */
+}
+
+.footerContainer {
+  background-color: #4169E1;
   width: 100%;
-  color: white;
+  padding: 2rem 1rem;
+  padding-top: 100px;
+  border-top-left-radius: 250px;
+  border-top-right-radius: 80% 270px;
 }
 
 .footerContent {
-  background-color: #4169E1;
-  width: 100%;
-  min-height: 50vh; /* Altura mínima para o rodapé */
   display: flex;
-  flex-direction: row; /* Mudamos para row para as colunas ficarem lado a lado */
-  align-items: flex-start;
-  justify-content: center;
+  flex-direction: column;
+  gap: 3rem;
+  max-width: 100%;
+  width: 100%;
+  margin: 0 auto;
+  padding: 4rem 1rem 0;
+}
+
+.footer-sections {
+  display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
-  gap: 20px; /* Espaço entre os elementos */
+  gap: 10rem;
+  max-width: 70%;
+  margin: 0 auto;
 }
 
-/* Ajustes para a classe extra-images */
-.extra-images {
-  display: flex;
-  justify-content: center; /* Centraliza as imagens */
-  gap: 20px; /* Espaço entre as imagens */
-  position: relative;
-  top: -20px; /* Mover os cards ligeiramente para cima */
-  z-index: 2; /* Garante que as imagens fiquem acima da ellipse */
+.footer-section {
+  min-width: 200px;
+  text-align: center;
 }
 
-.extra-image1, .extra-image2 {
-  
-  height: auto;
-  border-radius: 10px; /* Arredondar as bordas das imagens */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra para destacar as imagens */
-  margin-bottom: -30vh;
+.footer-section h4 {
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  text-transform: uppercase;
 }
 
-.ellipse03 {
-  width: 100%;
-  height: 100%;
-  z-index: 1; /* Garante que a Ellipse fique atrás dos cards */
-  margin-bottom: -38vh;
-}
-
-
-.menu {
-  display: flex;
-  justify-content: space-between; /* Deixa as colunas mais distantes */
-  align-items: flex-start;
-  gap: 20px;
-  width: 60%; /* A largura total do menu será 70%, deixando espaço para o logo */
-  max-width: 1000px;
-  margin-top: 5vh;
-}
-
-.menu ul {
+.footer-section ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.menu-coluna1,
-.menu-coluna2,
-.menu-coluna3 {
-  margin: 0 20px; /* Margem horizontal para as colunas */
+.footer-section ul li {
+  margin-bottom: 0.8rem;
 }
 
-.menu li a {
+.footer-section ul li a {
+  color: #e0e0e0;
   text-decoration: none;
-  color: white;
-  font-size: large;
-  font-family: sans-serif;
-  line-height: 2; /* Aumenta o espaço entre as linhas */
-  font-weight: bold;
+  transition: color 0.3s ease;
 }
 
-.menu li a:hover {
-  color: #FFCC00;
+.footer-section ul li a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid #ffffff40;
 }
 
 .footer-logo {
-  display: flex;
-  justify-content: flex-start; /* Faz com que o logo fique alinhado à esquerda da área disponível */
-  align-items: center;
-  width: 10%; /* O logo ocupa 10% da largura do rodapé */
-  margin-top: 3vh;
+  max-width: 150px;
 }
 
 .footerLogoImage {
-  width: 70%; /* O logo terá 70% da largura da coluna em que está */
-  height:max-content;
+  width: 100%;
+  height: auto;
+}
+
+.social-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.social-links a {
+  color: #e0e0e0;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+  color: #ffffff;
 }
 
 .copyright {
   text-align: center;
-  color: white;
-  margin-top: 20px;
-  font-size: 14px;
-  font-family: sans-serif;
-}
-html {
-  scroll-behavior: smooth;
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
-
-/* Responsividade */
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  .footerContent {
-    flex-direction: column; /* Para telas menores, os itens vão para baixo */
-    align-items: center;
+  .footer-sections {
+    justify-content: flex-start;
   }
 
-  .menu {
+  .footer-section {
+    min-width: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-section {
+    width: 100%;
+  }
+
+  .social-links {
     flex-direction: column;
     align-items: center;
-    width: 100%; /* O menu ocupa toda a largura */
-  }
-
-  .footer-logo {
-    margin-top: 10px;
-    width: 100%; /* O logo ocupa toda a largura no modo coluna */
-    justify-content: center;
-  }
-
-  .footerLogoImage {
-    max-width: 120px; /* Reduz o tamanho do logo em dispositivos móveis */
-  }
-
-  .copyright {
-    font-size: 12px;
-    padding: 10px;
+    gap: 1rem;
   }
 }

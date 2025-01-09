@@ -9,7 +9,6 @@ export default function Body() {
     <>
       {/* Substituir body por div, main ou section */}
       <div className="body-wrapper">
-        <img src={Ellipse1} alt="Ellipse1" className="imgCurve" />
         <div className="body-section">
           <div className="content-container">
             <div className="left-content">
@@ -27,38 +26,23 @@ export default function Body() {
         </div>
 
         {/* Nova seção de features */}
-        <div className="features-section">
-          <h2>Nossos Serviços</h2>
+        <section className="features-section">
+          <h2>O que a WebQuote oferece?</h2>
           <div className="features-grid">
             <div className="feature-card">
-              <h3>Orçamentos Rápidos</h3>
-              <p>Receba seu orçamento em minutos</p>
+              <h3>Automação Inteligente</h3>
+              <p>Orçamentos gerados em minutos com nossa tecnologia avançada de automação. Economize tempo e recursos.</p>
             </div>
             <div className="feature-card">
-              <h3>Personalização</h3>
-              <p>Soluções adaptadas às suas necessidades</p>
+              <h3>Personalização Total</h3>
+              <p>Cada projeto é único. Nossa plataforma se adapta às suas necessidades específicas, garantindo resultados sob medida.</p>
             </div>
             <div className="feature-card">
-              <h3>Suporte 24/7</h3>
-              <p>Sempre disponíveis para ajudar</p>
+              <h3>Suporte Especializado</h3>
+              <p>Equipe dedicada 24/7 para auxiliar em cada etapa. Conte com profissionais experientes sempre à disposição.</p>
             </div>
           </div>
-        </div>
-
-        {/* Seção de benefícios */}
-        <div className="benefits-section">
-          <h2 className="h2Benefits">Por que nos escolher?</h2>
-          <div className="benefits-container">
-            <div className="benefit-item">
-              <h3>Economia de Tempo</h3>
-              <p>Processo simplificado e eficiente</p>
-            </div>
-            <div className="benefit-item">
-              <h3>Qualidade Garantida</h3>
-              <p>Excelência em cada projeto</p>
-            </div>
-          </div>
-        </div>
+        </section>
       </div>
     </>
   );

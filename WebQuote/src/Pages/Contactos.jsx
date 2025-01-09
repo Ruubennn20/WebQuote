@@ -1,7 +1,7 @@
 import React, { useState } from 'react'; 
 import Header from '../Components/Header/Header';
 import './Contactos.css';
-import Footer from '../Components/Footer/Footer';
+import Footer2 from '../Components/Footer/Footer2';
 
 export default function Contactos() {
   // Estados para capturar as inputs
@@ -119,7 +119,7 @@ export default function Contactos() {
         <br />
         <br />
       </div>
-      <Footer />
+      <Footer2 />
     </>
   );
 }
