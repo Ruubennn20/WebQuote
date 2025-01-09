@@ -1,0 +1,135 @@
+.footerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    color: white;
+  }
+  
+  .footerContent {
+    background-color: #4169E1;
+    width: 100%;
+    min-height: 50vh; /* Altura mínima para o rodapé */
+    display: flex;
+    flex-direction: row; /* Mudamos para row para as colunas ficarem lado a lado */
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px; /* Espaço entre os elementos */
+  }
+  
+  /* Ajustes para a classe extra-images */
+  .extra-images {
+    display: flex;
+    justify-content: center; /* Centraliza as imagens */
+    gap: 20px; /* Espaço entre as imagens */
+    position: relative;
+    top: -20px; /* Mover os cards ligeiramente para cima */
+    z-index: 2; /* Garante que as imagens fiquem acima da ellipse */
+  }
+  
+  .extra-image1, .extra-image2 {
+    
+    height: auto;
+    border-radius: 10px; /* Arredondar as bordas das imagens */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra para destacar as imagens */
+    margin-bottom: -30vh;
+  }
+  
+  .ellipse03 {
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Garante que a Ellipse fique atrás dos cards */
+    margin-bottom: -38vh;
+  }
+  
+  
+  .menu {
+    display: flex;
+    justify-content: space-between; /* Deixa as colunas mais distantes */
+    align-items: flex-start;
+    gap: 20px;
+    width: 60%; /* A largura total do menu será 70%, deixando espaço para o logo */
+    max-width: 1000px;
+    margin-top: 5vh;
+  }
+  
+  .menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .menu-coluna1,
+  .menu-coluna2,
+  .menu-coluna3 {
+    margin: 0 20px; /* Margem horizontal para as colunas */
+  }
+  
+  .menu li a {
+    text-decoration: none;
+    color: white;
+    font-size: large;
+    font-family: sans-serif;
+    line-height: 2; /* Aumenta o espaço entre as linhas */
+    font-weight: bold;
+  }
+  
+  .menu li a:hover {
+    color: #FFCC00;
+  }
+  
+  .footer-logo {
+    display: flex;
+    justify-content: flex-start; /* Faz com que o logo fique alinhado à esquerda da área disponível */
+    align-items: center;
+    width: 10%; /* O logo ocupa 10% da largura do rodapé */
+    margin-top: 3vh;
+  }
+  
+  .footerLogoImage {
+    width: 70%; /* O logo terá 70% da largura da coluna em que está */
+    height:max-content;
+  }
+  
+  .copyright {
+    text-align: center;
+    color: white;
+    margin-top: 20px;
+    font-size: 14px;
+    font-family: sans-serif;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .footerContent {
+      flex-direction: column; /* Para telas menores, os itens vão para baixo */
+      align-items: center;
+    }
+  
+    .menu {
+      flex-direction: column;
+      align-items: center;
+      width: 100%; /* O menu ocupa toda a largura */
+    }
+  
+    .footer-logo {
+      margin-top: 10px;
+      width: 100%; /* O logo ocupa toda a largura no modo coluna */
+      justify-content: center;
+    }
+  
+    .footerLogoImage {
+      max-width: 120px; /* Reduz o tamanho do logo em dispositivos móveis */
+    }
+  
+    .copyright {
+      font-size: 12px;
+      padding: 10px;
+    }
+  }
+  
