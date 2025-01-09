@@ -1,18 +1,17 @@
-import express, { json } from 'express';
-import multer, { memoryStorage } from 'multer';
-import { createTransport } from 'nodemailer';
-import cors from 'cors';
-import { path } from 'framer-motion/client';
-import orcamentoRouter from './orcamento.js';
+const express = require('express');
+const multer = require('multer');
+const nodemailer = require('nodemailer');
+const cors = require('cors');
+const { path } = require('framer-motion/client');
  
 const app = express();
-const upload = multer({ storage: memoryStorage() });
+const upload = multer({ storage: multer.memoryStorage() });
  
 app.use(cors());
-app.use(json());
+app.use(express.json());
   
 // Configuração do nodemailer
-const transporter = createTransport({
+const transporter = nodemailer.createTransport({
   service: 'gmail', // Pode usar outro provedor ou configuração SMTP
   auth: {
     user: 'geral.webquote@gmail.com', // Substitua pelo seu email
