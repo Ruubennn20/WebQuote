@@ -161,11 +161,6 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     // If validation passes, continue with existing submit logic
     let total = 0;
 
-    // Calculate total based on selections
-    // Website Type multiplier
-    const websiteMultiplier = formData.objective === "novoSite" ? 1.5 : 
-                             formData.objective === "modernizacao" ? 1.25 : 1;
-
     // Pages cost
     formData.pages.forEach(page => {
       total += PRICE_MAP[page] || 0;
@@ -196,15 +191,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
       total += PRICE_MAP.clientSupport;
     }
 
-    // Cálculo do custo do website
-    total += PRICE_MAP[formData.objective] || 0;
-  
-    // Cálculo do custo das páginas
-    formData.pages.forEach((page) => {
-      total += PRICE_MAP[page] || 0;
-    });
-  
-    // Cálculo do custo de manutenção
+    // Maintenance
     if (formData.maintenance) {
       total += PRICE_MAP[formData.maintenance];
     }
@@ -218,9 +205,6 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     formData.languages.forEach(lang => {
       total += PRICE_MAP[lang] || 0;
     });
-
-    // Apply website type multiplier to final total
-    total = total * websiteMultiplier; 
 
     const doc = new jsPDF();
     
@@ -529,27 +513,24 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     // Final Total Table
     finalY = doc.lastAutoTable.finalY;
     const finalTotal = (
-      // Website Type multiplier
-      (
-        // Pages cost
-        formData.pages.reduce((sum, page) => sum + (PRICE_MAP[page] || 0), 0) +
-        // Design Services
-        formData.designServices.reduce((sum, service) => sum + (PRICE_MAP[service] || 0), 0) +
-        // Social Media Integration
-        (formData.socialMedia === "yes" ? PRICE_MAP.socialMedia : 0) +
-        // Payment Integration
-        (formData.paymentIntegration === "integracaoPg" ? PRICE_MAP.paymentIntegration : 0) +
-        // Product Reviews
-        (formData.productReviews === "avaliacaoProdutos" ? PRICE_MAP.productReviews : 0) +
-        // Customer Support
-        (formData.clientSupport === "suporteYes" ? PRICE_MAP.clientSupport : 0) +
-        // Languages
-        formData.languages.reduce((sum, lang) => sum + (PRICE_MAP[lang] || 0), 0) +
-        // Maintenance
-        (PRICE_MAP[formData.maintenance] || 0) +
-        // Update Frequency
-        (PRICE_MAP[formData.updateFrequency] || 0)
-      ) 
+      // Pages cost
+      formData.pages.reduce((sum, page) => sum + (PRICE_MAP[page] || 0), 0) +
+      // Design Services
+      formData.designServices.reduce((sum, service) => sum + (PRICE_MAP[service] || 0), 0) +
+      // Social Media Integration
+      (formData.socialMedia === "yes" ? PRICE_MAP.socialMedia : 0) +
+      // Payment Integration
+      (formData.paymentIntegration === "integracaoPg" ? PRICE_MAP.paymentIntegration : 0) +
+      // Product Reviews
+      (formData.productReviews === "avaliacaoProdutos" ? PRICE_MAP.productReviews : 0) +
+      // Customer Support
+      (formData.clientSupport === "suporteYes" ? PRICE_MAP.clientSupport : 0) +
+      // Languages
+      formData.languages.reduce((sum, lang) => sum + (PRICE_MAP[lang] || 0), 0) +
+      // Maintenance
+      (PRICE_MAP[formData.maintenance] || 0) +
+      // Update Frequency
+      (PRICE_MAP[formData.updateFrequency] || 0)
     );
 
     doc.autoTable({

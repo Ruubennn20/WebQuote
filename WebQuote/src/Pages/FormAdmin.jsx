@@ -121,7 +121,7 @@ export default function FormAdmin() {
                 <td>{orcamento.informacoesCliente.telefone}</td>
                 <td>{orcamento.detalhesWebsite.tipoWebsite}</td>
                 <td>
-                  {orcamento.orcamento.valorTotal} {orcamento.orcamento.moeda}
+                  {parseFloat(orcamento.orcamento.valorTotal).toFixed(2)} {orcamento.orcamento.moeda}
                 </td>
                 <td>
                   {new Date(orcamento.dataSubmissao).toLocaleDateString()}
