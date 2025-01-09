@@ -634,11 +634,6 @@ try {
       pdf: pdfBase64
     }];
     localStorage.setItem('orcamentos', JSON.stringify(newOrcamentos));
-
-    // Alert success and optionally redirect
-    alert('Orçamento salvo com sucesso!');
-    // Optional: Redirect to admin page
-    // window.location.href = '/admin';
   }
 
   

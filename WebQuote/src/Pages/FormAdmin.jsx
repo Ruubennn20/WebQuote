@@ -10,12 +10,18 @@ export default function FormAdmin() {
 
   useEffect(() => {
     const storedOrcamentos = JSON.parse(localStorage.getItem('orcamentos') || '[]');
+    // Sort orcamentos by date in descending order (newest first)
+    const sortedOrcamentos = storedOrcamentos.sort((a, b) => 
+      new Date(b.dataSubmissao) - new Date(a.dataSubmissao)
+    );
+    
     const initialStatusMap = {};
-    storedOrcamentos.forEach((orcamento) => {
+    sortedOrcamentos.forEach((orcamento) => {
       initialStatusMap[orcamento.orderNumber] = orcamento.status || "Aguardando processamento";
     });
+    
     setStatusMap(initialStatusMap);
-    setOrcamentos(storedOrcamentos);
+    setOrcamentos(sortedOrcamentos);
     setLoading(false);
   }, []);
 
@@ -47,7 +53,7 @@ export default function FormAdmin() {
       "Nome",
       "Email",
       "Contacto",
-      "Tipo Website",
+      "Tipo de Projeto",
       "Valor Total",
       "Data",
       "Status",
@@ -59,7 +65,7 @@ export default function FormAdmin() {
       orcamento.informacoesCliente.nome,
       orcamento.informacoesCliente.email,
       orcamento.informacoesCliente.telefone,
-      orcamento.detalhesWebsite.tipoWebsite,
+      orcamento.detalhesWebsite?.tipoWebsite || orcamento.detalhesApp?.tipoApp || "N/A",
       `${orcamento.orcamento.valorTotal} ${orcamento.orcamento.moeda}`,
       new Date(orcamento.dataSubmissao).toLocaleDateString(),
       statusMap[orcamento.orderNumber] || "Aguardando processamento",
@@ -105,7 +111,7 @@ export default function FormAdmin() {
               <th>Nome</th>
               <th>Email</th>
               <th>Contacto</th>
-              <th>Tipo Website</th>
+              <th>Tipo de Projeto</th>
               <th>Valor Total</th>
               <th>Data Submissão</th>
               <th>Status</th>
@@ -119,7 +125,9 @@ export default function FormAdmin() {
                 <td>{orcamento.informacoesCliente.nome}</td>
                 <td>{orcamento.informacoesCliente.email}</td>
                 <td>{orcamento.informacoesCliente.telefone}</td>
-                <td>{orcamento.detalhesWebsite.tipoWebsite}</td>
+                <td>
+                  {orcamento.detalhesWebsite?.tipoWebsite || orcamento.detalhesApp?.tipoApp || "N/A"}
+                </td>
                 <td>
                   {parseFloat(orcamento.orcamento.valorTotal).toFixed(2)} {orcamento.orcamento.moeda}
                 </td>

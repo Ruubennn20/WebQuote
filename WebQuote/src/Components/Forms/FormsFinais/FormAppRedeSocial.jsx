@@ -17,8 +17,8 @@ export default function FormAppRedeSocial({ formData: initialFormData, setFormDa
     settingsPage: 160,    // User settings
     
     // Type of app
-    novoApp: 0,
-    modernizacao: 0,
+    novaApp: 0,
+    modernizacaoApp: 0,
     
     // Design Services
     Logotipo: 80,
@@ -119,6 +119,9 @@ export default function FormAppRedeSocial({ formData: initialFormData, setFormDa
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Generate order number once at the start
+    const orderNumber = `WQ${Date.now().toString().slice(-6)}`;
 
     // Validation checks
     const validationErrors = [];
@@ -176,7 +179,7 @@ export default function FormAppRedeSocial({ formData: initialFormData, setFormDa
     doc.text('Fatura Num:    ', 130, 27);
     doc.text('Data:    ', 130, 31);
     doc.setFont('Helvetica', 'normal');
-    doc.text(`WQ${Date.now().toString().slice(-6)}`, 155, 27);
+    doc.text(orderNumber, 155, 27);
     doc.text(new Date().toLocaleDateString(), 155, 31);
 
     // Tabela para o tipo de website novo ou modernizar
@@ -185,7 +188,7 @@ export default function FormAppRedeSocial({ formData: initialFormData, setFormDa
       head: [['Tipo de serviço', "", '', '']],
       body: [[
         "Website",
-        formData.objective === "novoApp" ? "Desenvolvimento de um app novo" : 
+        formData.objective === "nova App" ? "Desenvolvimento de um app novo" : 
         formData.objective === "modernizacao" ? "Modernização de um app existente" : "",
         "",
         "",
@@ -534,53 +537,51 @@ try {
   
     // Captura dos dados do formulário
     const dadosOrcamento = {
+      orderNumber: orderNumber,
       informacoesCliente: {
-        nome: document.querySelector('input[placeholder="Digite o nome e apelido"]').value,
-        telefone: document.querySelector('input[placeholder="Digite o contacto"]').value,
-        email: document.querySelector('input[placeholder="Digite o email"]').value
+        nome: initialFormData.nome,
+        telefone: initialFormData.contacto,
+        email: initialFormData.email
       },
-      detalhesWebsite: {
-        tipoWebsite: formData.objective === "novoApp" ? "Novo App" : "Modernização",
-        paginas: formData.pages,
+      detalhesApp: {
+        tipoApp: formData.objective === "nova App" ? "Nova App" : "Modernização de App",
+        paginasPrincipais: formData.pages,
         servicosDesign: formData.designServices,
-        redesSociais: formData.socialMedia === "yes" ? "Sim" : "Não",
-        integracaoPagamento: formData.paymentIntegration === "integracaoPg" ? "Sim" : "Não",
-        avaliacaoProdutos: formData.productReviews === "avaliacaoProdutos" ? "Sim" : "Não",
-        suporteCliente: formData.clientSupport === "suporteYes" ? "Sim" : "Não",
-        periodoManutencao: formData.maintenance,
+        recursosSociais: formData.socialFeatures,
+        recursosMedia: formData.mediaFeatures,
+        servicosBackend: formData.backendServices,
+        manutencao: formData.maintenance,
         frequenciaAtualizacao: formData.updateFrequency,
         idiomas: formData.languages
       },
       orcamento: {
-        valorTotal: total.toFixed(2),
+        valorTotal: finalTotal.toFixed(2),
         moeda: "€"
       },
-      dataSubmissao: new Date().toISOString()
+      dataSubmissao: new Date().toISOString(),
+      status: "Aguardando processamento"
     };
-  
-    try {
-      // Envio dos dados para o servidor
-      const response = await fetch('http://localhost:3000/api/orcamento', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dadosOrcamento)
-      });
-      if (!response.ok) {
-        throw new Error('Erro ao salvar orçamento');
-      }
-      alert("Orçamento enviado com sucesso!")
-    } catch (error) {
-      console.error('Erro ao salvar orçamento:', error);
-    }
+
+    // Convert PDF to base64
+    const pdfBase64 = doc.output('datauristring');
+
+    // Store data in localStorage
+    const existingOrcamentos = JSON.parse(localStorage.getItem('orcamentos') || '[]');
+    const newOrcamentos = [...existingOrcamentos, {
+      ...dadosOrcamento,
+      pdf: pdfBase64
+    }];
+    localStorage.setItem('orcamentos', JSON.stringify(newOrcamentos));
+
+
   }
+
 
   const nextStep = () => {
     if (step === 2) {
       // Validate Step 1 (Basic App Setup)
       if (!formData.objective) {
-        alert("Por favor selecione se deseja um app novo ou modernização");
+        alert("Por favor selecione se deseja uma app nova ou modernização da app");
         return;
       }
       if (!formData.pages.length) {
@@ -666,8 +667,8 @@ try {
             required
           >
             <option value="">Selecione</option>
-            <option value="novoApp">Nova</option>
-            <option value="modernizacao">Modernização</option>
+            <option value="novaApp">App nova</option>
+            <option value="modernizacao">Modernização de uma app</option>
           </select>
         </div>
         <div>
