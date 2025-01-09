@@ -234,7 +234,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
     doc.text('Nome:', 13, 31);
     doc.text('Contacto:', 13, 35);
     doc.text('Email:', 13, 39);
-    
+
     // Calculate the width of the bold labels to position the values
     const nomeWidth = doc.getTextWidth('Nome:');
     const contactoWidth = doc.getTextWidth('Contacto:');
@@ -292,7 +292,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
         const pagesTotal = formData.pages.reduce((sum, page) => sum + (PRICE_MAP[page] || 0), 0);
         doc.autoTable({
             startY: finalY + 10,
-            head: [['Tipo de serviço', "", 'Horas', 'Preço (€)']],
+            head: [['Tipo de serviço', " ", 'Horas', 'Preço (€)']],
             body: [
                 ["Páginas: ", "", "", "20€ / Hora", "-"],
                 ...formData.pages.map(page => {
@@ -307,7 +307,7 @@ export default function FormECommerce({ formData: initialFormData, setFormData: 
 
                     // Set hours based on page type
                     const hours = page === 'lojaPage' ? "16" : "8";
-                    return ["", pageLabel, hours, (PRICE_MAP[page] || 0) + " €"];
+                    return [" ", pageLabel, hours, (PRICE_MAP[page] || 0) + " €"];
                 })
             ],
             foot: [[
